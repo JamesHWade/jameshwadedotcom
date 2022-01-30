@@ -3,7 +3,7 @@
 title: "What's on my mind?" # leave blank to exclude
 number_featured: 1 # pulling from mainSections in config.toml
 use_featured: false # if false, use most recent by date
-number_categories: 3 # set to zero to exclude
+number_categories: 0 # set to zero to exclude
 show_intro: true
 intro: |
   I have a nagging desire to create but always lack the time and occasionally the inspiration to do so. My current interests are in chemistry, data science, visualization, programming, learning, teaching, spaced repetition, notes systems, parenting, web development, and health.

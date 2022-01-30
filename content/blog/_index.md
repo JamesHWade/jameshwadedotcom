@@ -17,7 +17,7 @@ show_post_thumbnail: true
 sidebar:
   author: James Wade
   description: "It's a blog. You know the deal. There's an RSS link if you don't want to miss a post.\n"
-  show_sidebar_adunit: true
+  show_sidebar_adunit: false 
   text_link_label: Subscribe via RSS
   text_link_url: /index.xml
   title: Learnign Out Loud
