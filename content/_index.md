@@ -2,10 +2,10 @@
 action_label: Read More &rarr;
 action_link: /about
 action_type: text
-description: I'm a chemist, and I love finding new ways to use R for my job.
+description: I'm a chemist, and I love finding new ways to use R for my research.
 image_left: true
 images:
-- img/george.png
+- img/j-and-g.png
 show_action_link: true
 show_social_links: true
 subtitle: A personal site to exploring data science, statistics, & modeling, mostly with R
