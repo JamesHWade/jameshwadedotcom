@@ -8,7 +8,7 @@ images:
 - img/j-and-g_circular_small.png
 show_action_link: true
 show_social_links: true
-subtitle: A personal site to exploring data science, statistics, & modeling, mostly with R
+subtitle: A personal site exploring data science, statistics, modeling, and whatever else I find interesting - mostly with R.
 text_align_left: false
 title: James Wade
 type: home
