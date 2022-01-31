@@ -2,7 +2,7 @@
 date: "2019-02-25T13:38:41-06:00"
 description: Want to get in touch? Please use this contact form if we aren't already connected on social platform.
 draft: false
-formspree_form_id: github@jameshwade.com
+formspree_form_id: https://formspree.io/f/mjvlyybw
 layout: split-right
 name: Get in Touch
 show_poweredby_formspree: true

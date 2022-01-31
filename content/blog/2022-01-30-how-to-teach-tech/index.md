@@ -3,19 +3,23 @@ title: How to Teach
 subtitle: Lessons on Teaching and Design Curriculum from Greg Wilson
 date: 2022-01-30T15:11:08-05:00
 draft: true
+show_thumbnail: true
+layout: single
+excerpt: I have an idea for lowering the barrier to learn new R packages. I plan to start with [shiny](https://shiny.rstudio.com/) and work my way up to [golem](https://golemverse.org/). Both packages have fantastic documentation already, and I will learn from and be inspired by that content as I go.
+categories:
+- Learning
+tags:
+- Learning
+- Teaching
+- Concept Maps
+- Personas
 ---
 
-[What Every Data Scientist Should Know About Education - RStudio](https://www.rstudio.com/resources/webinars/what-every-data-scientist-should-know-about-education/)
-[An Update to How to Teach Tech](https://youtu.be/ewXvFQByRqY)
+These notes are based on talks given by [Greg Wilson](https://third-bit.com/), founder of the [Carpentries](https://carpentries.org/). The first is a talk he gave in April 2019 for RStudio: [What Every Data Scientist Should Know About Education - RStudio](https://www.rstudio.com/resources/webinars/what-every-data-scientist-should-know-about-education/). The second is an update to that talk from July 2021 on his personal [YouTube channel](https://www.youtube.com/channel/UCbDQ7FIeYB3FHRADAjUjfrg): [What Everyone in Tech Should Know About Teaching and Learning](https://youtu.be/ewXvFQByRqY)
 
-These notes are based on talks given by Greg Wilson, founder of the Carpentries.
+## Lesson 1 Design Curriculum for Learning Stage
 
-## Lesson 1
-
-```ad-note
-title: Lesson 1
-As an instructor, you must design teaching curriculum for three stages of learners: **novices**, **competents**, and **experts**.
-```
+There are three stages of learners: **novices**, **competents**, and **experts**. The curriculum and teaching styles should be distinct for each learning stage.
 
 ### Novice
 
@@ -27,10 +31,9 @@ A mental model is an incomplete and likely inaccurate framing of a topic, but it
 
 Competent practitioners have a connected mental model. To solve a problem, they reason through a series of intermediate steps and usually come to the correct conclusion, albeit slowly. As an instructor, **mentor** competent practitioners. Give them problems to expand their knowledge, but allow them to learn at their own pace. Do not let a competent practitioner be stuck for too long. Momentum is important for learning.
 
-```ad-warning
-title: Avoid Mixing Guideing & Mentoring
+#### Avoid Mixing Guiding & Mentoring
+
 A common mistake when teaching is to mentor a novice learner and guide a competent practitioner. Pushing knowledge to guide a competent practitioners will frustrate them because you tell them what they already know. Asking novices to tackle a problem on their own will frustrate them because they do not know what to explore.
-```
 
 ### Expert
 
@@ -38,12 +41,7 @@ Experts are able to see solutions at a glance. They bring multiple points of vie
 
 To teach an expert, ask them to **reflect** upon their work and **give feedback** on their thinking. Your aim is for them to learn to reflect on why more effectively.
 
-## Lesson 2
-
-```ad-note
-title: Lesson 2
-A lesson is a user interface for knowledge. **Build personas**.
-```
+## Lesson 2 A Lesson is a User Interface for Knowledge
 
 Much like designing a new user interface, your first step in to creating learning content is to **create personas** of learners. These are _fictional_ characters to capture key properties of your target audience. A persona consists of:
 
@@ -52,41 +50,21 @@ Much like designing a new user interface, your first step in to creating learnin
 3. Perceived needs: What do they _think_ they want to learn?
 4. Special considerations: How are they different from you as the instructor? What constraints do they have on learning
 
-## Lesson 3
-
-```ad-note
-title: Lesson 3
-Use **formative assessments** as unit tests during learning.
-```
+## Lesson 3 Use Formative Assessments as Unit Tests for Learning
 
 A formative assessment checks for retention of key learning concepts. If the learner gets the assessment wrong, you gain insight into the learners mental model. Your assessment must have **diagnostic power**. Build formative assessments _before_ you create your curriculum. You need to understand the mental model of your learners. If you do this well, you can dynamically adjust the lessons based on the prior knowledge of the learner.
 
-## Lesson 4
-
-```ad-note
-title: Lesson 4
-Manage **cognitive load**.
-```
+## Lesson 4 Manage Cognitive Load
 
 Do not overload your students with too much information at once. This does _not_ mean that you cannot convey complex ideas or use complex figures. You must introduce components of a complex idea or image gradually. A practical example of this is to use slide builds. You want new linguistic and audio information at the same time. This is one reason why [books do not work](https://andymatuschak.org/books/).
 
 Short term memory is the bottleneck of learning. We often overestimate our short term memory capacity. Modern estimates of short term memory are 4 +/- 1 chunks for knowledge. Short term memory capacity determines how you convert concept maps to lessons. Only once a concept map is decomposed into digestible chunks can you create the lesson. Count the concepts. Remember to not spoon feeding learners. Use your personas and learning stages to guide you.
 
-## Lesson 5
-
-```ad-note
-title: Lesson 5
-**Active learning** beats passive learning every time.
-```
+## Lesson 5 Active Learning Beats Passive Learning Every Time
 
 Active learning results in better learning outcomes. However, most learners will prefer passive learning as that is how most were taught throughout their childhood education. Strategies to incorporate active learning into your lessons, explore [The Learning Scientists](https://www.learningscientists.org/).
 
-## Lesson 6
-
-```ad-note
-title: Lesson 6
-Learner are **not robots**.
-```
+## Lesson 6 Learner are Not Robots
 
 For most learner, the most important factor for success is **intrinsic motivation**. "I'm learning this because I want to." You can increase intrinsic motivation of your students by increasing self-efficacy, utility, and community. Formative assessments increase self-efficacy by giving some control over the pace learning to learners. Utility requires that learners can apply new concepts soon after learning. A community of learners that want to learn will build upon each other. Demotivators a are unpredictability, unfairness, and indifference. Being an ally to your learners can make a big difference in student motivation. Valerie Aurora covers [how to be a good ally](https://frameshiftconsulting.com/ally-skills-workshop/).
 

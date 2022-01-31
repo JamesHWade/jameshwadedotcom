@@ -5,7 +5,7 @@ action_type: text
 description: I'm a chemist, and I love finding new ways to use R for my research.
 image_left: true
 images:
-- img/j-and-g.png
+- img/j-and-g_circular_small.png
 show_action_link: true
 show_social_links: true
 subtitle: A personal site to exploring data science, statistics, & modeling, mostly with R
