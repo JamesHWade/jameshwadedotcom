@@ -1,20 +1,14 @@
 ---
-date: "2019-02-25T13:38:41-06:00"
-description: Want to get in touch? Please use this contact form if we aren't already connected on social platform.
-draft: false
-formspree_form_id: james.wade1221+formspree@gmail.com
-layout: split-right
-name: Get in Touch
-show_poweredby_formspree: true
-show_social_links: true
-submit_button_label: Send Message
 title: Contact
-type: form
+name: Contact Form
+description: Want to get in touch? Please use this contact form if we aren’t already connected on social platform.
+date: 2022-01-30T19:57:25-05:00
+draft: false 
 url: contact
+type: form
+layout: split-right # split-right or split-left
+submit_button_label: Send
+show_social_links: true # specify social accounts in site config
+show_poweredby_formspree: true
+formspree_form_id: https://formspree.io/f/mjvlyybw
 ---
-
-** Contact page don't contain a body, just the front matter above.
-See form.html in the layouts folder.
-
-Formspree requires a (free) account and new form to be set up. The link is made on the final published url in the field: Restrict to Domain. It is possible to register up to 2 emails free and you can select which one you want the forms to go to within Formspree in the Settings tab.
-**
