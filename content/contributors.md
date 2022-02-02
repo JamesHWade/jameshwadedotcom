@@ -6,6 +6,8 @@ show_title_as_headline: true
 title: Contributors
 ---
 
+So far, it's just me contributing to the site, but I hope that changes! Until I have other contributors to thank, I will leave in the acknowledgments Alison Hill shared in the original template.
+
 Thank you to all the folks who have contributed both technical and creative skills to this project:
 
 + [Desirée De Leon :giraffe:](http://desiree.rbind.io/) (designed 5 of the custom color themes, made illustrations for the workshop, and provided general aesthetic feedback along the way)
