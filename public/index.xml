@@ -6,7 +6,7 @@
     <description>Recent content on James Wade</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 30 Jan 2022 14:39:20 -0500</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Netlify</title>
       <link>/learning/day02/01-netlify/</link>
@@ -84,12 +84,31 @@ My content section is: learning  My layout is: single-series   part 2!     does 
     </item>
     
     <item>
+      <title>How to Teach</title>
+      <link>/blog/2022-01-30-how-to-teach-tech/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2022-01-30-how-to-teach-tech/</guid>
+      <description>These notes are based on talks given by Greg Wilson, founder of the Carpentries. The first is a talk he gave in April 2019 for RStudio.1 The second is an update to that talk from July 2021 on his personal YouTube channel.2
+Lesson 1 - Design Curriculum for Learning Stages There are three stages of learners: novices, competents, and experts. The curriculum and teaching styles should be distinct for each learning stage.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>/contact/</link>
+      <pubDate>Sun, 30 Jan 2022 19:57:25 -0500</pubDate>
+      
+      <guid>/contact/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>A Beginning</title>
       <link>/blog/2022-01-30-learning-tools-teaching-r/</link>
       <pubDate>Sun, 30 Jan 2022 14:39:20 -0500</pubDate>
       
       <guid>/blog/2022-01-30-learning-tools-teaching-r/</guid>
-      <description>I have an idea for lowering the barrier to learn new R packages. I have built a few private packages, but nothing of mine fits the bill for what I want to try. There are uncountable resources for getting started with R, and I do not have much to add there. If you defied the odds and found this before you found STAT 545, I highly recommend that course. My idea is to integrate three fantastic tools for thought:</description>
+      <description>I have an idea for lowering the barrier to learn new R packages. I have built a few private packages, but nothing of mine fits the bill for what I want to try. There are uncountable resources for getting started with R, and I do not have much to add there. If you defied the odds and found this before you found STAT 545, I highly recommend that course.</description>
     </item>
     
     <item>
@@ -145,16 +164,6 @@ My content section is: learning  My layout is: single-series   part 2!     does 
       
       <guid>/project/bakeoff/</guid>
       <description>Formspree makes it easy to receive submissions from HTML forms on your static website.      Functional Form     This theme has a form-to-email feature built in, thanks to the simple Formspree integration. All you need to activate the form is a valid recipient email address saved in the front matter of the form (/content/forms/contact.md). Of course, the example shown below (your@email.here) must not be used.</description>
-    </item>
-    
-    <item>
-      <title>Contact</title>
-      <link>/contact/</link>
-      <pubDate>Mon, 25 Feb 2019 13:38:41 -0600</pubDate>
-      
-      <guid>/contact/</guid>
-      <description>** Contact page don&amp;rsquo;t contain a body, just the front matter above. See form.html in the layouts folder.
-Formspree requires a (free) account and new form to be set up. The link is made on the final published url in the field: Restrict to Domain. It is possible to register up to 2 emails free and you can select which one you want the forms to go to within Formspree in the Settings tab.</description>
     </item>
     
     <item>

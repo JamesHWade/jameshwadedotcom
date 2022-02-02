@@ -6,13 +6,40 @@
     <description>Recent content in Tags on James Wade</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 30 Jan 2022 14:39:20 -0500</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Concept Maps</title>
+      <link>/tags/concept-maps/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/concept-maps/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Learning</title>
       <link>/tags/learning/</link>
-      <pubDate>Sun, 30 Jan 2022 14:39:20 -0500</pubDate>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
       
       <guid>/tags/learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Personas</title>
+      <link>/tags/personas/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/personas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Teaching</title>
+      <link>/tags/teaching/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/teaching/</guid>
       <description></description>
     </item>
     
@@ -31,15 +58,6 @@
       <pubDate>Sun, 30 Jan 2022 14:39:20 -0500</pubDate>
       
       <guid>/tags/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Teaching</title>
-      <link>/tags/teaching/</link>
-      <pubDate>Sun, 30 Jan 2022 14:39:20 -0500</pubDate>
-      
-      <guid>/tags/teaching/</guid>
       <description></description>
     </item>
     
