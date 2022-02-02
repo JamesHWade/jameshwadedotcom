@@ -20,7 +20,7 @@ sidebar:
   show_sidebar_adunit: false 
   text_link_label: Subscribe via RSS
   text_link_url: /index.xml
-  title: Learnign Out Loud
+  title: Learning Out Loud
 thumbnail_left: true
 title: Blog
 ---
