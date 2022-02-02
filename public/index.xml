@@ -85,12 +85,12 @@ My content section is: learning  My layout is: single-series   part 2!     does 
     
     <item>
       <title>How to Teach</title>
-      <link>/blog/2022-01-30-how-to-teach-tech/</link>
+      <link>/blog/2022-02-02-how-to-teach-tech/</link>
       <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2022-01-30-how-to-teach-tech/</guid>
+      <guid>/blog/2022-02-02-how-to-teach-tech/</guid>
       <description>These notes are based on talks given by Greg Wilson, founder of the Carpentries. The first is a talk he gave in April 2019 for RStudio.1 The second is an update to that talk from July 2021 on his personal YouTube channel.2
-Lesson 1 - Design Curriculum for Learning Stages There are three stages of learners: novices, competents, and experts. The curriculum and teaching styles should be distinct for each learning stage.</description>
+Lesson 1: Design Curriculum for Learning Stages There are three stages of learners: novices, competents, and experts. The curriculum and teaching styles should be distinct for each learning stage.</description>
     </item>
     
     <item>
