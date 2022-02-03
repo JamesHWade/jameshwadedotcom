@@ -8,6 +8,15 @@
     <language>en</language>
     <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>A Beginning</title>
+      <link>/blog/2022-01-30-learning-tools-teaching-r/</link>
+      <pubDate>Sun, 30 Jan 2022 14:39:20 -0500</pubDate>
+      
+      <guid>/blog/2022-01-30-learning-tools-teaching-r/</guid>
+      <description>I have an idea for lowering the barrier to learn new R packages. I have built a few private packages, but nothing of mine fits the bill for what I want to try. There are uncountable resources for getting started with R, and I do not have much to add there. If you defied the odds and found this before you found STAT 545, I highly recommend that course.</description>
+    </item>
+    
+    <item>
       <title>Netlify</title>
       <link>/learning/day02/01-netlify/</link>
       <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
@@ -37,6 +46,16 @@ Profile README     This is new! Let&amp;rsquo;s do it:
       <guid>/learning/prework/</guid>
       <description>Welcome to the Introducing Yourself Online workshop! We look forward to meeting you. Before attending the workshop, please complete the following prework.
 Set up RStudio Cloud     Sign up for a free RStudio Cloud account at https://rstudio.cloud/ before the workshop. I recommend logging in with an existing Google or GitHub account, if you have one (rather than creating a new account with another password you have to remember).</description>
+    </item>
+    
+    <item>
+      <title>How to Teach</title>
+      <link>/blog/2022-02-02-how-to-teach-tech/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2022-02-02-how-to-teach-tech/</guid>
+      <description>Much of my inspiration for this project come from Greg Wilson, founder of the Carpentries. These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio,1 and the second is an update to that talk from July 2021 on his personal YouTube channel.2
+Lesson 1: Design Curriculum for Learning Stages There are three stages of learners: novices, competents, and experts.</description>
     </item>
     
     <item>
@@ -84,31 +103,12 @@ My content section is: learning  My layout is: single-series   part 2!     does 
     </item>
     
     <item>
-      <title>How to Teach</title>
-      <link>/blog/2022-02-02-how-to-teach-tech/</link>
-      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/2022-02-02-how-to-teach-tech/</guid>
-      <description>These notes are based on talks given by Greg Wilson, founder of the Carpentries. The first is a talk he gave in April 2019 for RStudio.1 The second is an update to that talk from July 2021 on his personal YouTube channel.2
-Lesson 1: Design Curriculum for Learning Stages There are three stages of learners: novices, competents, and experts. The curriculum and teaching styles should be distinct for each learning stage.</description>
-    </item>
-    
-    <item>
       <title>Contact</title>
       <link>/contact/</link>
       <pubDate>Sun, 30 Jan 2022 19:57:25 -0500</pubDate>
       
       <guid>/contact/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>A Beginning</title>
-      <link>/blog/2022-01-30-learning-tools-teaching-r/</link>
-      <pubDate>Sun, 30 Jan 2022 14:39:20 -0500</pubDate>
-      
-      <guid>/blog/2022-01-30-learning-tools-teaching-r/</guid>
-      <description>I have an idea for lowering the barrier to learn new R packages. I have built a few private packages, but nothing of mine fits the bill for what I want to try. There are uncountable resources for getting started with R, and I do not have much to add there. If you defied the odds and found this before you found STAT 545, I highly recommend that course.</description>
     </item>
     
     <item>
@@ -189,10 +189,9 @@ Lesson 1: Design Curriculum for Learning Stages There are three stages of learne
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/contributors/</guid>
-      <description>Thank you to all the folks who have contributed both technical and creative skills to this project:
-   Desirée De Leon 🦒 (designed 5 of the custom color themes, made illustrations for the workshop, and provided general aesthetic feedback along the way)
-   Garrick Aden-Buie 🧙‍♀️ (debugged headroom.js and lent his panelset.js code to the theme)
-   Allison Horst 🐕 (awesome illustrations of campfires, seedlings, and evergreens, as well as my R Markdown hedgehog mascot 🦔)</description>
+      <description>So far, it&amp;rsquo;s just me contributing to the site, but I hope that changes! Until I have other contributors to thank, I will leave in the acknowledgments Alison Hill shared in the original template.
+Thank you to all the folks who have contributed both technical and creative skills to this project:
+   Desirée De Leon 🦒 (designed 5 of the custom color themes, made illustrations for the workshop, and provided general aesthetic feedback along the way)</description>
     </item>
     
     <item>

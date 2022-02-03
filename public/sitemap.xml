@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/blog/2022-01-30-learning-tools-teaching-r/</loc>
+    <lastmod>2022-01-30T14:39:20-05:00</lastmod>
+  </url><url>
     <loc>/learning/day02/01-netlify/</loc>
     <lastmod>2021-01-02T00:00:00+00:00</lastmod>
   </url><url>
@@ -10,6 +13,9 @@
   </url><url>
     <loc>/learning/prework/</loc>
     <lastmod>2021-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/blog/2022-02-02-how-to-teach-tech/</loc>
+    <lastmod>2022-02-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/learning/day01/</loc>
     <lastmod>2021-01-25T00:00:00+00:00</lastmod>
@@ -38,9 +44,6 @@
     <loc>/tags/concept-maps/</loc>
     <lastmod>2022-02-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/blog/2022-02-02-how-to-teach-tech/</loc>
-    <lastmod>2022-02-01T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/</loc>
     <lastmod>2022-02-01T00:00:00+00:00</lastmod>
   </url><url>
@@ -64,9 +67,6 @@
   </url><url>
     <loc>/form/</loc>
     <lastmod>2022-01-30T19:57:25-05:00</lastmod>
-  </url><url>
-    <loc>/blog/2022-01-30-learning-tools-teaching-r/</loc>
-    <lastmod>2022-01-30T14:39:20-05:00</lastmod>
   </url><url>
     <loc>/tags/orbit/</loc>
     <lastmod>2022-01-30T14:39:20-05:00</lastmod>

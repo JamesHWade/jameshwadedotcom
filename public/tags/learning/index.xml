@@ -8,22 +8,22 @@
     <language>en</language>
     <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>How to Teach</title>
-      <link>/blog/2022-02-02-how-to-teach-tech/</link>
-      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/2022-02-02-how-to-teach-tech/</guid>
-      <description>These notes are based on talks given by Greg Wilson, founder of the Carpentries. The first is a talk he gave in April 2019 for RStudio.1 The second is an update to that talk from July 2021 on his personal YouTube channel.2
-Lesson 1: Design Curriculum for Learning Stages There are three stages of learners: novices, competents, and experts. The curriculum and teaching styles should be distinct for each learning stage.</description>
-    </item>
-    
-    <item>
       <title>A Beginning</title>
       <link>/blog/2022-01-30-learning-tools-teaching-r/</link>
       <pubDate>Sun, 30 Jan 2022 14:39:20 -0500</pubDate>
       
       <guid>/blog/2022-01-30-learning-tools-teaching-r/</guid>
       <description>I have an idea for lowering the barrier to learn new R packages. I have built a few private packages, but nothing of mine fits the bill for what I want to try. There are uncountable resources for getting started with R, and I do not have much to add there. If you defied the odds and found this before you found STAT 545, I highly recommend that course.</description>
+    </item>
+    
+    <item>
+      <title>How to Teach</title>
+      <link>/blog/2022-02-02-how-to-teach-tech/</link>
+      <pubDate>Tue, 01 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2022-02-02-how-to-teach-tech/</guid>
+      <description>Much of my inspiration for this project come from Greg Wilson, founder of the Carpentries. These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio,1 and the second is an update to that talk from July 2021 on his personal YouTube channel.2
+Lesson 1: Design Curriculum for Learning Stages There are three stages of learners: novices, competents, and experts.</description>
     </item>
     
   </channel>
