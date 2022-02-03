@@ -4,7 +4,7 @@ subtitle: Lessons on Teaching and Designing Curriculum from Greg Wilson
 date: 2022-02-01
 draft: false
 show_thumbnail: true
-layout: single
+layout: single-sidebar
 excerpt: Much of my inspiration for this project come from [Greg Wilson](https://third-bit.com/), founder of the [Carpentries](https://carpentries.org/). These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio, and the second is an update to that talk from July 2021 on his personal YouTube channel.
 weight: 2
 categories:
