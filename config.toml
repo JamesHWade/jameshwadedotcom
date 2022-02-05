@@ -123,6 +123,11 @@ enableEmoji = true
     title = "Blog"
     url = "/blog/"
     weight = 2
+  [[menu.header]]
+    name = "Random Stuff"
+    title = "Random Stuff"
+    url = "/misc/"
+    weight = 3
   # [[menu.header]]
   #   name = "Projects"
   #   title = "Project Portfolio"
