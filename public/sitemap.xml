@@ -35,6 +35,15 @@
     <loc>/learning/day02/03-blogdown/</loc>
     <lastmod>2021-01-02T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/</loc>
+    <lastmod>2022-02-05T06:38:25-05:00</lastmod>
+  </url><url>
+    <loc>/misc/purple-map/</loc>
+    <lastmod>2022-02-05T06:38:25-05:00</lastmod>
+  </url><url>
+    <loc>/misc/</loc>
+    <lastmod>2022-02-05T06:38:25-05:00</lastmod>
+  </url><url>
     <loc>/blog/</loc>
     <lastmod>2022-02-01T00:00:00+00:00</lastmod>
   </url><url>
@@ -42,9 +51,6 @@
     <lastmod>2022-02-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/concept-maps/</loc>
-    <lastmod>2022-02-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/</loc>
     <lastmod>2022-02-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/learning/</loc>
@@ -127,8 +133,6 @@
     <loc>/contributors/</loc>
   </url><url>
     <loc>/license/</loc>
-  </url><url>
-    <loc>/misc/</loc>
   </url><url>
     <loc>/series/</loc>
   </url>
