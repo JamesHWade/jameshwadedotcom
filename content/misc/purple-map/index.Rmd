@@ -1,13 +1,13 @@
 ---
 title: Monitoring Air Quality in Town
-date: 2022-02-05T06:38:25-05:00
+date: 2022-02-05
 draft: false
 layout: single
 show_thumbnail: true
 excerpt: Purple air widgets show the air quality in the area near my home.
 ---
 
-## Purle Air Monitor Widgets
+## Air Quality Monitors
 
 [Purple Air Map](https://map.purpleair.com/1/mAQI/a10/p604800/cC0#10.65/43.6131/-84.1613)
 
@@ -15,14 +15,12 @@ excerpt: Purple air widgets show the air quality in the area near my home.
 <style> .wrapper { display: flex; } </style>
 <div class="wrapper",style="width: 100%">
 <div id='PurpleAirWidget_128747_module_AQI_conversion_C0_average_10_layer_standard'>
-Loading
-PurpleAir Widget...
+Loading PurpleAir Widget...
 <script
 src='https://www.purpleair.com/pa.widget.js?key=G6D5YRH2KAH9RC9A&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_128747_module_AQI_conversion_C0_average_10_layer_standard'></script>
 </div>
 <div id='PurpleAirWidget_37741_module_AQI_conversion_C0_average_10_layer_standard'>
-Loading
-PurpleAir Widget...</div>
+Loading PurpleAir Widget...</div>
 <script
 src='https://www.purpleair.com/pa.widget.js?key=MY9PMHUHU9TQV7OK&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_37741_module_AQI_conversion_C0_average_10_layer_standard'></script>
 </div>
