@@ -4,6 +4,8 @@ project:
 website:
   title: "James H Wade"
   navbar:
+    background: "#394b73"
+    search: true
     right:
       - about.qmd
       - href: talks.qmd
@@ -18,7 +20,7 @@ website:
         href: https://fosstodon.org/@jameshwade
 format:
   html:
-    theme: litera
+    theme: sandstone
     css: styles.css
 
 comments:

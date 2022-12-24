@@ -1,5 +1,4 @@
 ---
-title: "Intermittent explorations of data science, learning, stats, etc - mostly with R"
 listing:
   contents: posts
   sort: "date desc"
