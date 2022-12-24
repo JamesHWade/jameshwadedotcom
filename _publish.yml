@@ -1,0 +1,5 @@
+- source: project
+  netlify:
+    - id: "6cc722be-302b-4a92-b7ab-f4a4b34b7cbd"
+      url: "https://objective-lovelace-f69baa.netlify.app"
+

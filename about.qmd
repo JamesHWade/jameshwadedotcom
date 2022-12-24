@@ -1,0 +1,31 @@
+---
+title: "About"
+image: images/profile.png
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/jameshwade
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/jameshwade
+    - icon: github
+      text: Github
+      href: https://github.com/jameshwade
+    - icon: mastodon
+      text: Mastodon
+      href: https://fosstodon.org/@jameshwade
+---
+
+Hi 👋, I'm James Wade.
+
+I am a research scientist in working in the chemicals manufacturing industry as part of a research and development team. I apply materials characterization and data science with a special interest in sustainable materials design to develop new capabilities for research. My current focus is on augmenting materials characterization innovations with statistical analysis, machine learning, and data visualization. I started my career on a rotational program beginning in macromolecular characterization with an emphasis on polymer separations. Other rotations included a data science group aligned to manufacturing and a supply chain innovation center.
+
+I was raised in South Carolina and started my chemistry training at [Furman University](https://www.furman.edu/academics/chemistry/), a small liberal arts school in the upstate of South Carolina. At Furman, I found a passion for Analytical Chemistry where I worked on the abiotic origins of life, transition metal alkyl synthesis, and drug-DNA interactions for anticancer therapeutics. I used tools like chromatography, mass spectrometry, optical spectroscopy, and gel electrophoresis to answer important questions for research projects.
+
+I attended the [University of Illinois at Urbana-Champaign](https://chemistry.illinois.edu) for my graduate work in Analytical Chemistry. I worked under [Prof. Ryan Bailey](https://www.baileylab.com) and worked on projects including cancer diagnostics, silicon photonic sensors, microfluidics/miniaturization, and chromatographic separations.
+
+I live in mid-Michigan with my wife and young son. My wife is a veterinarian and brings home too many furry friends. The current menagerie is two dogs and five cats.
+
+[Resume](resources/resume.pdf)

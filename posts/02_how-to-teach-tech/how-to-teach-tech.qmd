@@ -1,0 +1,167 @@
+---
+title: How to Teach Tech
+subtitle: Lessons on teaching and designing curriculum from Greg Wilson
+date: 2022-02-01
+excerpt: Much of my inspiration for this project come from [Greg Wilson](https://third-bit.com/), founder of the [Carpentries](https://carpentries.org/). These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio, and the second is an update to that talk from July 2021 on his personal YouTube channel.
+categories:
+- learning
+image: classroom.png
+---
+
+Much of my inspiration for this project come from [Greg Wilson](https://third-bit.com/), founder of the [Carpentries](https://carpentries.org/). These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio,^[[What Every Data Scientist Should Know About Education - RStudio](https://www.rstudio.com/resources/webinars/what-every-data-scientist-should-know-about-education/)] and the second is an update to that talk from July 2021 on his personal YouTube channel.^[[What Everyone in Tech Should Know About Teaching and Learning](https://youtu.be/ewXvFQByRqY)]
+
+## Lesson 1: Design Curriculum for Learning Stages
+
+There are three stages of learners: **novices**, **competents**, and **experts**. The curriculum and teaching styles should be distinct for each learning stage.
+
+### Novice
+
+Novices can follow a set of instructions, but they get stuck if they deviate even slightly from the instructions. They may ask nonsensical questions (e.g., “What color is this database?”), and they cannot identify relevant details for the topic. Novices may not know they are a novice and misidentify as competent or even an expert. They lack a **mental model** of the problem. Your job as the instructor is to **guide** a novice to gain a mental model. You _push_ knowledge to them.
+
+A mental model is an incomplete and likely inaccurate framing of a topic, but it lets a novice grasp central learning concepts. A **concept map** is a great way to build and share mental models. A concept map **connects concepts with labeled connections**.
+
+### Competent
+
+Competent practitioners have a connected mental model. To solve a problem, they reason through a series of intermediate steps and usually come to the correct conclusion, albeit slowly. As an instructor, **mentor** competent practitioners. Give them problems to expand their knowledge, but allow them to learn at their own pace. Do not let a competent practitioner be stuck for too long. Momentum is important for learning.
+
+#### Avoid Mixing Guiding & Mentoring
+
+A common mistake when teaching is to mentor a novice learner and guide a competent practitioner. Pushing knowledge to guide a competent practitioners will frustrate them because you tell them what they already know. Asking novices to tackle a problem on their own will frustrate them because they do not know what to explore.
+
+### Expert
+
+Experts are able to see solutions at a glance. They bring multiple points of view to a a problem, and they excel at debugging. They fluency comes from thinking back and forth between causes and effects. Experts may **struggle to explain their thinking**. To them, problems are obvious, and they have forgotten the experience of a novice. Experts may be bad teacher for novices.
+
+To teach an expert, ask them to **reflect** upon their work and **give feedback** on their thinking. Your aim is for them to learn to reflect on why more effectively.
+
+## Lesson 2: A Lesson is a User Interface for Knowledge
+
+Much like designing a new user interface, your first step in to creating learning content is to **create personas** of learners. These are _fictional_ characters to capture key properties of your target audience. A persona consists of:
+
+1. General background: Who are they? What do they do when not learning?
+2. Relevant experience: What have they done before? This is better than a list of prerequisites.
+3. Perceived needs: What do they _think_ they want to learn?
+4. Special considerations: How are they different from you as the instructor? What constraints do they have on learning
+
+## Lesson 3: Use Formative Assessments as Unit Tests for Learning
+
+A formative assessment checks for retention of key learning concepts. If the learner gets the assessment wrong, you gain insight into the learners mental model. Your assessment must have **diagnostic power**. Build formative assessments _before_ you create your curriculum. You need to understand the mental model of your learners. If you do this well, you can dynamically adjust the lessons based on the prior knowledge of the learner.
+
+## Lesson 4: Manage Cognitive Load
+
+Do not overload your students with too much information at once. This does _not_ mean that you cannot convey complex ideas or use complex figures. You must introduce components of a complex idea or image gradually. A practical example of this is to use slide builds. You want new linguistic and audio information at the same time. This is one reason why [books do not work](https://andymatuschak.org/books/).
+
+Short term memory is the bottleneck of learning. We often overestimate our short term memory capacity. Modern estimates of short term memory are 4 +/- 1 chunks for knowledge. Short term memory capacity determines how you convert concept maps to lessons. Only once a concept map is decomposed into digestible chunks can you create the lesson. Count the concepts. Remember to not spoon feeding learners. Use your personas and learning stages to guide you.
+
+## Lesson 5: Active Learning Beats Passive Learning Every Time
+
+Active learning results in better learning outcomes. However, most learners will prefer passive learning as that is how most were taught throughout their childhood education. For strategies on how to incorporate active learning into your lessons, explore [The Learning Scientists](https://www.learningscientists.org/).
+
+## Lesson 6: Learner are Not Robots
+
+For most learners, the most important factor for success is **intrinsic motivation**. "I'm learning this because I want to." You can increase intrinsic motivation of your students by increasing self-efficacy, utility, and community. Formative assessments increase self-efficacy by giving some control over the pace learning to learners. Utility requires that learners can apply new concepts soon after learning. A community of learners that want to learn will build upon each other. Demotivators a are unpredictability, unfairness, and indifference. Being an ally to your learners can make a big difference in student motivation. Valerie Aurora covers [how to be a good ally](https://frameshiftconsulting.com/ally-skills-workshop/).
+
+<html>
+<head>
+<script type="module" src="https://js.withorbit.com/orbit-web-component.js"></script>
+</head>
+<body>
+<orbit-reviewarea color="purple">
+<orbit-prompt
+question="What do novices lack when learning new concepts?"
+answer="mental model"
+></orbit-prompt>
+<orbit-prompt
+cloze="As a teacher, you roles is to {guide} novices and {mentor} competent practitioners."
+></orbit-prompt>
+<orbit-prompt
+question="What makes experts bad teachers?"
+answer="struggle to explain thinking"
+></orbit-prompt>
+<orbit-prompt
+Question="What feeling does guiding a competent practitioner evoke?"
+Answer="frustration"
+></orbit-prompt>
+<orbit-prompt
+Question="When instructing an expert in a subject, what do you want them to do?"
+Answer="**reflect** on their thinking"
+></orbit-prompt>
+<orbit-prompt
+Question="What feature must a formative assessment have in order to guide you instruction?"
+Answer="diagnostic power"
+></orbit-prompt>
+<orbit-prompt
+Question="What is the most important factor in whether you learn something?"
+Answer="intrinsic motivation"
+></orbit-prompt>
+<orbit-prompt
+Question="Great teachers can influence the *intrinsic motivation* of their students by increasing what three things?"
+Answer="self-efficacy, utility, community"
+></orbit-prompt>
+<orbit-prompt
+Question="How many elements should you select from a concept map to put into a lesson?"
+Answer="No more than 7"
+></orbit-prompt>
+<orbit-prompt
+Question="What do you do after building a concept map to create teaching curricula?"
+Answer="isolate digestible elements"
+></orbit-prompt>
+<orbit-prompt
+Question="What is the bottleneck to learning?"
+Answer="short term memory"
+></orbit-prompt>
+</orbit-reviewarea>
+</body>
+</html>
+
+## Miscellaneous Tips and Tricks
+
+### What Can You Do to Help Disparate Learners?
+
+This is a common problem that is difficult to address. Here’s advice from Wilson on what you can try:
+
+1. Avoid this if you can. Can you have different session based on prior knowledge?
+2. Split the room.
+3. Use advanced learners to teach less advanced learners. **Note**: This can backfire in corporate settings since everyone expects to be taught.
+4. Use pair programming or another type of pairing. Pairs will be more homogeneous than individuals. People will realize that they are not alone in their struggles. Mismatched pairs can have their own student-teacher scenario where the “teacher” will also learn.
+5. Synchronous self-paced work. You can learn at your own pace, but you have instructors and helpers in the room. This is experimental but an area of interest to Wilson.
+
+### Pre-Assessments
+
+#### The Perils of Pre-Assessment
+
+Pre-assessments can scare novices away. Learners can feel that they are not “ready” for the curriculum. This selects for self-confidence more than prior knowledge and can disadvantage certain groups.
+
+#### The Problem of False Beginners
+
+Pre-assessments will poorly estimate learning pace. For instance, if you offer a course in building visualization with R to a group of experiences python programmers, the assessment results will show very little prior knowledge about R. However, if you mix those programming experts with complete novices, they will learn at a drastically different pace.
+
+### Avoid a Deficit Model for Teaching
+
+Do not use a deficit model for teaching. Do not require the people who already have a hard path do more work to keep up. It is the duty of the privileged to do the extra work to lower the playing field.
+
+### Online Interaction is the Future
+
+Wilson believes that online courses are a dead end. They are at best a refresher for those who already know the material. Instead, try to use the web as a medium for real-time interactions. The big divide between learning types is not on-line vs in-person. The divide is interactive versus recorded. Building places for interactive learning is the future.
+
+### Other Advice From Wilson
+
+1. Be kind: all else is details.
+2. Remember that you are not your learners…
+3. …that most people would rather fail than change…
+4. …and that ninety percent of magic consists of knowing one extra thing.
+5. Never teach alone.
+6. Never hesitate to sacrifice truth for clarity.
+7. Make every mistake a lesson.
+8. Remember that no lesson survives first contact with learners…
+9. …that every lesson is too short for the teacher and too long for the learner…
+10. …and that nobody will be more excited about the lesson than you are.
+
+### Where to Go Next
+
+- [Small Teaching by James Lang](https://www.amazon.com/Small-Teaching-Everyday-Lessons-Learning/dp/1118944496) - What should you do if you know what the right thing to do is, but you don’t have the time or the budge?
+- [Teaching What You Don’t Know by Therese Huston](https://www.amazon.com/Teaching-What-You-Dont-Know-ebook/dp/B003N18V04/) - How do you teach if you are only a page ahead of your learners?
+- [How Learning Happens by Kirschner & Hendrick](https://www.amazon.com/How-Learning-Happens-Educational-Psychology-ebook/dp/B084RNK2Z9/) - An opinionated introduction to the current state of learning. Wilson doesn’t recommend reading this cover to cover but as a reference in how to get started in a new area.
+- [The Discussion Book by Brookfield & Preskill](https://www.amazon.com/Discussion-Book-Great-People-Talking/dp/1119049717) - A catalog of 50 different techniques to get people sharing information and making decisions.
+- [Teaching Tech Together by Greg Wilson](https://teachtogether.tech/en/index.html) - Wilson’s collected lessons on teaching.
+

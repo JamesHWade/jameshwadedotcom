@@ -1,0 +1,15 @@
+---
+title: "Talks & Other Resources"
+---
+
+## RStudio Community Meetup
+
+### Enabling Citizen Data Scientists with RStudio Academy
+June 21st, 2022  
+[Talk](https://youtu.be/lCrd3BMVVqQ) | [Slides](https://github.com/JamesHWade/talks/raw/main/2022-06_RStudio-Meetup_RStudio-Academy/20220621_RStudio-Meetup_RStudio-Academy.pdf)
+
+<center><iframe width="560" height="315" src="https://www.youtube.com/embed/lCrd3BMVVqQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+
+#### Summary
+
+In chemistry and materials science research, data is messy, unstructured, and scattered. Solving this problem requires researchers to deeply embed within data generation and analysis workflows. We are on a multi-year journey to equip scientists and engineers with guidance and tools to extract insights from their data. I share our lessons from this journey learned through teaching, community building, and collaboration with a particular focus on the integration of language agnostic RStudio tools, products, and programs. I will especially be focusing on our experience with RStudio Academy.
