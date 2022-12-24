@@ -3,6 +3,7 @@ project:
 
 website:
   title: "James H Wade"
+  site-url: https://jameshwade.com
   navbar:
     background: "#394b73"
     search: true
@@ -10,6 +11,8 @@ website:
       - about.qmd
       - href: talks.qmd
         text: Talks
+      - icon: rss
+        href: index.xml
       - icon: twitter
         href: https://twitter.com/jameshwade
       - icon: linkedin
