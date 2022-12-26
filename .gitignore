@@ -12,6 +12,7 @@ _site/
 .Renviron
 .Rprofile
 .obsidian/
+notes/
 
 # History files
 .Rhistory

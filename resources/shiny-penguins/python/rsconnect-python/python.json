@@ -1,0 +1,11 @@
+{
+    "https://api.shinyapps.io": {
+        "server_url": "https://api.shinyapps.io",
+        "filename": "/Users/jameswade/Documents/jameshwadedotcom/resources/shiny-penguins/python",
+        "app_url": "https://james-h-wade.shinyapps.io/palmer_penguins_predicitons_with_python/",
+        "app_id": 7945508,
+        "app_guid": null,
+        "title": "Palmer Penguins Predicitons with Python",
+        "app_mode": "python-shiny"
+    }
+}

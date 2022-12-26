@@ -1,6 +1,7 @@
 ---
 title: How to Teach Tech
 subtitle: Lessons on teaching and designing curriculum from Greg Wilson
+author: James H Wade
 date: 2022-02-01
 excerpt: Much of my inspiration for this project come from [Greg Wilson](https://third-bit.com/), founder of the [Carpentries](https://carpentries.org/). These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio, and the second is an update to that talk from July 2021 on his personal YouTube channel.
 categories:
