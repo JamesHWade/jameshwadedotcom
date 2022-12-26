@@ -5,7 +5,7 @@ date: 2022-02-01
 excerpt: Much of my inspiration for this project come from [Greg Wilson](https://third-bit.com/), founder of the [Carpentries](https://carpentries.org/). These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio, and the second is an update to that talk from July 2021 on his personal YouTube channel.
 categories:
 - learning
-image: classroom.png
+image: images/classroom.png
 ---
 
 Much of my inspiration for this project come from [Greg Wilson](https://third-bit.com/), founder of the [Carpentries](https://carpentries.org/). These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio,^[[What Every Data Scientist Should Know About Education - RStudio](https://www.rstudio.com/resources/webinars/what-every-data-scientist-should-know-about-education/)] and the second is an update to that talk from July 2021 on his personal YouTube channel.^[[What Everyone in Tech Should Know About Teaching and Learning](https://youtu.be/ewXvFQByRqY)]

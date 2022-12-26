@@ -4,7 +4,7 @@ date: 2022-01-30
 author: James H Wade
 categories:
 - learning
-image: manistee.jpg
+image: images/manistee.jpg
 ---
 
 I have an idea for lowering the barrier to learn new R packages. I have built a few private packages, but nothing of mine fits the bill for what I want to try. There are uncountable resources for getting started with R, and I do not have much to add there. If you defied the odds and found this before you found [STAT 545](https://stat545.com/), I highly recommend that course. My idea is to integrate three fantastic tools for thought:
