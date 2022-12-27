@@ -11,9 +11,9 @@ format:
     code-copy: true
 ---
 
-The purpose of this article is to demonstrate a model deployment using Posit's open source tools for MLOps. This includes `{pins}`, `{vetiver}`, and the `{tidymodels}` bundle of packages along with the `{tidyverse}`. The model building is taken from Julia Silge's blog post written to help R users [get started with tidymodels](https://juliasilge.com/blog/palmer-penguins/).
+The purpose of this article is to demonstrate a model deployment using Posit's open source tools for MLOps. This includes `{pins}`, `{vetiver}`, and the `{tidymodels}` bundle of packages along with the `{tidyverse}`. The model building is taken from Julia Silge's blog post written to help R users [get started with tidymodels](https://juliasilge.com/blog/palmer-penguins/). I also found inspiration from the [`{vetiver}` documentation page](https://vetiver.rstudio.com/) and the recently revamped [Solutions Engineering Page from Posit](https://solutions.posit.co/gallery/bike_predict/).
 
-[![Source: MLOps Team at Posit \| An overview of MLOps with Vetiver and friends](images/vetiver-mlops.png){fig-alt="During the MLOps cycle, we collect data, understand and clean the data, train and evaluate a model, deploy the model, and monitor the deployed model. Monitoring can then lead back to collecting more data. There are many great tools available to understand clean data (like pandas and the tidyverse) and to build models (like tidymodels and scikit-learn). Use the vetiver framework to deploy and monitor your models."}](https://vetiver.rstudio.com/)
+[![Source: MLOps Team at Posit \| An overview of MLOps with Vetiver and friends](images/vetiver-mlops.png){fig-alt="During the MLOps cycle, we collect data, understand and clean the data, train and evaluate a model, deploy the model, and monitor the deployed model. Monitoring can then lead back to collecting more data. There are many great tools available to understand clean data (like pandas and the tidyverse) and to build models (like tidymodels and scikit-learn). Use the vetiver framework to deploy and monitor your models." fig-align="center" width="700"}](https://vetiver.rstudio.com/)
 
 ## Model Building
 
@@ -182,14 +182,13 @@ model_board <- board_local()
 workflow_set <- model_board |> pin_read("workflow_set")
 ```
 
-
 We can now use `rank_results()` to rank the models in the workflow set based on their performance based on our specified metrics - the area under the receiver operating characteristic curve (ROC AUC). ROC AUC is a measure of a model's ability to distinguish between positive and negative classes. A higher ROC AUC indicates a better-performing model with a maximum value of 1. Using the rank table, we can select the workflow ID for the best performing model.
 
 Throughout many of the tidymodels packages, `autoplot` is a handy method to rapidly visualize steps in your model workflow. These methods are specified by the package authors, and some `autoplot` methods have some options to customize the output. These are `ggplot` objects, so you can easily customize the appearance.
 
 ```{r}
 rank_results(workflow_set,
-  rank_metric = "accuracy",
+  rank_metric = "roc_auc",
   select_best = TRUE
 ) |>
   gt()
@@ -267,7 +266,6 @@ model_board <- board_local(versioned = TRUE)
 model_board |> vetiver_pin_write(v)
 model_board |> vetiver_pin_read("penguins_model")
 ```
-
 
 ```{r}
 #| eval: false
@@ -400,7 +398,7 @@ content(response)
 
 Avoiding a language-specific approach altogher, you can use `curl` in a terminal to make API calls.
 
-```{.bash filename="Terminal"}
+``` {.bash filename="Terminal"}
 #| file
 curl -X POST "https://connect.mycompany.com/penguins/predict" \
  -H "Accept: application/json" \
