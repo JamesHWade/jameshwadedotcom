@@ -4,8 +4,8 @@ format: html
 author: James H Wade
 date: 2023-01-10
 draft: true
-filters:
-  - shinylive
+# filters:
+#   - shinylive
 ---
 
 This is a Shinylive application embedded in a Quarto doc.
