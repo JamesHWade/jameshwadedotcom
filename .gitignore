@@ -63,3 +63,4 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+/.luarc.json

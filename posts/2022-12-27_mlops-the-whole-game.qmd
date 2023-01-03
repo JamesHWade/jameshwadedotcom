@@ -1,17 +1,32 @@
 ---
-title: "MLOps on Workbench with R"
+title: "MLOps: The Whole Game"
 author: James H Wade
 date: 2022-12-27
-draft: true
+thanks: Thank you to the MLOps and tidymodels teams at Posit and all the open source developers that contributed to this fantastic ecosystem.
+description: An example of model building, model delpoyment, and model monitoring with R using palmerpenguins
 execute: 
   freeze: true
 format: 
   html:
     toc: true
     code-copy: true
+image: images/penguins.png
+categories: 
+  - mlops
+  - modeling
+  - vetiver
+  - pins
+  - deployment
+  - R
 ---
 
-The purpose of this article is to demonstrate a model deployment using Posit's open source tools for MLOps. This includes `{pins}`, `{vetiver}`, and the `{tidymodels}` bundle of packages along with the `{tidyverse}`. The model building is taken from Julia Silge's blog post written to help R users [get started with tidymodels](https://juliasilge.com/blog/palmer-penguins/). I also found inspiration from the [`{vetiver}` documentation page](https://vetiver.rstudio.com/) and the recently revamped [Solutions Engineering Page from Posit](https://solutions.posit.co/gallery/bike_predict/).
+> If we actually know what we're doing we call it engineering. So, this basket of pain, we call something ops.
+>
+> <cite>Peter Wang, [Numerically Speaking Podcast](https://www.anaconda.com/podcast/human-in-the-loop) with Vicky Boykis on ML & MLOps</cite>
+
+MLOps can be overwhelming, but that is not the way it has to be. Posit's MLOps team has made from fantastic advancements over the past year or so, and I hope to show how to demonstrate how easy model deployment can be using Posit's open source tools for MLOps. This includes `{pins}`, `{vetiver}`, and the `{tidymodels}` bundle of packages along with the `{tidyverse}`. The motivation for this post came in part from a [Numerically Speaking podcast](https://www.anaconda.com/podcast/human-in-the-loop) I quote above, and much of the model building is taken from Julia Silge's blog post written to help R users [get started with tidymodels](https://juliasilge.com/blog/palmer-penguins/). I also found inspiration from the [`{vetiver}` documentation page](https://vetiver.rstudio.com/) and the recently revamped [Solutions Engineering Page from Posit](https://solutions.posit.co/gallery/bike_predict/).
+
+The post covers most of steps in MLOps process, but it's more of a sampler than exhaustive coverage. Think of this as the ["whole game"](https://r-pkgs.org/whole-game.html) of MLOps with R.
 
 [![Source: MLOps Team at Posit \| An overview of MLOps with Vetiver and friends](images/vetiver-mlops.png){fig-alt="During the MLOps cycle, we collect data, understand and clean the data, train and evaluate a model, deploy the model, and monitor the deployed model. Monitoring can then lead back to collecting more data. There are many great tools available to understand clean data (like pandas and the tidyverse) and to build models (like tidymodels and scikit-learn). Use the vetiver framework to deploy and monitor your models." fig-align="center" width="700"}](https://vetiver.rstudio.com/)
 
@@ -19,15 +34,17 @@ The purpose of this article is to demonstrate a model deployment using Posit's o
 
 ### Load Packages and Set Options
 
+Let's start with the packages that we'll use throughout. `{tidyverse}` and `{tidymodels}` are there, of course. `{pins}`, `{plumbr}`, and `{vetiver}` completes the rest of the Posit set for MLOps, and I use `{gt}` for tables.
+
 ```{r load-pkg}
 #| message: false
 library(tidyverse)
-library(gt)
 library(tidymodels)
 library(pins)
 library(vetiver)
-library(palmerpenguins)
 library(plumber)
+library(palmerpenguins)
+library(gt)
 library(conflicted)
 tidymodels_prefer()
 conflict_prefer("penguins", "palmerpenguins")
@@ -40,14 +57,16 @@ options(tidymodels.dark = TRUE)
 For this example, we'll use the `palmerpenguins` dataset to demonstrate the overall approach. There is a `{palmerpenguins}` package that contains this data set, and it is also included in the `{modeldata}` package, a part of `{tidymodels}`. We'll use the data from `{palmerpenguins}`.
 
 ```{r}
+#| code-fold: true
 penguins |>
   head(4) |>
   glimpse()
 ```
 
-As Julia's post points out, differentiating the species with a classification model is quite easy. A trickier model is one that predicts the penguin sex. Let's look at a plot of `flipper_length_mm` versus `bill_length_mm` for each of the species. The color indicates `sex` and the point size indicates `body_mass_g`.
+As Julia's [post points out](https://juliasilge.com/blog/palmer-penguins/), differentiating the species with a classification model is quite easy. A trickier model is one that predicts the penguin sex. Let's look at a plot of `flipper_length_mm` versus `bill_length_mm` for each of the species. The color indicates `sex` and the point size indicates `body_mass_g`.
 
 ```{r}
+#| code-fold: true
 penguins %>%
   filter(!is.na(sex)) %>%
   ggplot(aes(
@@ -106,11 +125,11 @@ Overall, this recipe applies several preprocessing steps to the data in order to
 
 ### Specify the Model
 
-We'll evaluate three modeling approaches. In the code below, `glm_spec`, `tree_spec`, and `mlp_brulee_spec` are specifications for three different machine learning models: a logistic regression model, a random forest model, and a multi-layer perceptron (MLP) model.
+We'll evaluate three modeling approaches. In the code below, `glm_spec`, `tree_spec`, and `mlp_brulee_spec` are specifications for three different machine learning models: a logistic regression model, a random forest model, and a multi-layer perceptron (MLP) model. The intent with model selection was to demonstrate the use of very different models rather than pick an ideal set of models to screen.
 
 The `logistic_reg()` function creates a specification for a logistic regression model, and the `set_engine('glm')` function sets the engine for the model to be `'glm'`, which stands for generalized linear model.
 
-The `rand_forest()` function creates a specification for a random forest model, and the `set_engine('ranger')` function sets the engine for the model to be `'ranger'`, which is an implementation of random forests using the `{ranger}` package. The `set_mode('classification')` function sets the mode of the model to be classification. `set_mode()` is not needed for logistic regression as that model is only used for classification. (Yes, you read that right. It has a bad name for what it does.)
+The `rand_forest()` function creates a specification for a random forest model, and the `set_engine('ranger')` function sets the engine for the model to be `'ranger'`, which is an implementation of random forests using the `{ranger}` package. The `set_mode('classification')` function sets the mode of the model to be classification. `set_mode()` is not needed for logistic regression as that model is only used for classification. (Yes, the name is a bad one for what it does.)
 
 The `mlp()` function creates a specification for an MLP model, and the `set_engine('brulee')` function sets the engine for the model to be `'brulee'`, which uses {`torch}` to specify and fit the neural network. The `tune()` function indicates that the hyperparameters for the model (`hidden_units`, `epochs`, `penalty`, and `learn_rate`) should be tuned.
 
@@ -143,7 +162,7 @@ The `vfold_cv()` function creates a v-fold cross-validation object, which is use
 
 The `control_bayes()` creates an object to store the settings for Bayesian optimization. Bayesian optimization is a method for finding the optimal set of hyperparameters for a machine learning model. The `no_improve` argument specifies the number of consecutive iterations with no improvement in the objective function before the optimization process is terminated. The `time_limit` argument specifies the maximum amount of time that the optimization process can run in minutes. The `save_pred` argument specifies whether to save the predictions made during the optimization process.
 
-```{r, }
+```{r}
 set.seed(1234)
 penguin_folds <- vfold_cv(penguin_train)
 
@@ -155,7 +174,9 @@ A workflow set combines the recipes and models to fit to our training data. The 
 
 The `workflow_map()` function applies a function to each element of the workflow set. In this case, we use the `tune_bayes` function, which performs Bayesian optimization using the `{tune}` package. The `iter` argument specifies the maximum number of iterations for each model, the `resamples` argument specifies the cross-validation folds to use, and the `control` argument specifies the settings for Bayesian optimization that we defined above.
 
-Overall, this code creates a workflow set consisting of three models (a logistic regression model, a random forest model, and an MLP model) with preprocessing steps applied to the data, and then performs Bayesian optimization to tune the hyperparameters of the models using cross-validation.
+Overall, this code creates a workflow set consisting of three models (a logistic regression model, a random forest model, and an MLP model) with preprocessing steps applied to the data, and then performs Bayesian optimization to tune the hyperparameters of the models using cross-validation.[^1]
+
+[^1]: For ease of compute, I don't actually re-calculate the workflow_set in this document. There's a hidden chunk that reads a pinned version of the workflow_set result. For the curious, that's `model_board <- board_local()` and `workflow_set <- mode_board |> pin_read("workflow_set")` .
 
 ```{r}
 #| eval: false
@@ -184,7 +205,7 @@ workflow_set <- model_board |> pin_read("workflow_set")
 
 We can now use `rank_results()` to rank the models in the workflow set based on their performance based on our specified metrics - the area under the receiver operating characteristic curve (ROC AUC). ROC AUC is a measure of a model's ability to distinguish between positive and negative classes. A higher ROC AUC indicates a better-performing model with a maximum value of 1. Using the rank table, we can select the workflow ID for the best performing model.
 
-Throughout many of the tidymodels packages, `autoplot` is a handy method to rapidly visualize steps in your model workflow. These methods are specified by the package authors, and some `autoplot` methods have some options to customize the output. These are `ggplot` objects, so you can easily customize the appearance.
+Throughout many tidymodels packages, `autoplot` is a handy method to rapidly visualize steps in a model workflow. These methods are specified by the package authors, and some `autoplot` methods have some options to customize the output. These are `ggplot` objects, so customize their appearance is easy.
 
 ```{r}
 rank_results(workflow_set,
@@ -261,22 +282,34 @@ The [`{pins}`](https://pins.rstudio.com/) package is used for storing and managi
 
 Once the `model_board` connection is made it's as easy as `vetiver_pin_write()` to "pin" our model to the model board and `vetiver_pin_read()` to access it. In this case, we must specify the username of the author of the pin, which in this case is `james`.
 
+#### Local Board
+
+For the purpose of this post, we using a local board with the `board_local()` function for writing and reading pins. If our goal is to reproduce the resutls in this post, it will do, but that defeats the purpose of deployment since we cannot share the pin with others.
+
 ```{r}
 model_board <- board_local(versioned = TRUE)
 model_board |> vetiver_pin_write(v)
 model_board |> vetiver_pin_read("penguins_model")
 ```
 
+#### Posit Connect Deployment
+
+Combining Posit's open source tools with their professions products is quite a powerful combination. Deploying to Posit connect is nearly the same as using a local board. They key difference is specifying an account name when reading the pin. In this case, we use `james` to indicate the account name, but this will be specific to the Posit Connect configuration.
+
 ```{r}
 #| eval: false
 model_board <- board_rsconnect(versioned = TRUE)
 model_board |> vetiver_pin_write(v)
-model_board |> vetiver_pin_read("penguins_model")
+model_board |> vetiver_pin_read("james/penguins_model")
 ```
+
+#### Deploying Elsewhere
+
+If you do not have access to Posit Connect or prefer a different deployment location, please let me know. I plan to cover it in future posts. Commenting on this post would be a great way to make that suggestion. I will start with Azure since that is what I use professionally.
 
 ### Create Model API
 
-Our next step is to use `{vetiver}` and [`{plumber}`](https://www.rplumber.io/) packages to create an API for our vetiver model, which can then be accessed and used to make predictions or perform other tasks via an HTTP request. `pr()` creates a new plumber router, and `vetiver_api(v)` adds a `POST` endpoint to make endpoints from a trained vetiver model. `vetiver_write_plumber()` creates a `plumber.R` file that specifies the model version of the model we pinned to our model dashbaord with `vetiver_pin_write()`.
+Our next step is to use `{vetiver}` and [`{plumber}`](https://www.rplumber.io/) packages to create an API for our vetiver model, which can then be accessed and used to make predictions or perform other tasks via an HTTP request. `pr()` creates a new plumber router, and `vetiver_api(v)` adds a `POST` endpoint to make endpoints from a trained vetiver model. `vetiver_write_plumber()` creates a `plumber.R` file that specifies the model version of the model we pinned to our model dashboard with `vetiver_pin_write()`.
 
 ```{r}
 pr() |>
@@ -314,7 +347,7 @@ function(pr) {
 
 ### Deploy API to Posit Connect
 
-This model can be hosted in a variety of locations. One of the easiest to use is Posit Connect. `vetiver_deploy_rsconnect()` does that for us. All you need to specify is the name of the pinned vetiver model and the model board.
+This model can be hosted in a variety of locations. One of the easiest to use is Posit Connect. `vetiver_deploy_rsconnect()` does that for us. All we need to specify is the name of the pinned vetiver model and the model board.
 
 ```{r}
 #| eval: false
@@ -384,7 +417,7 @@ new_data <- tibble(
 predict(endpoint, new_data)
 ```
 
-You can also use `{httr}` to call the API. In most cases, it is easier for R users to use `predict` rather than `httr::POST`. However, were this model written in another language, making predictions using `{httr}` would likely bet the best approach.
+We can also use `{httr}` to call the API. In most cases, it is easier for R users to use `predict` rather than `httr::POST`. However, were this model written in another language, making predictions using `{httr}` would likely bet the best approach.
 
 ```{r}
 #| eval: false
@@ -396,7 +429,7 @@ response
 content(response)
 ```
 
-Avoiding a language-specific approach altogher, you can use `curl` in a terminal to make API calls.
+Avoiding a language-specific approach altogether, we can use `curl` in a terminal to make API calls.
 
 ``` {.bash filename="Terminal"}
 #| file
@@ -414,7 +447,7 @@ After deployment, we need to monitor model performance. The [MLOps with vetiver 
 >
 > Without monitoring for degradation, this silent failure can continue undiagnosed. The vetiver framework offers functions to fluently compute, store, and plot model metrics. These functions are particularly suited to monitoring your model using multiple performance metrics over time. Effective model monitoring is not "one size fits all", but instead depends on choosing appropriate metrics and time aggregation for a given application.
 
-As a baseline for model performance, we can start by using our training set to create original metrics for the model. We also simulate a `date_obs` column. In a real example, you should use the date the data was collected.
+As a baseline for model performance, we can start by using our training set to create original metrics for the model. We also simulate a `date_obs` column. In a real example, we should use the date the data was collected.
 
 ```{r}
 set.seed(1234)

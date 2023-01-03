@@ -4,6 +4,7 @@ project:
 website:
   title: "James H Wade"
   site-url: https://jameshwade.com
+  favicon: images/favicon.ico
   navbar:
     background: "#394b73"
     search: true
