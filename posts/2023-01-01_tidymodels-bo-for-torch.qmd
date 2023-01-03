@@ -118,7 +118,7 @@ We'll use a deep neural net with to predict the `Class` variable. But first, we 
 #| filename: Initial Split
 ad_split <- initial_split(ad_data, strata = Class)
 ad_train <- training(ad_split)
-ad_test <- testing(ad_split)
+ad_test  <- testing(ad_split)
 ```
 
 ### Cross Validation
@@ -168,10 +168,10 @@ logistic_reg_brulee_spec <-
 mlp_brulee_spec <-
   mlp(
     hidden_units = 10,
-    dropout = tune(),
-    epochs = tune(),
-    learn_rate = tune(),
-    activation = "elu"
+    dropout      = tune(),
+    epochs       = tune(),
+    learn_rate   = tune(),
+    activation   = "elu"
   ) |>
   set_engine("brulee") |>
   set_mode("classification")
@@ -193,19 +193,19 @@ Model tuning is where Bayesian optimization comes into play. The `{tune}` packag
 #| filename: "Tuning Control Settings"
 bayes_control <-
   control_bayes(
-    no_improve = 30L,
-    time_limit = 20,
-    save_pred = TRUE,
+    no_improve    = 30L,
+    time_limit    = 20,
+    verbose_iter  = TRUE,
+    save_pred     = TRUE,
     save_workflow = TRUE
   )
 
 grid_control <-
   control_grid(
-    allow_par = TRUE,
-    save_pred = TRUE,
+    allow_par     = TRUE,
+    save_pred     = TRUE,
     save_workflow = TRUE,
-    parallel_over = NULL,
-    verbose = TRUE
+    parallel_over = NULL
   )
 ```
 
@@ -228,7 +228,7 @@ mlp_brulee_params <-
   mlp_brulee_spec |>
   extract_parameter_set_dials() |>
   update(
-    epochs = epochs(c(10, 200)),
+    epochs  = epochs(c(10, 200)),
     dropout = dropout(c(0.1, 0.9))
   )
 ```
@@ -257,7 +257,7 @@ logistic_reg_brulee_wf <-
   add_model(logistic_reg_brulee_spec) |>
   tune_grid(
     resamples = ad_folds,
-    control = grid_control
+    control   = grid_control
   )
 ```
 
@@ -286,7 +286,7 @@ Finally, we use the `collect_predictions` function to generate predictions on th
 #| filename: "Select Best Logistic Regression Model and Evaluate"
 # select the best model from the workflow
 best_logistic_reg_id <-
-  logistic_reg_brulee_wf %>%
+  logistic_reg_brulee_wf |>
   select_best(metric = "roc_auc")
 
 # extract the best model from the workflow
@@ -302,8 +302,8 @@ best_logistic_reg |>
 
 # plot results of test set fit
 best_logistic_reg |>
-  collect_predictions() %>%
-  roc_curve(Class, .pred_Impaired) %>%
+  collect_predictions() |>
+  roc_curve(Class, .pred_Impaired) |>
   autoplot()
 ```
 
@@ -322,8 +322,8 @@ mlp_brulee_tune_grid <-
   mlp_brulee_wf |>
   tune_grid(
     resamples = ad_folds,
-    grid = mlp_brulee_start,
-    control = grid_control
+    grid      = mlp_brulee_start,
+    control   = grid_control
   )
 ```
 
@@ -339,7 +339,7 @@ We can also repeat the best model selection and evaluation, as we did for logist
 #| filename: "Visualize and Evaluate Initial Tuning"
 
 best_mlp_id_no_bayes <-
-  mlp_brulee_tune_grid %>%
+  mlp_brulee_tune_grid |>
   select_best(metric = "roc_auc")
 
 # extract the best model from the workflow
@@ -355,8 +355,8 @@ best_mlp_no_bayes |>
 
 # plot results of test set fit
 best_mlp_no_bayes |>
-  collect_predictions() %>%
-  roc_curve(Class, .pred_Impaired) %>%
+  collect_predictions() |>
+  roc_curve(Class, .pred_Impaired) |>
   autoplot()
 ```
 
@@ -368,9 +368,9 @@ mlp_brulee_bo <-
   mlp_brulee_wf |>
   tune_bayes(
     resamples = ad_folds,
-    iter = 100L,
-    control = bayes_control,
-    initial = mlp_brulee_tune_grid
+    iter      = 100L,
+    control   = bayes_control,
+    initial   = mlp_brulee_tune_grid
   )
 ```
 
@@ -391,7 +391,7 @@ For our moment of truth, we can select the best model and evaluate it on the tes
 ```{r}
 #| filename: "Finalize Model and Evaluate"
 best_mlp_id <-
-  mlp_brulee_bo %>%
+  mlp_brulee_bo |>
   select_best(metric = "roc_auc")
 
 # extract the best model from the workflow
@@ -407,8 +407,8 @@ best_mlp |>
 
 # plot results of test set fit
 best_mlp |>
-  collect_predictions() %>%
-  roc_curve(Class, .pred_Impaired) %>%
+  collect_predictions() |>
+  roc_curve(Class, .pred_Impaired) |>
   autoplot()
 ```
 

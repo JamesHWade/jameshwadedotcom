@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="James H Wade">
+<meta name="dcterms.date" content="2022-02-01">
+
+<title>James H Wade - How to Teach Tech</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">James H Wade</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../talks.html">
+ <span class="menu-text">Talks</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jameshwade"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/james-h-wade"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jameshwade"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@jameshwade"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">How to Teach Tech</h1>
+            <p class="subtitle lead">Lessons on teaching and designing curriculum from Greg Wilson</p>
+                                <div class="quarto-categories">
+                <div class="quarto-category">learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>James H Wade </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 1, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>Much of my inspiration for this project come from <a href="https://third-bit.com/">Greg Wilson</a>, founder of the <a href="https://carpentries.org/">Carpentries</a>. These notes are based on his talks about how to teach tech. The first is a talk he gave in April 2019 for RStudio,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and the second is an update to that talk from July 2021 on his personal YouTube channel.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<section id="lesson-1-design-curriculum-for-learning-stages" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-1-design-curriculum-for-learning-stages">Lesson 1: Design Curriculum for Learning Stages</h2>
+<p>There are three stages of learners: <strong>novices</strong>, <strong>competents</strong>, and <strong>experts</strong>. The curriculum and teaching styles should be distinct for each learning stage.</p>
+<section id="novice" class="level3">
+<h3 class="anchored" data-anchor-id="novice">Novice</h3>
+<p>Novices can follow a set of instructions, but they get stuck if they deviate even slightly from the instructions. They may ask nonsensical questions (e.g., “What color is this database?”), and they cannot identify relevant details for the topic. Novices may not know they are a novice and misidentify as competent or even an expert. They lack a <strong>mental model</strong> of the problem. Your job as the instructor is to <strong>guide</strong> a novice to gain a mental model. You <em>push</em> knowledge to them.</p>
+<p>A mental model is an incomplete and likely inaccurate framing of a topic, but it lets a novice grasp central learning concepts. A <strong>concept map</strong> is a great way to build and share mental models. A concept map <strong>connects concepts with labeled connections</strong>.</p>
+</section>
+<section id="competent" class="level3">
+<h3 class="anchored" data-anchor-id="competent">Competent</h3>
+<p>Competent practitioners have a connected mental model. To solve a problem, they reason through a series of intermediate steps and usually come to the correct conclusion, albeit slowly. As an instructor, <strong>mentor</strong> competent practitioners. Give them problems to expand their knowledge, but allow them to learn at their own pace. Do not let a competent practitioner be stuck for too long. Momentum is important for learning.</p>
+<section id="avoid-mixing-guiding-mentoring" class="level4">
+<h4 class="anchored" data-anchor-id="avoid-mixing-guiding-mentoring">Avoid Mixing Guiding &amp; Mentoring</h4>
+<p>A common mistake when teaching is to mentor a novice learner and guide a competent practitioner. Pushing knowledge to guide a competent practitioners will frustrate them because you tell them what they already know. Asking novices to tackle a problem on their own will frustrate them because they do not know what to explore.</p>
+</section>
+</section>
+<section id="expert" class="level3">
+<h3 class="anchored" data-anchor-id="expert">Expert</h3>
+<p>Experts are able to see solutions at a glance. They bring multiple points of view to a a problem, and they excel at debugging. They fluency comes from thinking back and forth between causes and effects. Experts may <strong>struggle to explain their thinking</strong>. To them, problems are obvious, and they have forgotten the experience of a novice. Experts may be bad teacher for novices.</p>
+<p>To teach an expert, ask them to <strong>reflect</strong> upon their work and <strong>give feedback</strong> on their thinking. Your aim is for them to learn to reflect on why more effectively.</p>
+</section>
+</section>
+<section id="lesson-2-a-lesson-is-a-user-interface-for-knowledge" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-2-a-lesson-is-a-user-interface-for-knowledge">Lesson 2: A Lesson is a User Interface for Knowledge</h2>
+<p>Much like designing a new user interface, your first step in to creating learning content is to <strong>create personas</strong> of learners. These are <em>fictional</em> characters to capture key properties of your target audience. A persona consists of:</p>
+<ol type="1">
+<li>General background: Who are they? What do they do when not learning?</li>
+<li>Relevant experience: What have they done before? This is better than a list of prerequisites.</li>
+<li>Perceived needs: What do they <em>think</em> they want to learn?</li>
+<li>Special considerations: How are they different from you as the instructor? What constraints do they have on learning</li>
+</ol>
+</section>
+<section id="lesson-3-use-formative-assessments-as-unit-tests-for-learning" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-3-use-formative-assessments-as-unit-tests-for-learning">Lesson 3: Use Formative Assessments as Unit Tests for Learning</h2>
+<p>A formative assessment checks for retention of key learning concepts. If the learner gets the assessment wrong, you gain insight into the learners mental model. Your assessment must have <strong>diagnostic power</strong>. Build formative assessments <em>before</em> you create your curriculum. You need to understand the mental model of your learners. If you do this well, you can dynamically adjust the lessons based on the prior knowledge of the learner.</p>
+</section>
+<section id="lesson-4-manage-cognitive-load" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-4-manage-cognitive-load">Lesson 4: Manage Cognitive Load</h2>
+<p>Do not overload your students with too much information at once. This does <em>not</em> mean that you cannot convey complex ideas or use complex figures. You must introduce components of a complex idea or image gradually. A practical example of this is to use slide builds. You want new linguistic and audio information at the same time. This is one reason why <a href="https://andymatuschak.org/books/">books do not work</a>.</p>
+<p>Short term memory is the bottleneck of learning. We often overestimate our short term memory capacity. Modern estimates of short term memory are 4 +/- 1 chunks for knowledge. Short term memory capacity determines how you convert concept maps to lessons. Only once a concept map is decomposed into digestible chunks can you create the lesson. Count the concepts. Remember to not spoon feeding learners. Use your personas and learning stages to guide you.</p>
+</section>
+<section id="lesson-5-active-learning-beats-passive-learning-every-time" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-5-active-learning-beats-passive-learning-every-time">Lesson 5: Active Learning Beats Passive Learning Every Time</h2>
+<p>Active learning results in better learning outcomes. However, most learners will prefer passive learning as that is how most were taught throughout their childhood education. For strategies on how to incorporate active learning into your lessons, explore <a href="https://www.learningscientists.org/">The Learning Scientists</a>.</p>
+</section>
+<section id="lesson-6-learner-are-not-robots" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-6-learner-are-not-robots">Lesson 6: Learner are Not Robots</h2>
+<p>For most learners, the most important factor for success is <strong>intrinsic motivation</strong>. “I’m learning this because I want to.” You can increase intrinsic motivation of your students by increasing self-efficacy, utility, and community. Formative assessments increase self-efficacy by giving some control over the pace learning to learners. Utility requires that learners can apply new concepts soon after learning. A community of learners that want to learn will build upon each other. Demotivators a are unpredictability, unfairness, and indifference. Being an ally to your learners can make a big difference in student motivation. Valerie Aurora covers <a href="https://frameshiftconsulting.com/ally-skills-workshop/">how to be a good ally</a>.</p>
+
+
+<script type="module" src="https://js.withorbit.com/orbit-web-component.js"></script>
+
+
+<orbit-reviewarea color="purple"> <orbit-prompt question="What do novices lack when learning new concepts?" answer="mental model"></orbit-prompt> <orbit-prompt cloze="As a teacher, you roles is to {guide} novices and {mentor} competent practitioners."></orbit-prompt> <orbit-prompt question="What makes experts bad teachers?" answer="struggle to explain thinking"></orbit-prompt> <orbit-prompt question="What feeling does guiding a competent practitioner evoke?" answer="frustration"></orbit-prompt> <orbit-prompt question="When instructing an expert in a subject, what do you want them to do?" answer="**reflect** on their thinking"></orbit-prompt> <orbit-prompt question="What feature must a formative assessment have in order to guide you instruction?" answer="diagnostic power"></orbit-prompt> <orbit-prompt question="What is the most important factor in whether you learn something?" answer="intrinsic motivation"></orbit-prompt> <orbit-prompt question="Great teachers can influence the *intrinsic motivation* of their students by increasing what three things?" answer="self-efficacy, utility, community"></orbit-prompt> <orbit-prompt question="How many elements should you select from a concept map to put into a lesson?" answer="No more than 7"></orbit-prompt> <orbit-prompt question="What do you do after building a concept map to create teaching curricula?" answer="isolate digestible elements"></orbit-prompt> <orbit-prompt question="What is the bottleneck to learning?" answer="short term memory"></orbit-prompt> </orbit-reviewarea>
+
+
+</section>
+<section id="miscellaneous-tips-and-tricks" class="level2">
+<h2 class="anchored" data-anchor-id="miscellaneous-tips-and-tricks">Miscellaneous Tips and Tricks</h2>
+<section id="what-can-you-do-to-help-disparate-learners" class="level3">
+<h3 class="anchored" data-anchor-id="what-can-you-do-to-help-disparate-learners">What Can You Do to Help Disparate Learners?</h3>
+<p>This is a common problem that is difficult to address. Here’s advice from Wilson on what you can try:</p>
+<ol type="1">
+<li>Avoid this if you can. Can you have different session based on prior knowledge?</li>
+<li>Split the room.</li>
+<li>Use advanced learners to teach less advanced learners. <strong>Note</strong>: This can backfire in corporate settings since everyone expects to be taught.</li>
+<li>Use pair programming or another type of pairing. Pairs will be more homogeneous than individuals. People will realize that they are not alone in their struggles. Mismatched pairs can have their own student-teacher scenario where the “teacher” will also learn.</li>
+<li>Synchronous self-paced work. You can learn at your own pace, but you have instructors and helpers in the room. This is experimental but an area of interest to Wilson.</li>
+</ol>
+</section>
+<section id="pre-assessments" class="level3">
+<h3 class="anchored" data-anchor-id="pre-assessments">Pre-Assessments</h3>
+<section id="the-perils-of-pre-assessment" class="level4">
+<h4 class="anchored" data-anchor-id="the-perils-of-pre-assessment">The Perils of Pre-Assessment</h4>
+<p>Pre-assessments can scare novices away. Learners can feel that they are not “ready” for the curriculum. This selects for self-confidence more than prior knowledge and can disadvantage certain groups.</p>
+</section>
+<section id="the-problem-of-false-beginners" class="level4">
+<h4 class="anchored" data-anchor-id="the-problem-of-false-beginners">The Problem of False Beginners</h4>
+<p>Pre-assessments will poorly estimate learning pace. For instance, if you offer a course in building visualization with R to a group of experiences python programmers, the assessment results will show very little prior knowledge about R. However, if you mix those programming experts with complete novices, they will learn at a drastically different pace.</p>
+</section>
+</section>
+<section id="avoid-a-deficit-model-for-teaching" class="level3">
+<h3 class="anchored" data-anchor-id="avoid-a-deficit-model-for-teaching">Avoid a Deficit Model for Teaching</h3>
+<p>Do not use a deficit model for teaching. Do not require the people who already have a hard path do more work to keep up. It is the duty of the privileged to do the extra work to lower the playing field.</p>
+</section>
+<section id="online-interaction-is-the-future" class="level3">
+<h3 class="anchored" data-anchor-id="online-interaction-is-the-future">Online Interaction is the Future</h3>
+<p>Wilson believes that online courses are a dead end. They are at best a refresher for those who already know the material. Instead, try to use the web as a medium for real-time interactions. The big divide between learning types is not on-line vs in-person. The divide is interactive versus recorded. Building places for interactive learning is the future.</p>
+</section>
+<section id="other-advice-from-wilson" class="level3">
+<h3 class="anchored" data-anchor-id="other-advice-from-wilson">Other Advice From Wilson</h3>
+<ol type="1">
+<li>Be kind: all else is details.</li>
+<li>Remember that you are not your learners…</li>
+<li>…that most people would rather fail than change…</li>
+<li>…and that ninety percent of magic consists of knowing one extra thing.</li>
+<li>Never teach alone.</li>
+<li>Never hesitate to sacrifice truth for clarity.</li>
+<li>Make every mistake a lesson.</li>
+<li>Remember that no lesson survives first contact with learners…</li>
+<li>…that every lesson is too short for the teacher and too long for the learner…</li>
+<li>…and that nobody will be more excited about the lesson than you are.</li>
+</ol>
+</section>
+<section id="where-to-go-next" class="level3">
+<h3 class="anchored" data-anchor-id="where-to-go-next">Where to Go Next</h3>
+<ul>
+<li><a href="https://www.amazon.com/Small-Teaching-Everyday-Lessons-Learning/dp/1118944496">Small Teaching by James Lang</a> - What should you do if you know what the right thing to do is, but you don’t have the time or the budge?</li>
+<li><a href="https://www.amazon.com/Teaching-What-You-Dont-Know-ebook/dp/B003N18V04/">Teaching What You Don’t Know by Therese Huston</a> - How do you teach if you are only a page ahead of your learners?</li>
+<li><a href="https://www.amazon.com/How-Learning-Happens-Educational-Psychology-ebook/dp/B084RNK2Z9/">How Learning Happens by Kirschner &amp; Hendrick</a> - An opinionated introduction to the current state of learning. Wilson doesn’t recommend reading this cover to cover but as a reference in how to get started in a new area.</li>
+<li><a href="https://www.amazon.com/Discussion-Book-Great-People-Talking/dp/1119049717">The Discussion Book by Brookfield &amp; Preskill</a> - A catalog of 50 different techniques to get people sharing information and making decisions.</li>
+<li><a href="https://teachtogether.tech/en/index.html">Teaching Tech Together by Greg Wilson</a> - Wilson’s collected lessons on teaching.</li>
+</ul>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://www.rstudio.com/resources/webinars/what-every-data-scientist-should-know-about-education/">What Every Data Scientist Should Know About Education - RStudio</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://youtu.be/ewXvFQByRqY">What Everyone in Tech Should Know About Teaching and Learning</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="jameshwade/jameshwadedotcom" data-repo-id="R_kgDOGZX0zQ" data-category="General" data-category-id="DIC_kwDOGZX0zc4CTP0T" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
