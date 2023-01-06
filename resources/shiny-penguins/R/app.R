@@ -7,53 +7,55 @@ library(glue)
 
 ui <- fluidPage(
   title = "Predicting Penguin Sex",
-  sidebarLayout(sidebarPanel(
-    selectInput(
-      inputId = "species",
-      label = "Penguin Species",
-      choices = c("Gentoo", "Chinstrap", "Adelie")
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(
+        inputId = "species",
+        label = "Penguin Species",
+        choices = c("Gentoo", "Chinstrap", "Adelie")
+      ),
+      sliderInput(
+        inputId = "bill_length_mm",
+        label = "Bill Length (mm)",
+        min = 30L,
+        max = 60L,
+        value = 45L,
+        step = 0.5,
+        width = "100%"
+      ),
+      sliderInput(
+        inputId = "bill_depth_mm",
+        label = "Bill Depth (mm)",
+        min = 10L,
+        max = 22L,
+        value = 15L,
+        step = 0.5,
+        width = "100%"
+      ),
+      sliderInput(
+        inputId = "flipper_length_mm",
+        label = "Flipper Length (mm)",
+        min = 170L,
+        max = 235L,
+        value = 200L,
+        step = 1L,
+        width = "100%"
+      ),
+      sliderInput(
+        inputId = "body_mass_g",
+        label = "Body Mass (g)",
+        min = 2700L,
+        max = 6300L,
+        value = 3500L,
+        step = 10L,
+        width = "100%"
+      ),
+      actionButton(
+        inputId = "predict_sex",
+        label = "Predict",
+        width = "100%"
+      )
     ),
-    sliderInput(
-      inputId = "bill_length_mm",
-      label = "Bill Length (mm)",
-      min = 30L,
-      max = 60L,
-      value = 45L,
-      step = 0.5,
-      width = "100%"
-    ),
-    sliderInput(
-      inputId = "bill_depth_mm",
-      label = "Bill Depth (mm)",
-      min = 10L,
-      max = 22L,
-      value = 15L,
-      step = 0.5,
-      width = "100%"
-    ),
-    sliderInput(
-      inputId = "flipper_length_mm",
-      label = "Flipper Length (mm)",
-      min = 170L,
-      max = 235L,
-      value = 200L,
-      step = 1L,
-      width = "100%"
-    ),
-    sliderInput(
-      inputId = "body_mass_g",
-      label = "Body Mass (g)",
-      min = 2700L,
-      max = 6300L,
-      value = 3500L,
-      step = 10L,
-      width = "100%"
-    ),
-    actionButton(
-      inputId = "predict_sex",
-      label = "Predict",
-      width = "100%"
-    )),
     mainPanel(
       br(), br(), br(),
       h1(textOutput("predicted_sex"))
@@ -62,7 +64,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-
   new_data <- reactive({
     tibble(
       species = input$species,

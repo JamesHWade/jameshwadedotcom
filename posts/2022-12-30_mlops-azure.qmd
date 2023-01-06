@@ -85,9 +85,9 @@ workflow_set <-
     )
   ) |>
   workflow_map("tune_bayes",
-               iter = 50L,
-               resamples = penguin_folds,
-               control = bayes_control
+    iter = 50L,
+    resamples = penguin_folds,
+    control = bayes_control
   )
 ```
 
@@ -109,7 +109,7 @@ Below is an example for how to access an Azure storage container, create or conn
 library(AzureStor)
 library(pins)
 
-container <- 
+container <-
   storage_container(
     endpoint = Sys.getenv("AZURE_CONTAINER_ENDPOINT"),
     sas = Sys.getenv("AZURE_SAS_KEY")
@@ -121,7 +121,7 @@ model_board <- pins::board_azure(container)
 ```{r}
 #| include: false
 library(ggplot2)
-workflow_set  <- pin_read(model_board, "penguins_workflowset")
+workflow_set <- pin_read(model_board, "penguins_workflowset")
 penguin_split <- pin_read(model_board, "penguin_split")
 theme_set(theme_bw())
 ```
@@ -151,7 +151,7 @@ final_fit_to_deploy <-
   workflow_set |>
   extract_workflow(best_model_id) |>
   finalize_workflow(best_fit) |>
-  last_fit(penguin_split) |> 
+  last_fit(penguin_split) |>
   extract_workflow()
 ```
 
@@ -208,17 +208,17 @@ library(vetiver)
 
 # Packages needed to generate model predictions
 if (FALSE) {
-    library(parsnip)
-    library(recipes)
-    library(stats)
-    library(workflows)
+  library(parsnip)
+  library(recipes)
+  library(stats)
+  library(workflows)
 }
 b <- board_azure(AzureStor::storage_container("https://penguinstore.blob.core.windows.net/penguincontainer"), path = "")
 v <- vetiver_pin_read(b, "penguins_model", version = "20221222T172651Z-50d8c")
 
 #* @plumber
 function(pr) {
-    pr %>% vetiver_api(v)
+  pr %>% vetiver_api(v)
 }
 ```
 
@@ -228,9 +228,11 @@ If Posit Connect is not the right place for our model, `vetiver_write_docker` cr
 
 ```{r}
 #| eval: false
-vetiver_write_docker(vetiver_model = v,
-                     path = "azure",
-                     lockfile = "azure/vetiver_renv.lock")
+vetiver_write_docker(
+  vetiver_model = v,
+  path = "azure",
+  lockfile = "azure/vetiver_renv.lock"
+)
 ```
 
 Here is an example of the dockerfile that is generated.

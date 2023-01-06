@@ -16,6 +16,7 @@ about:
     - icon: mastodon
       text: Mastodon
       href: https://fosstodon.org/@jameshwade
+comments: false
 ---
 
 Hi 👋, I'm James Wade.

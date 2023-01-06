@@ -118,7 +118,7 @@ We'll use a deep neural net with to predict the `Class` variable. But first, we 
 #| filename: Initial Split
 ad_split <- initial_split(ad_data, strata = Class)
 ad_train <- training(ad_split)
-ad_test  <- testing(ad_split)
+ad_test <- testing(ad_split)
 ```
 
 ### Cross Validation
