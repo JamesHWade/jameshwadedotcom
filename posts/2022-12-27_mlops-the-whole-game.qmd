@@ -3,7 +3,7 @@ title: "MLOps: The Whole Game"
 author: James H Wade
 date: 2022-12-27
 thanks: Thank you to the MLOps and tidymodels teams at Posit and all the open source developers that contributed to this fantastic ecosystem.
-description: An example of model building, model delpoyment, and model monitoring with R using palmerpenguins
+description: An example of model building, model deployment, and model monitoring with R using palmerpenguins
 execute: 
   freeze: true
 format: 
