@@ -22,6 +22,9 @@ website:
         href: https://github.com/jameshwade
       - icon: mastodon
         href: https://fosstodon.org/@jameshwade
+  page-footer: 
+    left: "© Copyright 2023 James Wade. Unless otherwise noted, all text and images licensed [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). All code falls under the [MIT License](https://choosealicense.com/licenses/mit/) unless otherwise noted."
+        
 format:
   html:
     theme: sandstone
