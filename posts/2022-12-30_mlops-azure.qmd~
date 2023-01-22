@@ -2,10 +2,9 @@
 title: "MLOps: Moving from Posit Connect to Azure"
 author: James H Wade
 date: 2023-01-22
-execute: 
+execute:
   freeze: auto
-draft: true
-format: 
+format:
   html:
     toc: true
     code-copy: true
@@ -14,13 +13,13 @@ params:
   AZURE_CONTAINER_ENDPOINT=`Sys.getenv("AZURE_CONTAINTER_ENDPOINT")`
 ---
 
-The purpose of this article is to demonstrate a model deployment using Posit's open source tools for MLOps and using Azure as the deployment infrastructure. This is the second article in a series on MLOps. See the first one that [uses Posit Connect for deployment](%22mlops-r.qmd%22).
+If you're like me, the decisions about deployment locations and "the cloud" are out of your control at work. Whether you use AWS, GCP, Azure, or another, you are stuck with the cloud you've been given. The purpose of this article is to demonstrate a model deployment using Posit's open source tools for MLOps and using Azure as the deployment infrastructure. This is the second article in a series on MLOps. See the first one that [uses Posit Connect for deployment]("2022-12-27_mlops-the-whole-game.qmd").
 
 [![Source: MLOps Team at Posit \| An overview of MLOps with Vetiver and friends](images/vetiver-mlops.png){fig-alt="During the MLOps cycle, we collect data, understand and clean the data, train and evaluate a model, deploy the model, and monitor the deployed model. Monitoring can then lead back to collecting more data. There are many great tools available to understand clean data (like pandas and the tidyverse) and to build models (like tidymodels and scikit-learn). Use the vetiver framework to deploy and monitor your models."}](https://vetiver.rstudio.com/)
 
 ## Model Building
 
-### Load Packages and Set Options
+We covered model builidng in [part one]("2022-12-27_mlops-the-whole-game.qmd"), but here is the code from there to save time searching around for it.
 
 ```{r load-pkg}
 #| eval: false
@@ -168,7 +167,7 @@ v
 
 ### Pin Model to Board
 
-Once the model_board connection is made it's as easy as `vetiver_pin_write()` to "pin" our model to the model board and `vetiver_pin_read()` to access it. In this case, we must specify the username of the author of the pin, which in this case is `UA21849@DOW.COM`.
+Once the model_board connection is made it's as easy as `vetiver_pin_write()` to "pin" our model to the model board and `vetiver_pin_read()` to access it. 
 
 ```{r}
 model_board |> vetiver_pin_write(v)
