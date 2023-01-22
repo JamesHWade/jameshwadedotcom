@@ -30,9 +30,9 @@ format:
     theme: sandstone
     css: styles.css
 
-comments:
-  giscus: 
-    repo: jameshwade/jameshwadedotcom
+# comments:
+#   giscus: 
+#     repo: jameshwade/jameshwadedotcom
     
 execute: 
   freeze: auto
