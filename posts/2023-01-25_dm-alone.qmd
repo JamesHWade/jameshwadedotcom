@@ -1,0 +1,172 @@
+---
+title: "Exploring {dm} Alone"
+author: James H Wade
+description: Using data from Alone to test drive the `{dm}` package as part of week 4 of TidyTuesday 
+date: 2023-01-25
+execute: 
+  freeze: auto
+draft: true
+format: 
+  html:
+    toc: true
+    code-copy: true
+    code-link: true
+categories: 
+  - database
+  - RDBMS
+  - data management
+  - R
+  - TidyTuesday
+---
+
+Working with relational data tables doesn't sound like the most exciting topic, but it's one I always could do better in my data science projects. Kirill Müller drew in quite an audience for his overview of the [`{dm}`](https://github.com/cynkra/dm) package at [his rstudio::conf talk in 2022](https://www.rstudio.com/conference/2022/talks/dm-analyze-build-deploy-relational/). `{dm}` is designed to bridge the gap between individual data frames and relational databases, making it a powerful tool for anyone working with large or complex datasets.
+
+`{dm}` provides a consistent set of verbs for consuming, creating, and deploying relational data models. It makes working with data a lot easier by capturing a relational data models constructed from local data frames or "lazy tables" connected to an RDBMS (Relational Database Management System). With `{dm}` you can use `{dplyr}` data manipulation verbs, along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking.
+
+One of the most powerful features of `{dm}` is its ability to scale from datasets that fit in memory to databases with billions of rows. This means that even if your dataset is too large to fit in memory, you can still use `{dm}` to work with it efficiently.
+
+## Creating `dm` from Dataframes
+
+In this tutorial, we will use the [`{alone}`](https://gradientdescending.com/alone-r-package-datasets-from-the-survival-tv-series/) package, part of week for of #TidyTuesday. Our first step is to convert data in the `{alone}` package into a `dm` object.
+
+```{r}
+library(dm)
+library(alone)
+
+alone_no_keys <- dm(episodes, loadouts, seasons, survivalists)
+alone_no_keys
+```
+
+## Primary Keys
+
+In practice, we should always inspect our data to ensure we are joining data in a sensible manner, but `dm_enum_pk_candidates()` can suggest a primary key for us.
+
+```{r}
+dm_enum_pk_candidates(
+  dm = alone_no_keys,
+  table = episodes
+)
+```
+
+`episode_number` and `title` are the two candidates for primary keys. We can look at the other tables, as well.
+
+::: {.panel-tabset}
+
+## loadouts
+
+```{r}
+dm_enum_pk_candidates(
+  dm = alone_no_keys,
+  table = loadouts
+)
+```
+## seasons
+
+```{r}
+dm_enum_pk_candidates(
+  dm = alone_no_keys,
+  table = seasons
+)
+```
+
+## survivalists
+
+```{r}
+dm_enum_pk_candidates(
+  dm = alone_no_keys,
+  table = survivalists
+)
+```
+
+:::
+
+`{loadouts}` and `{survivalists}` lack a single column that serves as a primary key, but we can use a column tuple (i.e., multiple columns) to make a primary key.
+
+```{r}
+alone_only_pks <-
+  alone_no_keys %>%
+  dm_add_pk(table = episodes, columns = episode_number_overall) %>%
+  dm_add_pk(loadouts, c(version, season, name, item_number)) %>%
+  dm_add_pk(seasons, season) %>%
+  dm_add_pk(survivalists, c(season, name))
+
+alone_only_pks
+```
+
+## Foreign Keys
+
+To create the relationships between tables, we need to identify foreign keys. We can use the same approach as we did with primary keys, this time with `dm_enum_fk_candidates()`. 
+
+```{r}
+dm_enum_fk_candidates(
+  dm = alone_only_pks,
+  table = episodes,
+  ref_table = seasons
+)
+```
+
+`dm_add_fk()` is the same as `dm_add_pk()` except for foreign keys.
+
+```{r}
+alone_with_keys <-
+  alone_only_pks |>
+  dm_add_fk(table = episodes, columns = season, ref_table = seasons) |>
+  dm_add_fk(loadouts, c(name, season), survivalists) |>
+  dm_add_fk(loadouts, season, seasons) |>
+  dm_add_fk(survivalists, season, seasons)
+
+alone_with_keys
+```
+
+## Visualizing Relationships
+
+Two powerful features included with `{dm}` are relational table visualization and integrity checks. `dm_draw()` gives us a visualization to inspect the relationships between tables and the keys used to do so.
+
+```{r}
+rlang::check_installed("DiagrammeR")
+dm_draw(alone_with_keys)
+```
+
+## Integrity Checks
+
+
+```{r}
+dm_examine_constraints(alone_no_keys)
+```
+
+```{r}
+dm_examine_constraints(alone_only_pks)
+```
+
+```{r}
+dm_examine_constraints(alone_with_keys)
+```
+
+We can see that there is an issue with constraints for joining `loadouts` and `survivalists`.
+
+## Table Flattening
+
+In my own projects, the power of a well organized tidy data structure is most evident when I join tidy tables to answer a particular question about the project. The joined table can sometimes be the most valuable step in the product. From these joins, I can usually build visuals and summaries that becomes the most visible artifact of the product. 
+
+`dm_flatten_to_tbl()` uses a table of our choosing as starting point and produces a wide table that brings in information from our other tables. Importantly, columns with the same name but no relationship (i.e., they are not primary <-> foreign keys) are disambiguated. This seems like it could explode for more complicated data structures, but four tables seems manageable. 
+
+```{r}
+flat_survivors <- dm_flatten_to_tbl(alone_with_keys, .start = survivalists)
+flat_survivors
+```
+
+The renaming of ambiguous columns is important in this case since `seasons$country` refers the location of the show and `survivalists$country` refers to the nationality of the survivalist.
+
+```{r}
+library(ggplot2)
+flat_survivors |>
+  ggplot(aes(x = age, y = days_lasted, color = country.survivalists)) +
+  geom_point(size = 2, alpha = 0.7) +
+  theme_minimal() +
+  labs(
+    x = "Survivalist Age", y = "Days Alone", color = "Nationality",
+    title = "Days on Alone vs Survivalist Age",
+    subtitle = "Color Indicates Nationality"
+  ) +
+  theme(plot.title.position = "plot")
+```
