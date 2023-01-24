@@ -19,7 +19,7 @@ categories:
   - TidyTuesday
 ---
 
-Working with relational data tables doesn't sound like the most exciting topic, but it's one I always could do better in my data science projects. Kirill Müller drew in quite an audience for his overview of the [`{dm}`](https://github.com/cynkra/dm) package at [his rstudio::conf talk in 2022](https://www.rstudio.com/conference/2022/talks/dm-analyze-build-deploy-relational/). `{dm}` is designed to bridge the gap between individual data frames and relational databases, making it a powerful tool for anyone working with large or complex datasets.
+Working with relational data tables doesn't sound like the most exciting topic, but it's one I always could do better in my data science projects. Kirill Müller drew in quite an audience for his overview of the `{dm}` package at [his rstudio::conf talk in 2022](https://www.rstudio.com/conference/2022/talks/dm-analyze-build-deploy-relational/). `{dm}` is designed to bridge the gap between individual data frames and relational databases, making it a powerful tool for anyone working with large or complex datasets.
 
 `{dm}` provides a consistent set of verbs for consuming, creating, and deploying relational data models. It makes working with data a lot easier by capturing a relational data models constructed from local data frames or "lazy tables" connected to an RDBMS (Relational Database Management System). With `{dm}` you can use `{dplyr}` data manipulation verbs, along with additional methods for constructing and verifying relational data models, including key selection, key creation, and rigorous constraint checking.
 
@@ -27,7 +27,7 @@ One of the most powerful features of `{dm}` is its ability to scale from dataset
 
 ## Creating `dm` from Dataframes
 
-In this tutorial, we will use the [`{alone}`](https://gradientdescending.com/alone-r-package-datasets-from-the-survival-tv-series/) package, part of week for of #TidyTuesday. Our first step is to convert data in the `{alone}` package into a `dm` object.
+In this tutorial, we will use the `{alone}` package, part of week for of #TidyTuesday. Our first step is to convert data in the `{alone}` package into a `dm` object.
 
 ```{r}
 library(dm)
