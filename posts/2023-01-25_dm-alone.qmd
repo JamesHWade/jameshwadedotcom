@@ -3,9 +3,9 @@ title: "Exploring {dm} Alone"
 author: James H Wade
 description: Using data from Alone to test drive the `{dm}` package as part of week 4 of TidyTuesday 
 date: 2023-01-25
+image: images/alonehex.png
 execute: 
   freeze: auto
-draft: true
 format: 
   html:
     toc: true
@@ -16,6 +16,7 @@ categories:
   - RDBMS
   - data management
   - R
+  - dm
   - TidyTuesday
 ---
 
@@ -157,6 +158,10 @@ flat_survivors
 
 The renaming of ambiguous columns is important in this case since `seasons$country` refers the location of the show and `survivalists$country` refers to the nationality of the survivalist.
 
+## A simple plot
+
+Usign flattened data, we can make a simple plot of days lasted versus age colored by country.
+
 ```{r}
 library(ggplot2)
 flat_survivors |>
@@ -170,3 +175,5 @@ flat_survivors |>
   ) +
   theme(plot.title.position = "plot")
 ```
+
+In a future post, I'd like to explore going from files to `dm` to a database.
