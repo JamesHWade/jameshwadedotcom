@@ -1,0 +1,462 @@
+---
+title: Teaching GPT Models What They Don't Already Know
+description: Using vector databases to provide missing context to GPT models
+execute: 
+  eval: false
+---
+
+Large language models like GPT-3 and ChatGPT don't need much of an introduction. They are enormously powerful with benchmarks being , they still struggle to provide accurate results when the appropriate response requires context more recent than the training data for a model. This is where vector databases can be particularly useful.
+
+Vector databases allow us to perform semantic search using **embeddings**, which can provide a much more nuanced understanding of language. By creating embeddings of text data and storing them in a database, we can quickly search for related documents and even perform advanced operations like similarity searches or clustering. This can be especially helpful when working with text data that is more context-dependent or domain-specific, such as scientific or technical documentation.
+
+`{gpttools}` provides a set of tools for working with GPT-3 and other OpenAI models, including the ability to generate embeddings, perform similarity searches, and build vector databases. `{gpttools}` also has convenience functions to aid in scraping web pages to collect text data, generate embeddings, and store those embeddings in a vector database for future use.
+
+To demonstrate the power of vector databases, we'll use `{gpttools}` to build a vector database of the text from [*R for Data Science*](https://r4ds.hadley.nz/). We'll then use the vector database along with GPT-3 to answer questions about writing R code. The approach uses semantic search to find the most relevant text from the book and then uses GPT-3 to generate a response based on that text.
+
+## Scraping Text from R4DS
+
+The first step is to scrape the text from the R4DS book. We'll use the `crawl()` function to scrape the text from the book and store it in a data frame. The `crawl()` function uses the `rvest` package to scrape the text from the online book and `{tokenizers}` to split the text into chunks for subsequent processing.
+
+The code to scrape the data is relatively simple:
+
+```{r}
+library(gpttools)
+crawl("https://r4ds.hadley.nz/")
+```
+
+Under the hood there are a few things going on. Here is the annotated function and associated functions:
+
+::: {.panel-tabset}
+
+## crawl
+
+```{r}
+crawl <- function(url) {
+  local_domain <- urltools::url_parse(url)$domain
+  if (!dir.exists("text")) dir.create("text")
+  links <- recursive_hyperlinks(local_domain, url) |> unique()
+  scraped_data <-
+    purrr::map(links, \(x){
+      if (identical(check_url(x), 200L)) {
+        tibble::tibble(
+          link    = x,
+          text    = paste(scrape_url(x), collapse = " "),
+          n_words = tokenizers::count_words(text)
+        )
+      } else {
+        cli::cli_inform(c(
+          "!" = "Skipped {url}",
+          "i" = "Status code: {status}"
+        ))
+      }
+    }, .progress = "Scrape URLs") |>
+    dplyr::bind_rows() |>
+    dplyr::distinct()
+  arrow::write_parquet(scraped_data,
+                       glue("text/{local_domain}.parquet"))
+}
+```
+
+## recursive_hyperlinks
+
+```{r}
+recursive_hyperlinks <- function(local_domain, url, checked_urls = NULL) {
+  links <- url[!(url %in% checked_urls)]
+  if (length(links) < 1) {
+    return(checked_urls)
+  }
+  checked_urls <- c(checked_urls, links)
+  links_df <- purrr::map(links, get_hyperlinks) |>
+    dplyr::bind_rows() |>
+    dplyr::filter(!stringr::str_detect(link,"^\\.$|mailto:|^\\.\\.|\\#|^\\_$"))
+
+  new_links <-
+    purrr::pmap(as.list(links_df), \(parent, link) {
+      clean_link <- NULL
+      if (stringr::str_detect(link, paste0("^https?://", local_domain))) {
+        clean_link <- link
+      } else if (stringr::str_detect(link, "^/[^/]|^/+$|^\\./|^[[:alnum:]]") &&
+                 !stringr::str_detect(link, "^https?://")) {
+        if (stringr::str_detect(link, "^\\./")) {
+          clean_link <- stringr::str_replace(link, "^\\./", "/")
+        } else if (stringr::str_detect(link, "^[[:alnum:]]")) {
+          clean_link <- glue::glue("/", link)
+        } else {
+          clean_link <- link
+        }
+        clean_link <- glue::glue("{parent}{clean_link}")
+      }
+      validate_link(clean_link, link)
+    }, .progress = "Collect Links") |>
+    unlist()
+  recursive_hyperlinks(local_domain, unique(new_links), checked_urls)
+}
+```
+
+## get_hyperlinks
+
+```{r}
+get_hyperlinks <- function(url) {
+  rlang::check_installed("rvest")
+  status <- httr::GET(url) |> httr::status_code()
+  if (identical(status, 200L)) {
+    tibble::tibble(
+      parent = url,
+      link  = rvest::read_html(url) |>
+        rvest::html_nodes("a[href]") |>
+        rvest::html_attr("href") |>
+        unique()
+    )
+  } else {
+    cli::cli_warn(c(
+      "!" = "URL not valid.",
+      "i" = "Tried to scrape {url}",
+      "i" = "Status code: {status}"
+    ))
+  }
+}
+```
+
+## scrape_url
+
+```{r}
+scrape_url <- function(url) {
+  rlang::check_installed("rvest")
+  exclude_tags <- c("style", "script", "head", "meta", "link", "button")
+  text <- rvest::read_html(url) |>
+    rvest::html_nodes(xpath = paste("//body//*[not(self::",
+                                    paste(exclude_tags, collapse = " or self::"),
+                                    ")]",
+                                    sep = ""
+    )) |>
+    rvest::html_text2() |>
+    remove_new_lines()
+  if ("You need to enable JavaScript to run this app." %in% text) {
+    cli::cli_warn("Unable to parse page {url}. JavaScript is required.")
+    NULL
+  } else {
+    text
+  }
+}
+```
+
+:::
+
+`crawl()` that takes in a single argument, `url`, which is a character string of the URL to be scraped. The function scrapes all hyperlinks within the same domain. The scraped text is processed into a tibble format and saved as a parquet file using the `{arrow}` package into a directory called "text" with a filename that includes the local domain extracted earlier.
+
+The function begins by extracting the local domain of the input URL using the `urltools::url_parse()` function, which returns a parsed URL object, and then extracting the domain component of the object.
+
+The function then calls another function called `recursive_hyperlinks()` to recursively extract all hyperlinks within the url and validates the links in the process by only keeping urls that return a status code of `200` (i.e., the webpage is accessible).
+
+The function then loops through each link and scrapes the text from each webpage and creates a tibble with three columns: link, text, and n_words. The link column contains the URL, the text column contains the scraped text, and the n_words column contains the number of words in the scraped text.
+
+## Generating Embeddings
+
+After scraping the text data from the R4DS book, the next step is to generate embeddings for each chunk of text. This can be done using the `create_index()` function provided by the `{gpttools}` package. `create_index()` takes in a single argument, `domain`, which should be a character string indicating the domain of the scraped data.
+
+Here's the code to generate embeddings for the R4DS text data:
+
+```{r}
+# Specify the domain of the scraped data
+domain <- "r4ds.hadley.nz"
+
+# Create embeddings for each chunk of text in the scraped data
+index <- create_index(domain)
+```
+
+`create_index()` function prepares the scraped data for indexing using the `prepare_scraped_files()` function, which splits the text into chunks and calculates the number of tokens in each chunk. It then calls `add_embeddings()` to generate embeddings for each chunk of text using the OpenAI API. A resulting tibble with embeddings is stored as a feather file using, again using the `{arrow}` package.
+
+Here's the code for the create_index() function and helper functions:
+
+::: {.panel-tabset}
+
+## create_index
+```{r}
+create_index <- function(domain) {
+  index <-
+    prepare_scraped_files(domain = domain) |>
+    add_embeddings()
+  arrow::write_feather(index, sink = glue::glue("indices/{domain}.feather"))
+  index
+}
+```
+
+## prepare_scraped_files
+```{r}
+prepare_scraped_files <- function(domain) {
+  arrow::read_parquet(glue("text/{domain}.parquet")) |>
+    dplyr::mutate(
+      chunks = purrr::map(text, \(x) {
+        chunk_with_overlap(x,
+          chunk_size = 500,
+          overlap_size = 50,
+          doc_id = domain,
+          lowercase = FALSE,
+          strip_punct = FALSE,
+          strip_numeric = FALSE,
+          stopwords = NULL
+        )
+      })
+    ) |>
+    tidyr::unnest(chunks) |>
+    tidyr::unnest(chunks) |>
+    dplyr::rename(original_text = text) |>
+    dplyr::mutate(n_tokens = tokenizers::count_characters(chunks) %/% 4)
+}
+```
+
+## add_embeddings
+
+```{r}
+add_embeddings <- function(index) {
+  index |>
+    dplyr::mutate(
+      embeddings = purrr::map(
+        .x = chunks,
+        .f = create_openai_embedding,
+        .progress = "Create Embeddings"
+      )
+    ) |>
+    tidyr::unnest(embeddings)
+}
+```
+
+## create_openai_embedding
+
+```{r}
+create_openai_embedding <-
+  function(input_text,
+           model = "text-embedding-ada-002",
+           openai_api_key = Sys.getenv("OPENAI_API_KEY")) {
+    body <- list(
+      model = model,
+      input = input_text
+    )
+    embedding <- query_openai_api(body, openai_api_key, task = "embeddings")
+    embedding$usage$total_tokens
+    tibble::tibble(
+      usage = embedding$usage$total_tokens,
+      embedding = embedding$data$embedding
+    )
+  }
+```
+
+:::
+
+The resulting tibble contains the following columns:
+
+  - link: The URL of the webpage
+  - text: The scraped text
+  - n_words: The number of words in the scraped text
+  - chunks: The text split into chunks
+  - n_tokens: The number of tokens in each chunk
+  - embeddings: The embeddings for each chunk of text
+
+Here is an example:
+
+
+
+## Querying with Embeddings
+
+After generating embeddings for each chunk of text, the next step is to query the embeddings to find similar chunks of text. This can be done using the `query_index()` function provided by the `{gpttools}` package. This is a bit of a complicated function, so it's worth taking a look at the code to see how it works.
+
+::: {.panel-tabset}
+
+## query_index
+
+```{r}
+query_index <- function(index, query, task = "conservative q&a", k = 4) {
+  arg_match(
+    task,
+    c(
+      "conservative q&a", "permissive q&a",
+      "paragraph about a question", "bullet points",
+      "summarize problems given a topic",
+      "extract key libraries and tools",
+      "simple instructions", "summarize"
+    )
+  )
+  query_embedding <- create_openai_embedding(input_text = query) |>
+    dplyr::pull(embedding) |>
+    unlist()
+
+  full_context <- get_top_matches(index, query_embedding, k = k)
+
+  context <-
+    full_context |>
+    dplyr::pull(chunks) |>
+    paste(collapse = "\n\n")
+
+  instructions <-
+    switch(task,
+      "conservative q&a" =
+        glue::glue(
+          "Answer the question based on the context below, and if the question
+          can't be answered based on the context, say \"I don't know\"\n\n
+          Context:\n{context}\n\n---\n\nQuestion: {query}\nAnswer:"
+        ),
+      "permissive q&a" =
+        glue::glue(
+          "Answer the question based on the context below, and if the question
+          can't be answered based on the context, say \"This is a tough
+          question but I can answer anyway.\"\n\n
+          Context:\n{context}\n\n---\n\nQuestion: {query}\nAnswer:"
+        ),
+      "paragraph about a question" =
+        glue::glue(
+          "Write a paragraph, addressing the question, and use the text below
+          to obtain relevant information\"\n\nContext:\n
+          {context}\n\n---\n\nQuestion: {query}\nParagraph long Answer:"
+        ),
+      "bullet points" =
+        glue::glue(
+          "Write a bullet point list of possible answers, addressing the
+          question, and use the text below to obtain relevant information\"\n\nC
+          ontext:\n{context}\n\n---\n\nQuestion: {query}\nBullet point
+          Answer:"
+        ),
+      "summarize problems given a topic" =
+        glue::glue(
+          "Write a summary of the problems addressed by the questions below\"\n
+          \n{context}\n\n---\n\n"
+        ),
+      "extract key libraries and tools" =
+        glue::glue("Write a list of libraries and tools present in the context
+                   below\"\n\nContext:\n{context}\n\n---\n\n"),
+      "simple instructions" =
+        glue::glue("{query} given the common questions and answers below \n\n
+                   {context}\n\n---\n\n"),
+      "summarize" =
+        glue::glue("Write an elaborate, paragraph long summary about
+                   \"{query}\" given the questions and answers from a public
+                   forum or documentation page on this topic\n\n{context}\n\n
+                   ---\n\nSummary:"),
+    )
+
+  n_tokens <- tokenizers::count_characters(instructions) %/% 4
+  if (n_tokens > 3500) {
+    answer <-
+      list(
+        choice = list(
+          text = "Too many tokens. Please lower the number of documents (k)."
+        )
+      )
+  } else {
+    answer <- openai_create_completion(
+      model = "text-davinci-003",
+      prompt = instructions,
+      max_tokens = as.integer(3800L - n_tokens)
+    )
+  }
+  list(instructions, full_context, answer)
+}
+```
+
+## get_top_matches
+
+```{r}
+get_top_matches <- function(index, query_embedding, k = 5) {
+  index |>
+    dplyr::rowwise() |>
+    dplyr::mutate(similarity = lsa::cosine(
+      query_embedding,
+      embedding |> unlist()
+    )) |>
+    dplyr::arrange(desc(similarity)) |>
+    head(k)
+}
+```
+
+## openai_create_completion
+
+```{r}
+openai_create_completion <-
+  function(model = "text_davinci-003",
+           prompt = "<|endoftext|>",
+           suffix = NULL,
+           max_tokens = 16,
+           temperature = NULL,
+           top_p = NULL,
+           openai_api_key = Sys.getenv("OPENAI_API_KEY")) {
+    assert_that(
+      is.string(model),
+      is.string(prompt),
+      is.count(max_tokens),
+      is.string(suffix) || is.null(suffix),
+      value_between(temperature, 0, 1) || is.null(temperature),
+      is.string(openai_api_key),
+      value_between(top_p, 0, 1) || is.null(top_p)
+    )
+
+    if (is.number(temperature) && is.number(top_p)) {
+      cli_warn("Specify either temperature or top_p, not both.")
+    }
+
+    body <- list(
+      model = model,
+      prompt = prompt,
+      suffix = suffix,
+      max_tokens = max_tokens,
+      temperature = temperature
+    )
+
+    query_openai_api(body, openai_api_key, task = "completions")
+  }
+```
+
+:::
+
+The `query_index()` function takes in four arguments: `index`, `query`, `task`, and `k`.
+
+* `index`: The index containing the embeddings to be queried.
+* `query`: The query string to search for similar chunks of text.
+* `task`: The type of task to perform based on the context of the query. {gpttools} provides a few pre-defined tasks, such as "conservative q&a" or "extract key libraries and tools", which can be passed to this argument. These queries were taken from a repo created by OpenAI and Pinecone, which can be found [here](https://github.com/pinecone-io/examples/tree/master/integrations/openai/beyond_search_webinar).
+* `k`: The number of similar chunks of text to return.
+
+The function generates an embedding for the query string with `create_openai_embedding()`. It then uses the `get_top_matches()` to find the most similar chunks of text in the index using cosine similarity returning the top `k` matches.
+
+The next step is to formats the instructions based on the `task` argument as well as the `query` and `context`. For example, if the task is "conservative q&a", the function will return a string asking the model to answer a question based on the context of the returned chunks of text. If the task is "extract key libraries and tools", the function will return a string listing the libraries and tools present in the returned chunks of text.
+
+The prompt is passed to OpenAI's GPT-3 `text-davince-003` to generate a response based on the formatted output. The response is returned as a list containing the instructions, the top `k` matches, and the response from OpenAI's GPT-3.
+
+## Analysis of Embeddings with tidymodels and UMAP
+
+The next step is to perform dimesnion reduction with UMAP as naive exploration of the embeddigns. The `embeddings` column in the index contains a list of 1536-dimensional vectors. We can use the `recipes` package to normalize the vectors and then use the `step_umap()` function to reduce the dimensionality to 2. We can then plot the results.
+
+```{r}
+#| include: false
+#| eval: true
+index <- arrow::read_feather("~/Documents/gpttools/indices/r4ds.hadley.nz.feather")
+```
+
+```{r}
+#| eval: true
+#| message: false
+library(recipes)
+library(ggplot2)
+library(purrr)
+library(tidyr)
+library(embed)
+
+index_wide <-  
+index |>
+  mutate(embedding = map(embedding, \(x) as.data.frame(t(x)))) |>
+  unnest(embedding)
+
+set.seed(123)
+
+umap_spec <- recipe(~ ., data = index_wide) |>
+  step_normalize(starts_with("V")) |>
+  step_umap(starts_with("V"), num_comp = 2)
+
+umap_estimates <- prep(umap_spec, training = index_wide)
+umap_data <- bake(umap_estimates, new_data = NULL)
+
+umap_data |> 
+  ggplot() +
+  geom_point(aes(x = UMAP1, y = UMAP2, color = link),
+             alpha = 0.5, size = 2, show.legend = FALSE) +
+  labs(title = "Dimensionality Reduction with UMAP",
+       subtitle = "UMAP of 1536-dimensional vectors | Colored by Source Text") +
+  theme_minimal()
+```
