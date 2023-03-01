@@ -1,8 +1,22 @@
 ---
 title: Teaching GPT Models What They Don't Already Know
+author: James H Wade
+date: 2023-03-01
 description: Using vector databases to provide missing context to GPT models
 execute: 
+  freeze: auto
   eval: false
+format: 
+  html:
+    toc: true
+    code-copy: true
+    code-link: true
+categories: 
+  - GPT3
+  - LLM
+  - NLP
+  - Web Scraping
+  - R
 ---
 
 Large language models like GPT-3 and ChatGPT don't need much of an introduction. They are enormously powerful with benchmarks being , they still struggle to provide accurate results when the appropriate response requires context more recent than the training data for a model. This is where vector databases can be particularly useful.
