@@ -245,16 +245,12 @@ create_openai_embedding <-
 
 The resulting tibble contains the following columns:
 
-  - link: The URL of the webpage
-  - text: The scraped text
-  - n_words: The number of words in the scraped text
-  - chunks: The text split into chunks
-  - n_tokens: The number of tokens in each chunk
-  - embeddings: The embeddings for each chunk of text
-
-Here is an example:
-
-
+  - `link`: URL of the webpage
+  - `original_text`: scraped text
+  - `n_words`: number of words in the scraped text
+  - `chunks`: text split into chunks
+  - `usage`: number of tokens used for creating the embedding
+  - `embeddings`: embeddings for each chunk of text
 
 ## Querying with Embeddings
 
