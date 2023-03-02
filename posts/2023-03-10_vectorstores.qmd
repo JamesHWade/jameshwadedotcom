@@ -50,7 +50,7 @@ crawl <- function(url) {
   if (!dir.exists("text")) dir.create("text")
   links <- recursive_hyperlinks(local_domain, url) |> unique()
   scraped_data <-
-    purrr::map(links, \(x){
+    purrr::map(links, \(x) {
       if (identical(check_url(x), 200L)) {
         tibble::tibble(
           link    = x,
@@ -66,8 +66,10 @@ crawl <- function(url) {
     }, .progress = "Scrape URLs") |>
     dplyr::bind_rows() |>
     dplyr::distinct()
-  arrow::write_parquet(scraped_data,
-                       glue("text/{local_domain}.parquet"))
+  arrow::write_parquet(
+    scraped_data,
+    glue("text/{local_domain}.parquet")
+  )
 }
 ```
 
@@ -82,7 +84,7 @@ recursive_hyperlinks <- function(local_domain, url, checked_urls = NULL) {
   checked_urls <- c(checked_urls, links)
   links_df <- purrr::map(links, get_hyperlinks) |>
     dplyr::bind_rows() |>
-    dplyr::filter(!stringr::str_detect(link,"^\\.$|mailto:|^\\.\\.|\\#|^\\_$"))
+    dplyr::filter(!stringr::str_detect(link, "^\\.$|mailto:|^\\.\\.|\\#|^\\_$"))
 
   new_links <-
     purrr::pmap(as.list(links_df), \(parent, link) {
@@ -90,7 +92,7 @@ recursive_hyperlinks <- function(local_domain, url, checked_urls = NULL) {
       if (stringr::str_detect(link, paste0("^https?://", local_domain))) {
         clean_link <- link
       } else if (stringr::str_detect(link, "^/[^/]|^/+$|^\\./|^[[:alnum:]]") &&
-                 !stringr::str_detect(link, "^https?://")) {
+        !stringr::str_detect(link, "^https?://")) {
         if (stringr::str_detect(link, "^\\./")) {
           clean_link <- stringr::str_replace(link, "^\\./", "/")
         } else if (stringr::str_detect(link, "^[[:alnum:]]")) {
@@ -116,7 +118,7 @@ get_hyperlinks <- function(url) {
   if (identical(status, 200L)) {
     tibble::tibble(
       parent = url,
-      link  = rvest::read_html(url) |>
+      link = rvest::read_html(url) |>
         rvest::html_nodes("a[href]") |>
         rvest::html_attr("href") |>
         unique()
@@ -259,12 +261,12 @@ create_openai_embedding <-
 
 The resulting tibble contains the following columns:
 
-  - `link`: URL of the webpage
-  - `original_text`: scraped text
-  - `n_words`: number of words in the scraped text
-  - `chunks`: text split into chunks
-  - `usage`: number of tokens used for creating the embedding
-  - `embeddings`: embeddings for each chunk of text
+- `link`: URL of the webpage
+- `original_text`: scraped text
+- `n_words`: number of words in the scraped text
+- `chunks`: text split into chunks
+- `usage`: number of tokens used for creating the embedding
+- `embeddings`: embeddings for each chunk of text
 
 ## Querying with Embeddings
 
@@ -275,17 +277,9 @@ After generating embeddings for each chunk of text, the next step is to query th
 ## query_index
 
 ```{r}
-query_index <- function(index, query, task = "conservative q&a", k = 4) {
-  arg_match(
-    task,
-    c(
-      "conservative q&a", "permissive q&a",
-      "paragraph about a question", "bullet points",
-      "summarize problems given a topic",
-      "extract key libraries and tools",
-      "simple instructions", "summarize"
-    )
-  )
+query_index <- function(index, query, history, task = "Context Only", k = 4) {
+  arg_match(task, c("Context Only", "Permissive Chat"))
+
   query_embedding <- create_openai_embedding(input_text = query) |>
     dplyr::pull(embedding) |>
     unlist()
@@ -299,66 +293,56 @@ query_index <- function(index, query, task = "conservative q&a", k = 4) {
 
   instructions <-
     switch(task,
-      "conservative q&a" =
-        glue::glue(
-          "Answer the question based on the context below, and if the question
-          can't be answered based on the context, say \"I don't know\"\n\n
-          Context:\n{context}\n\n---\n\nQuestion: {query}\nAnswer:"
+      "Context Only" =
+        list(
+          list(
+            role = "system",
+            content =
+              glue(
+                "You are a helpful chat bot that answere questions based on the
+                context provided by the user. If the user does not provide
+                context, say \"I am not able to answer that question. Maybe
+                try rephrasing your question in a different way.\"\n\n
+                Context: {context}"
+              )
+          ),
+          list(
+            role = "user",
+            content = glue("{query}")
+          )
         ),
-      "permissive q&a" =
-        glue::glue(
-          "Answer the question based on the context below, and if the question
-          can't be answered based on the context, say \"This is a tough
-          question but I can answer anyway.\"\n\n
-          Context:\n{context}\n\n---\n\nQuestion: {query}\nAnswer:"
-        ),
-      "paragraph about a question" =
-        glue::glue(
-          "Write a paragraph, addressing the question, and use the text below
-          to obtain relevant information\"\n\nContext:\n
-          {context}\n\n---\n\nQuestion: {query}\nParagraph long Answer:"
-        ),
-      "bullet points" =
-        glue::glue(
-          "Write a bullet point list of possible answers, addressing the
-          question, and use the text below to obtain relevant information\"\n\nC
-          ontext:\n{context}\n\n---\n\nQuestion: {query}\nBullet point
-          Answer:"
-        ),
-      "summarize problems given a topic" =
-        glue::glue(
-          "Write a summary of the problems addressed by the questions below\"\n
-          \n{context}\n\n---\n\n"
-        ),
-      "extract key libraries and tools" =
-        glue::glue("Write a list of libraries and tools present in the context
-                   below\"\n\nContext:\n{context}\n\n---\n\n"),
-      "simple instructions" =
-        glue::glue("{query} given the common questions and answers below \n\n
-                   {context}\n\n---\n\n"),
-      "summarize" =
-        glue::glue("Write an elaborate, paragraph long summary about
-                   \"{query}\" given the questions and answers from a public
-                   forum or documentation page on this topic\n\n{context}\n\n
-                   ---\n\nSummary:"),
+      "Permissive Chat" =
+        list(
+          list(
+            role = "system",
+            content =
+              glue(
+                "You are a helpful chat bot that answere questions based on the
+                context provided by the user. If the user does not provide
+                context, say \"I am not able to answer that question with the
+                context you gave me, but here is my best answer. Maybe
+                try rephrasing your question in a different way.\"\n\n
+                Context: {context}"
+              )
+          ),
+          list(
+            role = "user",
+            content = glue("{query}")
+          )
+        )
     )
 
-  n_tokens <- tokenizers::count_characters(instructions) %/% 4
-  if (n_tokens > 3500) {
-    answer <-
-      list(
-        choice = list(
-          text = "Too many tokens. Please lower the number of documents (k)."
-        )
-      )
-  } else {
-    answer <- openai_create_completion(
-      model = "text-davinci-003",
-      prompt = instructions,
-      max_tokens = as.integer(3800L - n_tokens)
-    )
-  }
-  list(instructions, full_context, answer)
+  cli_inform("Embedding...")
+
+  history <-
+    purrr::map(history, \(x) if (x$role == "system") NULL else x) |>
+    purrr::compact()
+
+  prompt <- c(history, instructions)
+
+  answer <- openai_create_chat_completion(prompt)
+
+  list(prompt, full_context, answer)
 }
 ```
 
@@ -367,12 +351,10 @@ query_index <- function(index, query, task = "conservative q&a", k = 4) {
 ```{r}
 get_top_matches <- function(index, query_embedding, k = 5) {
   index |>
-    dplyr::rowwise() |>
-    dplyr::mutate(similarity = lsa::cosine(
-      query_embedding,
-      embedding |> unlist()
-    )) |>
-    dplyr::arrange(desc(similarity)) |>
+    dplyr::mutate(similarity = purrr::map_dbl(embedding, \(x) {
+      lsa::cosine(query_embedding, unlist(x))
+    })) |>
+    dplyr::arrange(dplyr::desc(similarity)) |>
     head(k)
 }
 ```
@@ -380,38 +362,67 @@ get_top_matches <- function(index, query_embedding, k = 5) {
 ## openai_create_completion
 
 ```{r}
-openai_create_completion <-
-  function(model = "text_davinci-003",
-           prompt = "<|endoftext|>",
-           suffix = NULL,
-           max_tokens = 16,
-           temperature = NULL,
-           top_p = NULL,
-           openai_api_key = Sys.getenv("OPENAI_API_KEY")) {
+openai_create_chat_completion <-
+  function(prompt = "<|endoftext|>",
+           model = "gpt-3.5-turbo",
+           openai_api_key = Sys.getenv("OPENAI_API_KEY"),
+           task = "chat/completions") {
     assert_that(
       is.string(model),
-      is.string(prompt),
-      is.count(max_tokens),
-      is.string(suffix) || is.null(suffix),
-      value_between(temperature, 0, 1) || is.null(temperature),
-      is.string(openai_api_key),
-      value_between(top_p, 0, 1) || is.null(top_p)
+      is.string(openai_api_key)
     )
 
-    if (is.number(temperature) && is.number(top_p)) {
-      cli_warn("Specify either temperature or top_p, not both.")
+    if (is.string(prompt)) {
+      prompt <- list(
+        list(
+          role    = "user",
+          content = prompt
+        )
+      )
     }
 
     body <- list(
       model = model,
-      prompt = prompt,
-      suffix = suffix,
-      max_tokens = max_tokens,
-      temperature = temperature
+      messages = prompt
     )
 
-    query_openai_api(body, openai_api_key, task = "completions")
+    query_openai_api(body, openai_api_key, task = task)
   }
+```
+
+## query_openai_api
+
+```{r}
+query_openai_api <- function(body, openai_api_key, task) {
+  arg_match(task, c("completions", "chat/completions", "edits", "embeddings"))
+
+  base_url <- glue("https://api.openai.com/v1/{task}")
+
+  headers <- c(
+    "Authorization" = glue("Bearer {openai_api_key}"),
+    "Content-Type" = "application/json"
+  )
+
+  response <-
+    httr::RETRY("POST",
+      url = base_url,
+      httr::add_headers(headers), body = body,
+      encode = "json",
+      quiet = TRUE
+    )
+
+  parsed <- response %>%
+    httr::content(as = "text", encoding = "UTF-8") %>%
+    jsonlite::fromJSON(flatten = TRUE)
+
+  if (httr::http_error(response)) {
+    cli_alert_warning(c(
+      "x" = glue("OpenAI API request failed [{httr::status_code(response)}]."),
+      "i" = glue("Error message: {parsed$error$message}")
+    ))
+  }
+  parsed
+}
 ```
 
 :::
@@ -427,7 +438,7 @@ The function generates an embedding for the query string with `create_openai_emb
 
 The next step is to formats the instructions based on the `task` argument as well as the `query` and `context`. For example, if the task is "conservative q&a", the function will return a string asking the model to answer a question based on the context of the returned chunks of text. If the task is "extract key libraries and tools", the function will return a string listing the libraries and tools present in the returned chunks of text.
 
-The prompt is passed to OpenAI's GPT-3 `text-davince-003` to generate a response based on the formatted output. The response is returned as a list containing the instructions, the top `k` matches, and the response from OpenAI's GPT-3.
+The prompt is passed to OpenAI's GPT-3.5 `gpt-3.5-turbo` (i.e., ChatGPT) to generate a response based on the formatted output. The response is returned as a list containing the instructions, the top `k` matches, and the response from ChatGPT.
 
 ## Analysis of Embeddings with tidymodels and UMAP
 
@@ -436,7 +447,7 @@ The next step is to perform dimesnion reduction with UMAP as naive exploration o
 ```{r}
 #| include: false
 #| eval: true
-index <- arrow::read_feather("~/Documents/gpttools/indices/r4ds.hadley.nz.feather")
+index <- arrow::read_feather("../indices/r4ds.hadley.nz.feather")
 ```
 
 ```{r}
@@ -449,7 +460,7 @@ library(tidyr)
 library(embed)
 
 index_wide <-  
-index |>
+  index |>
   mutate(embedding = map(embedding, \(x) as.data.frame(t(x)))) |>
   unnest(embedding)
 

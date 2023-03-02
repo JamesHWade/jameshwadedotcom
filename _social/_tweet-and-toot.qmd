@@ -1,0 +1,25 @@
+---
+title: Tweets and Toots
+---
+
+```{r}
+library(rtweet)
+library(rtoot)
+```
+
+```{r}
+rtweet::post_tweet(
+  status = 
+    "New post in my #mlops with #rstats series using 📻tune📻 from #tidymodels. It covers:
+    
+🔥 using 🍮brulee🍮 to fit a neural net with torch
+📈 hyperparameter tuning with Bayesian optimization
+🪵 and old reliable logistic regression for a baseline
+
+https://jameshwade.com/posts/2023-01-01_tidymodels-bo-for-torch.html",
+media = "images/brulee.png",
+media_alt_text = "A screenshot of the blog post and a picture of creme brulee. Text: Bayesian Optimizaiton with Tidymodels
+MACHINE LEARNING, MODELING, TUNE, DEEP LEARNING, TORCH, R; Model tuning or torch models with Bayesian optimization using tune, workflows, brulee, and other friends from tidymodels"
+)
+```
+
