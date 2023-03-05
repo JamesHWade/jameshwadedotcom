@@ -19,13 +19,15 @@ categories:
   - R
 ---
 
-Large language models like GPT-3 and ChatGPT don't need much of an introduction. They are enormously powerful with benchmarks being , they still struggle to provide accurate results when the appropriate response requires context more recent than the training data for a model. This is where vector databases can be particularly useful.
+Large language models like GPT-3 and ChatGPT don’t need much of an introduction. They are enormously powerful with benchmarks being surpassed [nearly as quickly as they are created](https://arxiv.org/pdf/2104.14337.pdf). Despite the unprecedented model performance, these models struggle to provide accurate results when the appropriate response requires context more recent than the training data for a model. Vector databases can created from data sources outside the training corpus can address this gap by providing missing context to a model.
 
-Vector databases allow us to perform semantic search using **embeddings**, which can provide a much more nuanced understanding of language. By creating embeddings of text data and storing them in a database, we can quickly search for related documents and even perform advanced operations like similarity searches or clustering. This can be especially helpful when working with text data that is more context-dependent or domain-specific, such as scientific or technical documentation.
+Vector databases can be use in semantic search with **embeddings** created form source text. By creating embeddings of text data and storing them in a database, we can quickly search for related documents and even perform advanced operations like similarity searches or clustering. This can be especially helpful when working with text data that is more context-dependent or domain-specific, such as scientific or technical documentation.
 
-`{gpttools}` provides a set of tools for working with GPT-3 and other OpenAI models, including the ability to generate embeddings, perform similarity searches, and build vector databases. `{gpttools}` also has convenience functions to aid in scraping web pages to collect text data, generate embeddings, and store those embeddings in a vector database for future use.
+`{gpttools}` provides a set of tools for working with GPT-3 and other OpenAI models, including the ability to generate embeddings, perform similarity searches, and build vector databases. This package also has convenience functions to aid in scraping web pages to collect text data, generate embeddings, and store those embeddings in a vector database for future use.
 
-To demonstrate the power of vector databases, we'll use `{gpttools}` to build a vector database of the text from [*R for Data Science*](https://r4ds.hadley.nz/). We'll then use the vector database along with GPT-3 to answer questions about writing R code. The approach uses semantic search to find the most relevant text from the book and then uses GPT-3 to generate a response based on that text.
+To demonstrate the power of vector databases, we’ll use `{gpttools}` to build a vector database from [_R for Data Science_](https://r4ds.hadley.nz/). The approach uses semantic search to find the most relevant text from the book and then uses ChatGPT to generate a response based on that text via the recently release ChatGPT API.
+
+Popular python packages such as [`llama-index`](https://gpt-index.readthedocs.io/en/latest/index.html) and [`langchain`](https://langchain.readthedocs.io/en/latest/index.html) provide easy utility functions to create vector stores for semantic search with a few lines of python code. `{gpttools}` aims to provide similar functionality with R using data frames as the data structure for the vector store.
 
 ## Scraping Text from R4DS
 
