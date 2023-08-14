@@ -1,0 +1,17 @@
+---
+title: WebR in Quarto HTML Documents
+format: html
+engine: knitr
+service-worker-url:
+  - /posts/webr/webr-servicework.js
+  - /posts/webr/webr-worker.js
+filters:
+  - webr
+---
+
+This is a webr-enabled code cell in a Quarto HTML document.
+
+```{webr-r}
+fit = lm(mpg ~ am, data = mtcars)
+summary(fit)
+```

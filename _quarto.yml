@@ -1,5 +1,6 @@
 project:
   type: website
+  execute-dir: project
 
 website:
   title: "James H Wade"
@@ -15,6 +16,8 @@ website:
         text: Talks
       - icon: rss
         href: index.xml
+      - icon: youtube
+        href: https://youtube.com/@james-h-wade
       - icon: twitter
         href: https://twitter.com/jameshwade
       - icon: linkedin

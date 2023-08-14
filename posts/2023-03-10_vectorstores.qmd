@@ -1,8 +1,9 @@
 ---
-title: Teaching GPT Models What They Don't Already Know
+title: Teaching ChatGPT What It Doesn't Know
 author: James H Wade
-date: 2023-03-01
-description: Using vector databases to provide missing context to GPT models
+date: 2023-03-25
+description: Using a retriever (or vector database) to provide missing context to ChatGPT, similar to ChatGPT Retrieval plugin
+image: images/retriever.jpg
 execute: 
   freeze: auto
   eval: false
@@ -12,11 +13,12 @@ format:
     code-copy: true
     code-link: true
 categories: 
-  - GPT3
+  - ChatGPT
   - LLM
   - NLP
   - Web Scraping
   - R
+  - OpenAI
 ---
 
 Large language models like GPT-3 and ChatGPT don’t need much of an introduction. They are enormously powerful with benchmarks being surpassed [nearly as quickly as they are created](https://arxiv.org/pdf/2104.14337.pdf). Despite the unprecedented model performance, these models struggle to provide accurate results when the appropriate response requires context more recent than the training data for a model. Vector databases can created from data sources outside the training corpus can address this gap by providing missing context to a model.
@@ -33,7 +35,7 @@ Popular python packages such as [`llama-index`](https://gpt-index.readthedocs.io
 
 The first step is to scrape the text from the R4DS book. We'll use the `crawl()` function to scrape the text from the book and store it in a data frame. The `crawl()` function uses the `rvest` package to scrape the text from the online book and `{tokenizers}` to split the text into chunks for subsequent processing.
 
-The code to scrape the data is relatively simple:
+The code to scrape the data is relatively simple but is unlikely to work on all sites. From some internal testing, it works quite well on `{pkgdown}` and similar documentation sites.
 
 ```{r}
 library(gpttools)
@@ -47,10 +49,40 @@ Under the hood there are a few things going on. Here is the annotated function a
 ## crawl
 
 ```{r}
-crawl <- function(url) {
+crawl <- function(url,
+                  index_create = TRUE,
+                  aggressive = FALSE,
+                  overwrite = FALSE,
+                  num_cores = parallel::detectCores() - 1) {
   local_domain <- urltools::url_parse(url)$domain
-  if (!dir.exists("text")) dir.create("text")
-  links <- recursive_hyperlinks(local_domain, url) |> unique()
+  withr::local_options(list(
+    cli.progress_show_after = 0,
+    cli.progress_clear = FALSE
+  ))
+  future::plan(future::multisession, workers = num_cores)
+  scraped_data_dir <-
+    file.path(tools::R_user_dir("gpttools", which = "data"), "text")
+  scraped_text_file <-
+    glue::glue("{scraped_data_dir}/{local_domain}.parquet")
+
+  if (file.exists(scraped_text_file) && rlang::is_false(overwrite)) {
+    cli::cli_abort(
+      c(
+        "!" = "Scraped data already exists for this domain.",
+        "i" = "Use {.code crawl(<url>, overwrite = TRUE)} to overwrite."
+      )
+    )
+  }
+
+  cli_rule("Crawling {.url {url}}")
+  cli_inform(c(
+    "i" = "This may take a while.",
+    "i" = "Gathering links to scrape"
+  ))
+  links <-
+    recursive_hyperlinks(local_domain, url, aggressive = aggressive) |>
+    unique()
+  cli_inform(c("i" = "Scraping validated links"))
   scraped_data <-
     purrr::map(links, \(x) {
       if (identical(check_url(x), 200L)) {
@@ -65,7 +97,7 @@ crawl <- function(url) {
           "i" = "Status code: {status}"
         ))
       }
-    }, .progress = "Scrape URLs") |>
+    }) |>
     dplyr::bind_rows() |>
     dplyr::distinct()
   arrow::write_parquet(
@@ -78,13 +110,24 @@ crawl <- function(url) {
 ## recursive_hyperlinks
 
 ```{r}
-recursive_hyperlinks <- function(local_domain, url, checked_urls = NULL) {
+recursive_hyperlinks <- function(local_domain,
+                                 url,
+                                 checked_urls = NULL,
+                                 aggressive = FALSE) {
   links <- url[!(url %in% checked_urls)]
   if (length(links) < 1) {
     return(checked_urls)
   }
+
+  if (aggressive) {
+    domain_pattern <- glue("^https?://(?:.*\\.)?{local_domain}/?")
+  } else {
+    domain_pattern <- glue("^https?://{local_domain}/?")
+  }
+
   checked_urls <- c(checked_urls, links)
-  links_df <- purrr::map(links, get_hyperlinks) |>
+  cli::cli_inform(c("i" = "Total urls: {length(checked_urls)}"))
+  links_df <- furrr::future_map(links, get_hyperlinks) |>
     dplyr::bind_rows() |>
     dplyr::filter(!stringr::str_detect(link, "^\\.$|mailto:|^\\.\\.|\\#|^\\_$"))
 
@@ -104,9 +147,9 @@ recursive_hyperlinks <- function(local_domain, url, checked_urls = NULL) {
         }
         clean_link <- glue::glue("{parent}{clean_link}")
       }
-      validate_link(clean_link, link)
-    }, .progress = "Collect Links") |>
+    }) |>
     unlist()
+
   recursive_hyperlinks(local_domain, unique(new_links), checked_urls)
 }
 ```
@@ -143,9 +186,9 @@ scrape_url <- function(url) {
   exclude_tags <- c("style", "script", "head", "meta", "link", "button")
   text <- rvest::read_html(url) |>
     rvest::html_nodes(xpath = paste("//body//*[not(self::",
-                                    paste(exclude_tags, collapse = " or self::"),
-                                    ")]",
-                                    sep = ""
+      paste(exclude_tags, collapse = " or self::"),
+      ")]",
+      sep = ""
     )) |>
     rvest::html_text2() |>
     remove_new_lines()
@@ -190,19 +233,51 @@ Here's the code for the create_index() function and helper functions:
 
 ## create_index
 ```{r}
-create_index <- function(domain) {
-  index <-
-    prepare_scraped_files(domain = domain) |>
-    add_embeddings()
-  arrow::write_feather(index, sink = glue::glue("indices/{domain}.feather"))
-  index
+create_index <- function(domain, overwrite = FALSE) {
+  index_dir <-
+    file.path(tools::R_user_dir("gpttools", which = "data"), "index")
+  index_file <-
+    glue::glue("{index_dir}/{domain}.parquet")
+
+  if (file.exists(index_file) && rlang::is_false(overwrite)) {
+    cli::cli_abort(
+      c(
+        "!" = "Index already exists for this domain.",
+        "i" = "Use {.code overwrite = TRUE} to overwrite index."
+      )
+    )
+  }
+  cli::cli_inform(c(
+    "!" = "You are about to create embeddings for {domain}.",
+    "i" = "This will use many tokens. Only proceed if you understand the cost.",
+    "i" = "Read more about embeddings at {.url
+      https://platform.openai.com/docs/guides/embeddings}."
+  ))
+  ask_user <- usethis::ui_yeah(
+    "Would you like to continue with creating embeddings?"
+  )
+  if (rlang::is_true(ask_user)) {
+    index <-
+      prepare_scraped_files(domain = domain) |>
+      add_embeddings()
+    if (rlang::is_false(dir.exists(index_dir))) {
+      dir.create(index_dir, recursive = TRUE)
+    }
+    arrow::write_parquet(
+      x    = index,
+      sink = index_file
+    )
+  } else {
+    cli_inform("No index was created for {domain}")
+  }
 }
 ```
 
 ## prepare_scraped_files
 ```{r}
 prepare_scraped_files <- function(domain) {
-  arrow::read_parquet(glue("text/{domain}.parquet")) |>
+  scraped_dir <- tools::R_user_dir("gpttools", which = "data")
+  arrow::read_parquet(glue("{scraped_dir}/text/{domain}.parquet")) |>
     dplyr::mutate(
       chunks = purrr::map(text, \(x) {
         chunk_with_overlap(x,
@@ -301,7 +376,7 @@ query_index <- function(index, query, history, task = "Context Only", k = 4) {
             role = "system",
             content =
               glue(
-                "You are a helpful chat bot that answere questions based on the
+                "You are a helpful chat bot that answers questions based on the
                 context provided by the user. If the user does not provide
                 context, say \"I am not able to answer that question. Maybe
                 try rephrasing your question in a different way.\"\n\n
@@ -319,7 +394,7 @@ query_index <- function(index, query, history, task = "Context Only", k = 4) {
             role = "system",
             content =
               glue(
-                "You are a helpful chat bot that answere questions based on the
+                "You are a helpful chat bot that answers questions based on the
                 context provided by the user. If the user does not provide
                 context, say \"I am not able to answer that question with the
                 context you gave me, but here is my best answer. Maybe
@@ -341,9 +416,7 @@ query_index <- function(index, query, history, task = "Context Only", k = 4) {
     purrr::compact()
 
   prompt <- c(history, instructions)
-
-  answer <- openai_create_chat_completion(prompt)
-
+  answer <- gptstudio::openai_create_chat_completion(prompt)
   list(prompt, full_context, answer)
 }
 ```
@@ -361,7 +434,7 @@ get_top_matches <- function(index, query_embedding, k = 5) {
 }
 ```
 
-## openai_create_completion
+## openai_create_chat_completion (from `{gptstudio}`)
 
 ```{r}
 openai_create_chat_completion <-
@@ -444,12 +517,13 @@ The prompt is passed to OpenAI's GPT-3.5 `gpt-3.5-turbo` (i.e., ChatGPT) to gene
 
 ## Analysis of Embeddings with tidymodels and UMAP
 
-The next step is to perform dimesnion reduction with UMAP as naive exploration of the embeddigns. The `embeddings` column in the index contains a list of 1536-dimensional vectors. We can use the `recipes` package to normalize the vectors and then use the `step_umap()` function to reduce the dimensionality to 2. We can then plot the results.
+The next step is to perform dimension reduction with UMAP as naive exploration of the embeddings. The `embeddings` column in the index contains a list of 1536-dimensional vectors. We can use the `recipes` package to normalize the vectors and then use the `step_umap()` function to reduce the dimensionality to 2. We can then plot the results.
 
 ```{r}
 #| include: false
 #| eval: true
-index <- arrow::read_feather("../indices/r4ds.hadley.nz.feather")
+library(gpttools)
+index <- load_index("r4ds.hadley.nz")
 ```
 
 ```{r}
@@ -483,3 +557,16 @@ umap_data |>
        subtitle = "UMAP of 1536-dimensional vectors | Colored by Source Text") +
   theme_minimal()
 ```
+
+## Retreiver Plugin as a Shiny App
+
+To use the index, `{gpttools}` now as a shiny app that you can run as a plugin in RStudio. To use it, open the command palette (Cmd/Ctrl + Shift + P) and type "gpttools". You can then select the "gpttools: ChatGPT with Retrieval" option. This will open a shiny app in your viewer pane. If you have multiple indices, you can select which one to use in the dropdown menu. You can also specify if you want answers that only use the context of 
+index ("Context Only") or if you want answers that use the context of the index and full ChatGPT model ("Permissive Chat"). "Context Only" answers are much less likely to "hallucinate." "Permissive Chat" answers are more likely to hallucinate, but they are also more likely choice if the index lacks relevant information.
+
+<video src="https://user-images.githubusercontent.com/6314313/227738408-0c4c97e9-3601-4977-b8a8-ac655a185656.mov" data-canonical-src="https://user-images.githubusercontent.com/6314313/227738408-0c4c97e9-3601-4977-b8a8-ac655a185656.mov" controls="controls" muted="muted" class="d-block rounded-bottom-2 width-fit" style="max-height:400px; max-width: 100%; width: 100%;">
+</video>
+
+```{r}
+## Photo Credit
+
+Thumbnail Photo by <a href="https://unsplash.com/@richardworks?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Richard Burlton</a> on <a href="https://unsplash.com/s/photos/retriever?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
