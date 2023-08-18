@@ -566,7 +566,6 @@ index ("Context Only") or if you want answers that use the context of the index 
 <video src="https://user-images.githubusercontent.com/6314313/227738408-0c4c97e9-3601-4977-b8a8-ac655a185656.mov" data-canonical-src="https://user-images.githubusercontent.com/6314313/227738408-0c4c97e9-3601-4977-b8a8-ac655a185656.mov" controls="controls" muted="muted" class="d-block rounded-bottom-2 width-fit" style="max-height:400px; max-width: 100%; width: 100%;">
 </video>
 
-```{r}
 ## Photo Credit
 
 Thumbnail Photo by <a href="https://unsplash.com/@richardworks?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Richard Burlton</a> on <a href="https://unsplash.com/s/photos/retriever?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
