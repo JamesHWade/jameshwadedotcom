@@ -1,7 +1,7 @@
 {
-  "hash": "aea41833dce8a3db13a271fd19ccb977",
+  "hash": "56e7dbea50e90942dd07576e68b70270",
   "result": {
-    "markdown": "---\ntitle: WebR in Quarto HTML Documents\nformat: html\nengine: knitr\nfilters:\n  - webr\n---\n\n\nThis is a webr-enabled code cell in a Quarto HTML document.\n\n```{webr-r}\nfit = lm(mpg ~ am, data = mtcars)\nsummary(fit)\n```\n",
+    "markdown": "---\ntitle: WebR in Quarto HTML Documents\nformat: html\nengine: knitr\nwebr: \n  channel-type: 'post-message'\nfilters:\n  - webr\n---\n\n\nThis is a webr-enabled code cell in a Quarto HTML document.\n\n```{webr-r}\nfit = lm(mpg ~ am, data = mtcars)\nsummary(fit)\n```\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
