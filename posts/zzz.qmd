@@ -1,7 +1,0 @@
----
-title: "Additional Dependencies"
-format: html
----
-
-1. [/posts/webr-serviceworker.js](/posts/webr-serviceworker.js)
-2. [/posts/webr-worker.js](/posts/webr-worker.js)
