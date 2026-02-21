@@ -2,7 +2,9 @@
 title: "About"
 image: images/profile.png
 about:
-  template: jolla
+  template: trestles
+  image-width: 14em
+  image-shape: rounded
   links:
     - icon: twitter
       text: Twitter
@@ -21,12 +23,12 @@ comments: false
 
 Hi 👋, I'm James Wade.
 
-I am a research scientist in working in the chemicals manufacturing industry as part of a research and development team. I apply materials characterization and data science with a special interest in sustainable materials design to develop new capabilities for research. My current focus is on augmenting materials characterization innovations with statistical analysis, machine learning, and data visualization. I started my career on a rotational program beginning in macromolecular characterization with an emphasis on polymer separations. Other rotations included a data science group aligned to manufacturing and a supply chain innovation center.
+I'm a research scientist in a large chemicals R&D organization, where I build AI-powered developer tools and lead AI strategy for about three thousand researchers. Most of my work lives in the R and Python ecosystems—I build internal packages, ship Shiny apps to production, and maintain open source projects like [gptstudio](https://github.com/MichelNivard/gptstudio), [shinymcp](https://github.com/JamesHWade/shinymcp), and [deputy](https://github.com/JamesHWade/deputy). I also run our Citizen Data Science program, which helps bench scientists get more from their data.
 
-I was raised in South Carolina and started my chemistry training at [Furman University](https://www.furman.edu/academics/chemistry/), a small liberal arts school in the upstate of South Carolina. At Furman, I found a passion for Analytical Chemistry where I worked on the abiotic origins of life, transition metal alkyl synthesis, and drug-DNA interactions for anticancer therapeutics. I used tools like chromatography, mass spectrometry, optical spectroscopy, and gel electrophoresis to answer important questions for research projects.
+Before all this, I was a bench chemist. I grew up in South Carolina and started my chemistry training at [Furman University](https://www.furman.edu/academics/chemistry/), a small liberal arts school in the upstate. That's where I found analytical chemistry—working on the abiotic origins of life, transition metal synthesis, and drug-DNA interactions for anticancer therapeutics.
 
-I attended the [University of Illinois at Urbana-Champaign](https://chemistry.illinois.edu) for my graduate work in Analytical Chemistry. I worked under [Prof. Ryan Bailey](https://www.baileylab.com) and worked on projects including cancer diagnostics, silicon photonic sensors, microfluidics/miniaturization, and chromatographic separations.
+I did my graduate work at the [University of Illinois at Urbana-Champaign](https://chemistry.illinois.edu), in [Ryan Bailey's lab](https://www.baileylab.com), building silicon photonic biosensors and microfluidic tools for cancer diagnostics and precision medicine.
 
-I live in mid-Michigan with my wife and young son. My wife is a veterinarian and brings home too many furry friends. The current menagerie is two dogs and five cats.
+I live in mid-Michigan with my wife and son. My wife is a veterinarian who brings home too many furry friends—the current menagerie is two dogs and five cats.
 
 [Resume](resources/resume.pdf)

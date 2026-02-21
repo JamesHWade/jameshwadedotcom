@@ -1,0 +1,67 @@
+meta:
+  name: James H Wade
+  link:
+    home: https://jameshwade.com
+    github: https://github.com/jameshwade
+    twitter: https://twitter.com/jameshwade
+    mastodon: https://fosstodon.org/@jameshwade
+    linkedin: https://www.linkedin.com/in/james-h-wade
+
+color:
+  palette:
+    cream: "#faf7f2"
+    cream-dark: "#f0ece4"
+    ink: "#1c1c2e"
+    ink-light: "#3d3d52"
+    teal: "#1b6b4a"
+    teal-dark: "#0f4d35"
+    teal-light: "#28a06e"
+    amber: "#c27839"
+    amber-light: "#d4956a"
+    warm-gray: "#8b8680"
+    mid-gray: "#6b6660"
+    border: "#e0dbd2"
+    # Bootstrap color name aliases for tooling compatibility
+    green: teal
+    orange: amber
+    white: cream
+    black: ink
+  foreground: ink
+  background: cream
+  primary: teal
+  secondary: amber
+  success: teal-light
+  warning: amber
+  light: cream-dark
+  dark: ink
+
+typography:
+  fonts:
+    - family: Bricolage Grotesque
+      source: google
+      weight: [200, 300, 400, 500, 600, 700, 800]
+    - family: Newsreader
+      source: google
+      weight: [200, 300, 400, 500, 600, 700, 800]
+      style: [normal, italic]
+    - family: JetBrains Mono
+      source: google
+      weight: [100, 200, 300, 400, 500, 600, 700, 800]
+      style: [normal, italic]
+  base:
+    family: Newsreader
+    size: 1.05rem
+    line-height: 1.78
+  headings:
+    family: Bricolage Grotesque
+    weight: 700
+    line-height: 1.25
+    color: ink
+  monospace:
+    family: JetBrains Mono
+    size: 0.88em
+  monospace-inline:
+    color: amber
+    background-color: cream-dark
+  link:
+    color: teal

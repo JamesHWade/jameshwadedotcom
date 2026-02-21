@@ -1,13 +1,32 @@
 ---
+pagetitle: "James H Wade"
 listing:
   contents: posts
   sort: "date desc"
-  type: default
+  type: grid
   categories: true
   sort-ui: false
   filter-ui: false
   feed: true
+  grid-columns: 2
 page-layout: full
-title-block-banner: true
 comments: false
 ---
+
+::: {.hero-section}
+
+::: {.hero-title}
+James H Wade
+:::
+
+::: {.hero-subtitle}
+Research scientist building AI developer tools for industrial R&D. Writing about R, Shiny, and large language models.
+:::
+
+::: {.hero-links}
+[About Me](about.qmd){.btn-outline-custom}
+:::
+
+:::
+
+## Latest Posts {.listing-section-title}

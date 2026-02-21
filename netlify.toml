@@ -1,5 +1,12 @@
 [[headers]]
-  for = "/directory/with/webr/content/*"
+  for = "/posts/2023-08-13_webr/*"
+
+  [headers.values]
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Embedder-Policy = "require-corp"
+
+[[headers]]
+  for = "/posts/2026-02-21_pyodide/*"
 
   [headers.values]
     Cross-Origin-Opener-Policy = "same-origin"

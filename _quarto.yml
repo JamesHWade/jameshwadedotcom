@@ -8,7 +8,7 @@ website:
   favicon: images/favicon.ico
   twitter-card: true
   navbar:
-    background: "#394b73"
+    background: light
     search: true
     right:
       - about.qmd
@@ -26,19 +26,24 @@ website:
         href: https://github.com/jameshwade
       - icon: mastodon
         href: https://fosstodon.org/@jameshwade
-  page-footer: 
-    left: "© Copyright 2023 James Wade. Unless otherwise noted, all text and images licensed with [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and code with [MIT License](https://choosealicense.com/licenses/mit/) unless otherwise noted."
-        
+  page-footer:
+    left: "© 2023–2026 James Wade. Text and images licensed [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), code [MIT](https://choosealicense.com/licenses/mit/) unless otherwise noted."
+
 format:
   html:
-    theme: sandstone
-    css: styles.css
+    theme:
+      - brand
+      - custom.scss
+    highlight-style: atom-one-dark
+    include-in-header:
+      - text: |
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
 
 # comments:
-#   giscus: 
+#   giscus:
 #     repo: jameshwade/jameshwadedotcom
-    
-execute: 
+
+execute:
   freeze: auto
-
-

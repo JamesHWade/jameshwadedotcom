@@ -1,0 +1,706 @@
+/*-- scss:defaults --*/
+
+// ==============================
+// Color Palette
+// ==============================
+$cream:       #faf7f2;
+$cream-dark:  #f0ece4;
+$ink:         #1c1c2e;
+$ink-light:   #3d3d52;
+$teal:        #1b6b4a;
+$teal-dark:   #0f4d35;
+$teal-light:  #28a06e;
+$amber:       #c27839;
+$amber-light: #d4956a;
+$warm-gray:   #8b8680;
+$mid-gray:    #6b6660;
+$border:      #e0dbd2;
+
+// ==============================
+// Bootstrap Variable Overrides
+// ==============================
+$body-bg: $cream;
+$body-color: $ink;
+$primary: $teal;
+$secondary: $amber;
+$light: $cream;
+$dark: $ink;
+
+$font-family-sans-serif: 'Bricolage Grotesque', system-ui, sans-serif;
+$font-family-serif: 'Newsreader', Georgia, serif;
+$font-family-monospace: 'JetBrains Mono', monospace;
+$font-family-base: $font-family-serif;
+$headings-font-family: $font-family-sans-serif;
+
+$font-size-base: 1.05rem;
+$line-height-base: 1.78;
+$headings-font-weight: 700;
+$headings-line-height: 1.25;
+$headings-color: $ink;
+
+$h1-font-size: 2.5rem;
+$h2-font-size: 1.85rem;
+$h3-font-size: 1.45rem;
+$h4-font-size: 1.2rem;
+
+$link-color: $teal;
+$link-hover-color: $teal-dark;
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+$border-radius: 0.5rem;
+$border-radius-sm: 0.3rem;
+$border-radius-lg: 0.75rem;
+
+$card-border-color: $border;
+$card-bg: white;
+$card-border-radius: $border-radius-lg;
+
+$navbar-light-color: $ink;
+$navbar-light-hover-color: $teal;
+$navbar-light-active-color: $teal;
+$navbar-padding-y: 1rem;
+
+$code-color: $amber;
+
+/*-- scss:rules --*/
+
+// ==============================
+// Animations
+// ==============================
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// ==============================
+// Base
+// ==============================
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba($teal, 0.15);
+  color: $ink;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+// ==============================
+// Navbar
+// ==============================
+.navbar {
+  border-bottom: 1px solid $border;
+  backdrop-filter: blur(12px);
+  background: rgba($cream, 0.92) !important;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+
+  .navbar-brand {
+    font-family: $font-family-sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: $ink !important;
+
+    &:hover {
+      color: $teal !important;
+    }
+  }
+
+  .navbar-nav .nav-link {
+    font-family: $font-family-sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.01em;
+    color: $mid-gray;
+    transition: color 0.2s ease;
+    padding: 0.5rem 0.85rem;
+
+    &:hover, &.active {
+      color: $teal;
+    }
+  }
+
+  .bi {
+    font-size: 1.1rem;
+  }
+}
+
+#quarto-search .aa-Form {
+  border-color: $border;
+  border-radius: $border-radius;
+  background: white;
+
+  &:focus-within {
+    border-color: $teal;
+    box-shadow: 0 0 0 3px rgba($teal, 0.1);
+  }
+}
+
+// ==============================
+// Hero Section (Homepage)
+// ==============================
+.hero-section {
+  text-align: center;
+  padding: 5rem 2rem 3.5rem;
+  margin: 0 auto 1rem;
+  max-width: 800px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: $teal;
+    border-radius: 2px;
+  }
+}
+
+.hero-title {
+  animation: fadeInUp 0.7s ease-out;
+
+  p {
+    font-family: $font-family-sans-serif;
+    font-size: clamp(2.8rem, 6vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 0 1rem;
+    color: $ink;
+  }
+}
+
+.hero-subtitle {
+  animation: fadeInUp 0.7s ease-out 0.1s both;
+
+  p {
+    font-family: $font-family-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    font-weight: 400;
+    line-height: 1.65;
+    color: $ink-light;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+}
+
+.hero-links {
+  animation: fadeInUp 0.7s ease-out 0.2s both;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  a {
+    font-family: $font-family-sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: $border-radius;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+  }
+
+  .btn-primary-custom {
+    background: $teal;
+    color: white;
+    border: 2px solid $teal;
+
+    &:hover {
+      background: $teal-dark;
+      border-color: $teal-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($teal, 0.25);
+    }
+  }
+
+  .btn-outline-custom {
+    background: transparent;
+    color: $ink;
+    border: 2px solid $border;
+
+    &:hover {
+      border-color: $teal;
+      color: $teal;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// ==============================
+// Listing Section Header
+// ==============================
+.listing-section-title {
+  font-family: $font-family-sans-serif;
+  font-size: 0.85rem !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: $warm-gray;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+  border-bottom: none;
+  border-top: none !important;
+  padding-top: 0 !important;
+  margin-top: 1.5rem !important;
+}
+
+// Remove the default top border on listing grids
+#quarto-listing-listing {
+  border-top: none !important;
+}
+
+// ==============================
+// Blog Post Grid / Cards
+// ==============================
+#quarto-listing-listing .list.grid {
+  gap: 2rem !important;
+}
+
+.quarto-grid-item {
+  border: none !important;
+
+  // .card may be on the same element or a child depending on Quarto version
+  &.card, .card {
+    border: 1px solid $border;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    background: white;
+    box-shadow: 0 2px 8px rgba($ink, 0.04);
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba($ink, 0.08), 0 4px 12px rgba($ink, 0.04);
+      border-color: rgba($teal, 0.3);
+
+      .card-img-top img {
+        transform: scale(1.03);
+      }
+    }
+  }
+
+  .card-img-top {
+    margin-bottom: 0 !important;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  .card-body {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .card-title {
+    font-family: $font-family-sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.75rem;
+
+    a {
+      color: $ink;
+      text-decoration: none;
+
+      &:hover {
+        color: $teal;
+      }
+    }
+  }
+
+  .card-text {
+    font-size: 0.92rem;
+    color: $mid-gray;
+    line-height: 1.6;
+  }
+
+  .listing-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .listing-category {
+    font-family: $font-family-sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.65rem;
+    background: $cream-dark;
+    color: $mid-gray;
+    border-radius: 999px;
+    border: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba($teal, 0.1);
+      color: $teal;
+    }
+  }
+
+  .card-footer {
+    background: transparent;
+    border-top: 1px solid $border;
+    padding: 0.85rem 1.5rem;
+
+    .listing-date,
+    .listing-author {
+      font-family: $font-family-sans-serif;
+      font-size: 0.8rem;
+      color: $warm-gray;
+      font-weight: 500;
+    }
+  }
+}
+
+// ==============================
+// Category Sidebar
+// ==============================
+.quarto-listing-category {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .category {
+    font-family: $font-family-sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: $warm-gray;
+    padding: 0.18rem 0;
+    border-bottom: none;
+    transition: color 0.2s ease;
+    line-height: 1.35;
+
+    &:hover, &.active {
+      color: $teal;
+      font-weight: 500;
+    }
+  }
+
+  .category-header {
+    font-family: $font-family-sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $border;
+    margin-bottom: 0.5rem;
+  }
+}
+
+// ==============================
+// Article / Post Page
+// ==============================
+.quarto-title {
+  margin-bottom: 2rem;
+
+  h1.title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .quarto-title-meta {
+    font-family: $font-family-sans-serif;
+    font-size: 0.88rem;
+    color: $warm-gray;
+
+    .quarto-title-meta-heading {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.72rem;
+    }
+  }
+
+  .description {
+    font-size: 1.15rem;
+    color: $mid-gray;
+    line-height: 1.65;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+}
+
+.quarto-title-banner {
+  background: $cream-dark !important;
+  border-bottom: 1px solid $border;
+  padding: 3rem 0 !important;
+  margin-bottom: 2rem;
+}
+
+// ==============================
+// Content Typography
+// ==============================
+#quarto-content {
+  h2 {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid $border;
+  }
+
+  h3 {
+    margin-top: 2rem;
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+  }
+
+  blockquote {
+    border-left: 3px solid $teal;
+    padding: 0.75rem 1.5rem;
+    margin: 2rem 0;
+    background: rgba($cream-dark, 0.5);
+    border-radius: 0 $border-radius $border-radius 0;
+
+    p {
+      color: $ink-light;
+      font-style: italic;
+    }
+
+    cite {
+      font-style: normal;
+      font-family: $font-family-sans-serif;
+      font-size: 0.85rem;
+      color: $warm-gray;
+    }
+  }
+
+  img {
+    border-radius: $border-radius;
+  }
+
+  hr {
+    border-color: $border;
+    margin: 2.5rem 0;
+  }
+}
+
+// ==============================
+// Code Blocks
+// ==============================
+pre {
+  border-radius: $border-radius;
+  border: 1px solid $border;
+
+  &.sourceCode {
+    margin: 1.5rem 0;
+  }
+}
+
+code {
+  font-size: 0.88em;
+}
+
+p code, li code {
+  background: $cream-dark;
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.88em;
+  color: $amber;
+}
+
+div.sourceCode {
+  border-radius: $border-radius;
+  margin: 1.5rem 0;
+
+  pre {
+    padding: 1.25rem;
+  }
+}
+
+.code-copy-button {
+  border-radius: $border-radius-sm;
+
+  &:hover {
+    background: rgba($teal, 0.1);
+    color: $teal;
+  }
+}
+
+// ==============================
+// Table of Contents
+// ==============================
+#TOC {
+  font-family: $font-family-sans-serif;
+
+  .active {
+    border-left-color: $teal !important;
+    color: $teal !important;
+    font-weight: 600;
+  }
+
+  a {
+    font-size: 0.85rem;
+    color: $mid-gray;
+
+    &:hover {
+      color: $teal;
+    }
+  }
+
+  #toc-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $warm-gray;
+  }
+}
+
+// ==============================
+// About Page
+// ==============================
+.about-entity {
+  .about-image {
+    border-radius: $border-radius-lg !important;
+    border: 3px solid $border;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+      border-color: $teal;
+    }
+  }
+
+  .about-links .about-link {
+    font-family: $font-family-sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    border: 1.5px solid $border;
+    border-radius: $border-radius;
+    color: $ink;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: $teal;
+      color: $teal;
+      background: rgba($teal, 0.04);
+    }
+
+    .bi {
+      color: $teal;
+    }
+  }
+}
+
+// ==============================
+// Talks Page / Video Embeds
+// ==============================
+center {
+  display: block;
+  margin: 2rem auto;
+  text-align: center;
+
+  iframe {
+    border-radius: $border-radius;
+    max-width: 100%;
+    box-shadow: 0 4px 20px rgba($ink, 0.1);
+  }
+}
+
+// ==============================
+// Footer
+// ==============================
+.nav-footer {
+  border-top: 1px solid $border;
+  background: $cream-dark;
+  padding: 2.5rem 0;
+  margin-top: 4rem;
+
+  .nav-footer-left {
+    font-family: $font-family-sans-serif;
+    font-size: 0.82rem;
+    color: $warm-gray;
+    line-height: 1.6;
+
+    a {
+      color: $teal;
+
+      &:hover {
+        color: $teal-dark;
+      }
+    }
+  }
+}
+
+// ==============================
+// Focus Styles
+// ==============================
+*:focus-visible {
+  outline: 2px solid $teal;
+  outline-offset: 2px;
+}
+
+// ==============================
+// Responsive
+// ==============================
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .hero-title p {
+    font-size: 2.2rem;
+  }
+
+  .hero-links {
+    flex-direction: column;
+
+    a {
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+
+  .hero-title p {
+    font-size: 1.8rem;
+  }
+}
+
+// ==============================
+// Print
+// ==============================
+@media print {
+  .navbar, .nav-footer, .hero-links {
+    display: none !important;
+  }
+}
