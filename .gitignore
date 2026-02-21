@@ -1,6 +1,5 @@
 _site/
 .quarto
-/resume/
 /.quarto/
 /_*.local
 /.venv/
