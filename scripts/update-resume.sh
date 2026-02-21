@@ -20,6 +20,9 @@ echo "→ Building resume at $RESUME_DIR"
 cd "$RESUME_DIR"
 npm run build
 
+echo "→ Generating PDF"
+npm run generate-pdf
+
 echo "→ Copying dist to $SITE_DIR/resume/"
 rm -rf "$SITE_DIR/resume"
 mkdir -p "$SITE_DIR/resume"
