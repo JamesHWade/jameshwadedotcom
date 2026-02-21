@@ -13,11 +13,10 @@ format:
     code-copy: true
     code-link: true
 engine: knitr
-webr: 
-  channel-type: 'post-message'
 filters:
   - webr
 webr:
+  channel-type: 'post-message'
   packages:
     - ggplot2
     - palmerpenguins
