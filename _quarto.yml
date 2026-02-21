@@ -1,6 +1,8 @@
 project:
   type: website
   execute-dir: project
+  resources:
+    - resume/
 
 website:
   title: "James H Wade"
@@ -14,6 +16,8 @@ website:
       - about.qmd
       - href: talks.qmd
         text: Talks
+      - href: /resume/
+        text: Resume
       - icon: rss
         href: index.xml
       - icon: youtube
