@@ -15,7 +15,8 @@ about:
     - icon: twitter-x
       text: X
       href: https://x.com/jameshwade
-    - text: Bluesky
+    - icon: bluesky
+      text: Bluesky
       href: https://bsky.app/profile/jameshwade.bsky.social
 comments: false
 ---

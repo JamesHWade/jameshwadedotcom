@@ -28,7 +28,7 @@ website:
         href: https://linkedin.com/in/james-h-wade
       - icon: github
         href: https://github.com/jameshwade
-      - text: Bluesky
+      - icon: bluesky
         href: https://bsky.app/profile/jameshwade.bsky.social
   page-footer:
     left: "© 2023–2026 James Wade. Text and images licensed [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), code [MIT](https://choosealicense.com/licenses/mit/) unless otherwise noted."
