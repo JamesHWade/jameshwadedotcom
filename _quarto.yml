@@ -42,7 +42,9 @@ format:
       dark:
         - brand
         - custom-dark.scss
-    highlight-style: atom-one-dark
+    highlight-style:
+      light: atom-one-light
+      dark: atom-one-dark
     include-in-header:
       - text: |
           <link rel="preconnect" href="https://fonts.googleapis.com">

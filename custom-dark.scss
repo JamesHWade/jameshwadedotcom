@@ -188,11 +188,11 @@ $code-color: $amber;
 // Code
 // ==============================
 pre {
-  border-color: $border;
+  border-color: lighten($border, 8%);
 }
 
 p code, li code {
-  background: $cream-dark;
+  background: lighten($cream-dark, 5%);
   color: $amber;
 }
 
