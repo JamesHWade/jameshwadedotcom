@@ -1,0 +1,262 @@
+/*-- scss:defaults --*/
+
+// ==============================
+// Dark Color Palette
+// ==============================
+$cream:       #1a1a2e;
+$cream-dark:  #232340;
+$ink:         #e8e6e1;
+$ink-light:   #c5c3bc;
+$teal:        #34d399;
+$teal-dark:   #6ee7b7;
+$teal-light:  #28a06e;
+$amber:       #e0a370;
+$amber-light: #d4956a;
+$warm-gray:   #9b978f;
+$mid-gray:    #a8a49c;
+$border:      #2e2e48;
+
+// ==============================
+// Bootstrap Variable Overrides
+// ==============================
+$body-bg: $cream;
+$body-color: $ink;
+$primary: $teal;
+$secondary: $amber;
+$light: $cream;
+$dark: $ink;
+
+$headings-color: $ink;
+
+$link-color: $teal;
+$link-hover-color: $teal-dark;
+
+$card-border-color: $border;
+$card-bg: $cream;
+
+$navbar-dark-color: $ink;
+$navbar-dark-hover-color: $teal;
+$navbar-dark-active-color: $teal;
+
+$code-color: $amber;
+
+/*-- scss:rules --*/
+
+// ==============================
+// Navbar
+// ==============================
+.navbar {
+  border-bottom: 1px solid $border;
+  background: rgba($cream, 0.92) !important;
+
+  .navbar-brand {
+    color: $ink !important;
+
+    &:hover {
+      color: $teal !important;
+    }
+  }
+
+  .navbar-nav .nav-link {
+    color: $mid-gray;
+
+    &:hover, &.active {
+      color: $teal;
+    }
+  }
+}
+
+#quarto-search .aa-Form {
+  border-color: $border;
+  background: $cream-dark;
+
+  &:focus-within {
+    border-color: $teal;
+    box-shadow: 0 0 0 3px rgba($teal, 0.15);
+  }
+}
+
+// ==============================
+// Hero Section
+// ==============================
+.hero-title p {
+  color: $ink;
+}
+
+.hero-subtitle p {
+  color: $ink-light;
+}
+
+.hero-links {
+  .btn-primary-custom {
+    background: $teal;
+    color: $cream;
+    border-color: $teal;
+
+    &:hover {
+      background: $teal-dark;
+      border-color: $teal-dark;
+      color: $cream;
+    }
+  }
+
+  .btn-outline-custom {
+    color: $ink;
+    border-color: $border;
+
+    &:hover {
+      border-color: $teal;
+      color: $teal;
+    }
+  }
+}
+
+// ==============================
+// Cards
+// ==============================
+.quarto-grid-item {
+  &.card, .card {
+    background: $cream-dark;
+    border-color: $border;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-color: rgba($teal, 0.4);
+    }
+  }
+
+  .card-title a {
+    color: $ink;
+
+    &:hover {
+      color: $teal;
+    }
+  }
+
+  .card-text {
+    color: $mid-gray;
+  }
+
+  .listing-category {
+    background: rgba($teal, 0.1);
+    color: $mid-gray;
+
+    &:hover {
+      background: rgba($teal, 0.2);
+      color: $teal;
+    }
+  }
+
+  .card-footer {
+    border-top-color: $border;
+  }
+}
+
+// ==============================
+// Content
+// ==============================
+::selection {
+  background: rgba($teal, 0.25);
+  color: $ink;
+}
+
+.quarto-title-banner {
+  background: $cream-dark !important;
+  border-bottom-color: $border;
+}
+
+#quarto-content {
+  h2 {
+    border-top-color: $border;
+  }
+
+  blockquote {
+    background: rgba($cream-dark, 0.5);
+
+    p {
+      color: $ink-light;
+    }
+  }
+
+  hr {
+    border-color: $border;
+  }
+}
+
+// ==============================
+// Code
+// ==============================
+pre {
+  border-color: $border;
+}
+
+p code, li code {
+  background: $cream-dark;
+  color: $amber;
+}
+
+// ==============================
+// About Page
+// ==============================
+.about-entity {
+  .about-image {
+    border-color: $border;
+
+    &:hover {
+      border-color: $teal;
+    }
+  }
+
+  .about-links .about-link {
+    border-color: $border;
+    color: $ink;
+
+    &:hover {
+      border-color: $teal;
+      color: $teal;
+      background: rgba($teal, 0.08);
+    }
+
+    .bi {
+      color: $teal;
+    }
+  }
+}
+
+// ==============================
+// Footer
+// ==============================
+.nav-footer {
+  border-top-color: $border;
+  background: $cream-dark;
+
+  .nav-footer-left {
+    color: $warm-gray;
+
+    a {
+      color: $teal;
+
+      &:hover {
+        color: $teal-dark;
+      }
+    }
+  }
+}
+
+// ==============================
+// TOC
+// ==============================
+#TOC {
+  a {
+    color: $mid-gray;
+
+    &:hover {
+      color: $teal;
+    }
+  }
+
+  .active {
+    color: $teal !important;
+  }
+}

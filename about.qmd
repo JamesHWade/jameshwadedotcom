@@ -6,24 +6,23 @@ about:
   image-width: 14em
   image-shape: rounded
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/jameshwade
+    - icon: github
+      text: GitHub
+      href: https://github.com/jameshwade
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/james-h-wade/
-    - icon: github
-      text: Github
-      href: https://github.com/jameshwade
-    - icon: mastodon
-      text: Mastodon
-      href: https://fosstodon.org/@jameshwade
+    - icon: twitter-x
+      text: X
+      href: https://x.com/jameshwade
+    - text: Bluesky
+      href: https://bsky.app/profile/jameshwade.bsky.social
 comments: false
 ---
 
 Hi 👋, I'm James Wade.
 
-I'm a research scientist in a large chemicals R&D organization, where I build AI-powered developer tools and lead AI strategy for about three thousand researchers. Most of my work lives in the R and Python ecosystems—I build internal packages, ship Shiny apps to production, and maintain open source projects like [gptstudio](https://github.com/MichelNivard/gptstudio), [shinymcp](https://github.com/JamesHWade/shinymcp), and [deputy](https://github.com/JamesHWade/deputy). I also run our Citizen Data Science program, which helps bench scientists get more from their data.
+I'm a research scientist and analytical chemist at a large R&D organization. I still spend time in the lab, but I also build developer tools for researchers. Most of my work lives in the R and Python ecosystems. I build internal packages, ship Shiny apps to production, and maintain open source projects like [gptstudio](https://github.com/MichelNivard/gptstudio), [shinymcp](https://github.com/JamesHWade/shinymcp), and [deputy](https://github.com/JamesHWade/deputy).
 
 Before all this, I was a bench chemist. I grew up in South Carolina and started my chemistry training at [Furman University](https://www.furman.edu/academics/chemistry/), a small liberal arts school in the upstate. That's where I found analytical chemistry—working on the abiotic origins of life, transition metal synthesis, and drug-DNA interactions for anticancer therapeutics.
 

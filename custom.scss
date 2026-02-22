@@ -53,7 +53,7 @@ $border-radius-sm: 0.3rem;
 $border-radius-lg: 0.75rem;
 
 $card-border-color: $border;
-$card-bg: white;
+$card-bg: $body-bg;
 $card-border-radius: $border-radius-lg;
 
 $navbar-light-color: $ink;
@@ -143,7 +143,7 @@ html {
 #quarto-search .aa-Form {
   border-color: $border;
   border-radius: $border-radius;
-  background: white;
+  background: $body-bg;
 
   &:focus-within {
     border-color: $teal;
@@ -285,7 +285,7 @@ html {
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
-    background: white;
+    background: $body-bg;
     box-shadow: 0 2px 8px rgba($ink, 0.04);
 
     &:hover {

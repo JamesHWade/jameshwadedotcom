@@ -22,22 +22,26 @@ website:
         href: index.xml
       - icon: youtube
         href: https://youtube.com/@james-h-wade
-      - icon: twitter
-        href: https://twitter.com/jameshwade
+      - icon: twitter-x
+        href: https://x.com/jameshwade
       - icon: linkedin
         href: https://linkedin.com/in/james-h-wade
       - icon: github
         href: https://github.com/jameshwade
-      - icon: mastodon
-        href: https://fosstodon.org/@jameshwade
+      - text: Bluesky
+        href: https://bsky.app/profile/jameshwade.bsky.social
   page-footer:
     left: "© 2023–2026 James Wade. Text and images licensed [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), code [MIT](https://choosealicense.com/licenses/mit/) unless otherwise noted."
 
 format:
   html:
     theme:
-      - brand
-      - custom.scss
+      light:
+        - brand
+        - custom.scss
+      dark:
+        - brand
+        - custom-dark.scss
     highlight-style: atom-one-dark
     include-in-header:
       - text: |
