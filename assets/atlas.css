@@ -205,6 +205,7 @@ body.atlas-page main.content {
   flex-direction: column;
   justify-content: space-between;
   gap: 0.85rem;
+  min-width: 0;
 }
 
 .atlas-map-header {
@@ -490,8 +491,7 @@ body.quarto-dark .atlas-svg-frame .pin-sub {
 
 .atlas-svg-frame .atlas-pin:hover .pin-title,
 .atlas-svg-frame .atlas-pin.is-active .pin-title {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  stroke-width: 4px;
 }
 
 .atlas-nav-bar {
@@ -587,6 +587,7 @@ body.quarto-dark .atlas-svg-frame .pin-sub {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 0;
 }
 
 .sheet-banner {
@@ -628,6 +629,11 @@ body.quarto-dark .atlas-svg-frame .pin-sub {
   flex-direction: column;
   justify-content: space-between;
   gap: 0.95rem;
+  min-width: 0;
+}
+
+.sheet-body > div {
+  min-width: 0;
 }
 
 .sheet-body.is-switching {
@@ -691,6 +697,8 @@ body.quarto-dark .atlas-svg-frame .pin-sub {
 
 .sheet-code-wrap {
   position: relative;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .sheet-code {
@@ -703,6 +711,8 @@ body.quarto-dark .atlas-svg-frame .pin-sub {
   font-size: 0.72rem;
   line-height: 1.52;
   overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
   border-radius: 0;
 }
 
@@ -893,6 +903,9 @@ body.quarto-dark .atlas-svg-frame .pin-sub {
   padding: 0.42rem 0.62rem;
   line-height: 1.45;
   border: 1px solid var(--s-border-ink);
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+  max-width: 100%;
   transition: border-color 0.2s ease;
 }
 
@@ -1729,7 +1742,7 @@ p code, li code {
   }
 
   .atlas-workbench {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .atlas-map-pane {
@@ -1747,6 +1760,14 @@ p code, li code {
 }
 
 @media (max-width: 600px) {
+  .atlas-map-pane {
+    padding: 0.85rem;
+  }
+
+  .sheet-body {
+    padding: 1rem;
+  }
+
   .bench-slips-grid {
     grid-template-columns: 1fr;
   }
