@@ -1,0 +1,31 @@
+- title: "measure & measure.sec"
+  landmark: measure
+  tone: pine
+  meta_left: "R, Python"
+  meta_right: "Chemistry"
+  description: "Recipes-style tidymodels steps for spectroscopy, SEC/GPC polymer analysis, and analytical methods."
+  href: "https://github.com/JamesHWade/measure"
+
+- title: "deputy & dsprrr"
+  landmark: deputy
+  tone: ochre
+  meta_left: "R"
+  meta_right: "Agents & evals"
+  description: "Bounded ellmer agents with permissions and budgets, paired with declarative prompt optimization."
+  href: "https://github.com/JamesHWade/deputy"
+
+- title: "tempest, scans & graft"
+  landmark: frontier
+  tone: copper
+  meta_left: "R"
+  meta_right: "Experiments"
+  description: "STORM research agents, agent trajectory analysis, and reviewed project memory for R apps."
+  href: "https://github.com/JamesHWade/tempest"
+
+- title: "rill & shinymcp"
+  landmark: rill
+  tone: lake
+  meta_left: "R"
+  meta_right: "Shiny"
+  description: "An agent-native personal feed reader in Shiny alongside MCP Apps that render inside AI chat."
+  href: "https://github.com/JamesHWade/shinymcp"

@@ -1,32 +1,305 @@
 ---
 pagetitle: "James H Wade"
-listing:
-  contents: posts
-  sort: "date desc"
-  type: grid
-  categories: true
-  sort-ui: false
-  filter-ui: false
-  feed: true
-  grid-columns: 2
 page-layout: full
+title-block-style: none
+toc: false
 comments: false
+body-classes: atlas-page
+listing:
+  - id: bench
+    contents: data/bench.yml
+    template: templates/bench-slips.ejs
+  - id: notes
+    contents: posts
+    sort: "date desc"
+    max-items: 6
+    feed: true
+    template: templates/field-notes.ejs
+include-after-body:
+  - text: |
+      <script src="assets/atlas.js" defer></script>
 ---
 
-::: {.hero-section}
+::: {.content-hidden when-format="llms-txt"}
+```{=html}
+<section class="atlas-opener">
+  <div>
+    <h1 class="atlas-headline">Analytical chemistry, Shiny apps, and R tools for language models.</h1>
+    <p class="atlas-lead">
+      I'm a research scientist and analytical chemist at a large chemicals R&amp;D organization. Outside the lab, I spend a lot of time building open-source R and Python packages around analytical data, Shiny, and AI agents. Click around the map below to see what I've been working on, or detour past the dogs and cats.
+    </p>
+  </div>
 
-::: {.hero-title}
-James H Wade
+  <aside class="survey-colophon" aria-label="Recent talk">
+    <p class="colophon-body">
+      Recent talk: <strong>AI Agents Deserve R</strong> at <em>posit::conf(2026)</em>.
+    </p>
+    <div class="colophon-links">
+      <a href="talks.html">Talks &amp; slides →</a>
+      <a class="llms-link" href="/llms.txt">llms.txt</a>
+    </div>
+  </aside>
+</section>
+
+<section id="atlas-workbench" class="atlas-workbench" aria-label="Interactive project map">
+  <div class="atlas-map-pane">
+    <div class="atlas-map-header">
+      <span>Click a project on the map to inspect it</span>
+      <div class="atlas-legend">
+        <span><i style="background: var(--c-pine);"></i>Chemistry</span>
+        <span><i style="background: var(--c-ochre);"></i>Agents</span>
+        <span><i style="background: var(--c-copper);"></i>Shiny</span>
+        <span><i style="background: var(--c-plum);"></i>Home</span>
+      </div>
+    </div>
+
+    <div class="atlas-svg-frame">
+      <svg viewBox="0 0 640 396" role="img" aria-label="Illustrated map of James Wade's open-source projects across analytical chemistry, Shiny, R agent packages, and Mid-Michigan">
+        <g class="atlas-decor">
+        <g class="night-stars" fill="#FAF2DF">
+          <circle cx="42" cy="48" r="1.1"/><circle cx="290" cy="30" r="1.4"/><circle cx="595" cy="42" r="1.2"/>
+          <circle cx="58" cy="215" r="1"/><circle cx="305" cy="182" r="1.3"/><circle cx="608" cy="240" r="1.1"/>
+          <circle cx="230" cy="355" r="1.2"/><circle cx="580" cy="352" r="1.4"/>
+        </g>
+
+        <g stroke="var(--c-lake)" stroke-width="1" opacity="0.28" fill="none">
+          <path d="M 18 195 q 8 -4 16 0 t 16 0 t 16 0"/>
+          <path d="M 272 48 q 7 -3 14 0 t 14 0"/>
+          <path d="M 274 202 q 8 -4 16 0 t 16 0"/>
+          <path d="M 556 172 q 8 -4 16 0 t 16 0"/>
+          <path d="M 225 362 q 9 -4 18 0 t 18 0"/>
+        </g>
+
+        <!-- Analytical Chemistry -->
+        <g>
+          <path d="M 38 62 C 75 26, 178 24, 224 58 C 258 84, 250 148, 212 172 C 166 200, 62 194, 34 152 C 16 124, 16 84, 38 62 Z"
+                fill="var(--s-land-chem)" stroke="var(--c-pine)" stroke-width="1.8"/>
+          <path d="M 64 78 C 96 52, 164 52, 198 76 C 220 92, 214 134, 188 150 C 154 170, 88 164, 64 136 C 48 118, 48 92, 64 78 Z"
+                fill="none" stroke="var(--c-pine)" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
+          <text x="42" y="23" fill="var(--c-pine)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">Analytical chemistry</text>
+          <path d="M 155 150 Q 168 122 178 138 T 212 126" fill="none" stroke="var(--c-pine)" stroke-width="1.6"/>
+          <g transform="translate(52, 134)" stroke="var(--c-pine)" stroke-width="1.3" fill="none">
+            <path d="M 6 0 L 12 0 M 7 0 L 7 6 L 2 16 L 16 16 L 11 6 L 11 0"/>
+            <line x1="4.5" y1="12" x2="13.5" y2="12" stroke="var(--c-lake)" stroke-width="1.5"/>
+          </g>
+        </g>
+
+        <!-- Shiny & Interfaces -->
+        <g>
+          <path d="M 358 48 C 415 24, 542 28, 588 64 C 620 90, 614 146, 566 164 C 508 184, 395 178, 355 144 C 325 118, 326 62, 358 48 Z"
+                fill="var(--s-land-shiny)" stroke="var(--c-copper)" stroke-width="1.8"/>
+          <path d="M 384 66 C 430 48, 524 52, 560 76 C 580 92, 576 128, 542 142 C 498 158, 412 152, 384 128 C 362 110, 362 76, 384 66 Z"
+                fill="none" stroke="var(--c-copper)" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+          <text x="368" y="22" fill="var(--c-copper)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">Shiny &amp; interfaces</text>
+          <g transform="translate(566, 74)" stroke="var(--c-copper)" stroke-width="1.3" fill="none">
+            <polygon points="5,22 7,6 11,6 13,22" fill="var(--s-paper)"/>
+            <rect x="6" y="3" width="6" height="3" fill="var(--c-ochre)"/>
+            <line x1="14" y1="4" x2="22" y2="1" stroke="var(--c-ochre)" stroke-width="1.2"/>
+            <line x1="14" y1="6" x2="22" y2="8" stroke="var(--c-ochre)" stroke-width="1.2"/>
+          </g>
+        </g>
+
+        <!-- R Agent Tools -->
+        <g>
+          <path d="M 284 220 C 344 186, 522 182, 584 226 C 622 254, 616 330, 560 354 C 482 384, 332 374, 280 336 C 244 308, 246 242, 284 220 Z"
+                fill="var(--s-land-agent)" stroke="var(--c-ochre)" stroke-width="1.8"/>
+          <path d="M 314 240 C 364 214, 502 212, 550 244 C 578 264, 574 314, 532 332 C 472 356, 356 348, 314 318 C 288 298, 288 256, 314 240 Z"
+                fill="none" stroke="var(--c-ochre)" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
+          <text x="332" y="388" fill="var(--c-ochre)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">R packages for AI agents</text>
+          <g transform="translate(544, 248)" stroke="var(--c-ochre)" stroke-width="1.3" fill="none">
+            <path d="M 4 12 C 1 12 0 9 2 7 C 2 4 6 2 9 4 C 12 2 17 4 17 8 C 19 9 18 12 15 12 Z" fill="var(--s-paper)"/>
+            <polyline points="10,12 7,17 11,17 8,22" stroke="var(--c-copper)" stroke-width="1.4"/>
+          </g>
+        </g>
+
+        <!-- Menagerie Woods -->
+        <g>
+          <path d="M 30 248 C 66 226, 174 228, 206 258 C 228 280, 218 336, 178 354 C 130 374, 48 364, 26 326 C 12 300, 12 260, 30 248 Z"
+                fill="var(--s-land-woods)" stroke="var(--c-plum)" stroke-width="1.6"/>
+          <g stroke="var(--c-pine)" stroke-width="1.2" fill="none">
+            <polyline points="46,282 51,270 56,282"/><line x1="51" y1="282" x2="51" y2="286"/>
+            <polyline points="178,274 183,262 188,274"/><line x1="183" y1="274" x2="183" y2="278"/>
+          </g>
+          <path d="M 176 312 C 178 302 185 301 187 308 C 189 314 194 312 195 318 C 196 326 189 332 180 332 C 175 332 173 322 176 312 Z"
+                fill="var(--c-lake)" opacity="0.35" stroke="var(--c-lake)" stroke-width="1"/>
+        </g>
+
+        <!-- Paths -->
+        <g fill="none" stroke="var(--s-border-ink)" stroke-width="1.3" stroke-dasharray="3 4" opacity="0.5">
+          <path d="M 192 98 Q 285 68 386 86"/>
+          <path d="M 426 128 Q 418 182 406 232"/>
+          <path d="M 155 154 Q 218 228 318 274"/>
+          <path d="M 122 172 Q 114 214 114 268"/>
+        </g>
+        </g>
+
+        <!-- Interactive Pins -->
+        <g class="atlas-pin" data-pin="measure" role="button" tabindex="0" aria-label="Inspect measure and measure.sec">
+          <rect x="96" y="76" width="126" height="40" fill="transparent"/>
+          <circle id="pin-measure" cx="116" cy="96" r="14" fill="var(--c-pine)" fill-opacity="0.2" stroke="var(--c-pine)" stroke-width="1.8"/>
+          <circle cx="116" cy="96" r="5.5" fill="var(--c-pine)"/>
+          <text x="134" y="92" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700">measure</text>
+          <text x="134" y="106" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">+ measure.sec</text>
+        </g>
+
+        <g class="atlas-pin" data-pin="vandeemter" role="button" tabindex="0" aria-label="Inspect van-deemter-lab">
+          <rect x="64" y="130" width="116" height="48" fill="transparent"/>
+          <circle id="pin-vandeemter" cx="132" cy="146" r="12" fill="var(--c-lake)" fill-opacity="0.18" stroke="var(--c-lake)" stroke-width="1.6"/>
+          <circle cx="132" cy="146" r="4.8" fill="var(--c-lake)"/>
+          <text x="68" y="172" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700">van-deemter-lab</text>
+        </g>
+
+        <g class="atlas-pin" data-pin="shinymcp" role="button" tabindex="0" aria-label="Inspect shinymcp">
+          <rect x="384" y="66" width="150" height="42" fill="transparent"/>
+          <circle id="pin-shinymcp" cx="404" cy="86" r="16" fill="var(--c-copper)" fill-opacity="0.28" stroke="var(--c-copper)" stroke-width="2.6"/>
+          <circle cx="404" cy="86" r="6" fill="var(--c-copper)"/>
+          <text x="425" y="82" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">shinymcp</text>
+          <text x="425" y="96" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">Shiny -> MCP Apps</text>
+        </g>
+
+        <g class="atlas-pin" data-pin="rill" role="button" tabindex="0" aria-label="Inspect rill and suppose">
+          <rect x="430" y="118" width="134" height="32" fill="transparent"/>
+          <circle id="pin-rill" cx="446" cy="134" r="12" fill="var(--c-lake)" fill-opacity="0.18" stroke="var(--c-lake)" stroke-width="1.6"/>
+          <circle cx="446" cy="134" r="4.8" fill="var(--c-lake)"/>
+          <text x="464" y="138" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">rill &amp; suppose</text>
+        </g>
+
+        <g class="atlas-pin" data-pin="deputy" role="button" tabindex="0" aria-label="Inspect deputy">
+          <rect x="366" y="226" width="136" height="40" fill="transparent"/>
+          <circle id="pin-deputy" cx="386" cy="246" r="15" fill="var(--c-ochre)" fill-opacity="0.2" stroke="var(--c-ochre)" stroke-width="1.8"/>
+          <circle cx="386" cy="246" r="5.8" fill="var(--c-ochre)"/>
+          <text x="406" y="242" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700">deputy</text>
+          <text x="406" y="255" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">Agent workflows</text>
+        </g>
+
+        <g class="atlas-pin" data-pin="dsprrr" role="button" tabindex="0" aria-label="Inspect dsprrr">
+          <rect x="304" y="288" width="112" height="38" fill="transparent"/>
+          <circle id="pin-dsprrr" cx="322" cy="306" r="13" fill="var(--c-ochre)" fill-opacity="0.18" stroke="var(--c-ochre)" stroke-width="1.6"/>
+          <circle cx="322" cy="306" r="5" fill="var(--c-ochre)"/>
+          <text x="340" y="304" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">dsprrr</text>
+          <text x="340" y="317" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">DSPy for R</text>
+        </g>
+
+        <g class="atlas-pin" data-pin="frontier" role="button" tabindex="0" aria-label="Inspect tempest, scans, and graft">
+          <rect x="420" y="282" width="164" height="58" fill="transparent"/>
+          <circle id="pin-frontier" cx="496" cy="300" r="14" fill="var(--c-copper)" fill-opacity="0.2" stroke="var(--c-copper)" stroke-width="1.8"/>
+          <circle cx="496" cy="300" r="5.2" fill="var(--c-copper)"/>
+          <text x="424" y="332" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700">tempest · scans · graft</text>
+        </g>
+
+        <g class="atlas-pin" data-pin="menagerie" role="button" tabindex="0" aria-label="Inspect Menagerie Crossing">
+          <rect x="38" y="278" width="136" height="66" fill="transparent"/>
+          <circle id="pin-menagerie" cx="110" cy="296" r="13" fill="var(--c-plum)" fill-opacity="0.18" stroke="var(--c-plum)" stroke-width="1.6"/>
+          <circle cx="110" cy="298" r="3" fill="var(--c-plum)"/>
+          <circle cx="106" cy="293" r="1.4" fill="var(--c-plum)"/>
+          <circle cx="110" cy="291.5" r="1.4" fill="var(--c-plum)"/>
+          <circle cx="114" cy="293" r="1.4" fill="var(--c-plum)"/>
+          <text x="42" y="324" fill="var(--c-plum)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700">Menagerie Crossing</text>
+          <text x="58" y="337" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="8.8">2 dogs · 5 cats</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="atlas-tab-strip" role="group" aria-label="Map projects">
+      <button type="button" class="lm-btn is-active" data-lm="shinymcp">shinymcp</button>
+      <button type="button" class="lm-btn" data-lm="measure">measure</button>
+      <button type="button" class="lm-btn" data-lm="vandeemter">van-deemter-lab</button>
+      <button type="button" class="lm-btn" data-lm="deputy">deputy</button>
+      <button type="button" class="lm-btn" data-lm="dsprrr">dsprrr</button>
+      <button type="button" class="lm-btn" data-lm="frontier">tempest/scans/graft</button>
+      <button type="button" class="lm-btn" data-lm="rill">rill &amp; suppose</button>
+      <button type="button" class="lm-btn" data-lm="menagerie">Menagerie</button>
+    </div>
+  </div>
+
+  <div class="atlas-sheet-pane" aria-live="polite">
+    <div id="sheet-banner" class="sheet-banner">
+      <span id="sheet-region">Shiny &amp; interfaces</span>
+      <span id="sheet-stamp" class="stamp-badge">R · MCP</span>
+    </div>
+
+    <div class="sheet-body">
+      <div>
+        <div class="sheet-title-row">
+          <h2 id="sheet-title">shinymcp</h2>
+          <span id="sheet-updated" class="sheet-updated">Sep 2026</span>
+        </div>
+        <p id="sheet-desc" class="sheet-desc"></p>
+
+        <div class="sheet-widget">
+          <div class="widget-head">
+            <strong id="sheet-widget-title">Try switching datasets</strong>
+            <span id="sheet-widget-sub">Preview</span>
+          </div>
+          <div id="sheet-widget-body"></div>
+        </div>
+
+        <pre id="sheet-code" class="sheet-code"></pre>
+      </div>
+
+      <div class="sheet-footer">
+        <a id="sheet-cta" href="posts/2026-02-21_shinymcp.html">Read the shinymcp post →</a>
+        <div id="sheet-ext-links" class="sheet-ext-links">
+          <a href="https://github.com/JamesHWade/shinymcp" target="_blank" rel="noopener">GitHub ↗</a>
+          <a href="https://jameshwade.github.io/shinymcp/" target="_blank" rel="noopener">Docs ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+```
 :::
 
-::: {.hero-subtitle}
-Research scientist building AI developer tools for industrial R&D. Writing about R, Shiny, and large language models.
+::: {.content-visible when-format="llms-txt"}
+# James H. Wade
+
+Research scientist and analytical chemist at a large chemicals R&D organization building open-source R and Python developer tools for scientists.
+
+## Active Open-Source Projects
+
+- **Analytical chemistry:** [measure](https://github.com/JamesHWade/measure), [measure.sec](https://github.com/JamesHWade/measure.sec), [measure-methods](https://github.com/JamesHWade/measure-methods), and [van-deemter-lab](https://github.com/JamesHWade/van-deemter-lab).
+- **Shiny and interfaces:** [shinymcp](https://github.com/JamesHWade/shinymcp), [rill](https://github.com/JamesHWade/rill), and [suppose](https://github.com/JamesHWade/suppose).
+- **R packages for AI agents:** [deputy](https://github.com/JamesHWade/deputy), [dsprrr](https://github.com/JamesHWade/dsprrr), [tempest](https://github.com/JamesHWade/tempest), [scans](https://github.com/JamesHWade/scans), and [graft](https://github.com/JamesHWade/graft).
 :::
 
-::: {.hero-links}
-[About Me](about.qmd){.btn-outline-custom}
+## Current Projects {.section-heading}
+
+::: {#bench}
 :::
 
+::: {.atlas-broadsheet}
+::: {}
+::: {.broadsheet-bar}
+## Recent Writing
+[All posts →](writing.qmd)
 :::
 
-## Latest Posts {.listing-section-title}
+::: {#notes}
+:::
+:::
+
+::: {}
+::: {.broadsheet-bar}
+## Recent Talks
+[All talks →](talks.qmd)
+:::
+
+```{=html}
+<div class="talk-feature-card">
+  <h3>AI Agents Deserve R</h3>
+  <div class="talk-submeta">posit::conf(2026) · September 2026</div>
+  <p>Typed data frames, ellmer, deputy, dsprrr, and reproducible notebooks make R a practical environment for agentic workflows and evaluation.</p>
+  <div class="talk-links">
+    <a href="https://jameshwade.github.io/posit-conf-2026/" target="_blank" rel="noopener">Slides ↗</a>
+    <a href="https://github.com/JamesHWade/posit-conf-2026" target="_blank" rel="noopener">Repository ↗</a>
+  </div>
+</div>
+
+<div class="talk-secondary-card">
+  <h4><a href="talks.html">Disposable Shiny Apps</a></h4>
+  <div class="talk-submeta">posit::conf(2025) · September 2025</div>
+  <p>Build more Shiny apps, then throw them away. Video, slides, and slide-by-slide notes.</p>
+</div>
+```
+:::
+:::

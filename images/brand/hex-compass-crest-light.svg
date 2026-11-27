@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 264" width="240" height="264" fill="none" role="img" aria-label="James H Wade Mid-Michigan Hex-Compass crest (light)">
+  <defs>
+    <clipPath id="crest-clip-light">
+      <polygon points="120,16 218,73 218,191 120,248 22,191 22,73"/>
+    </clipPath>
+  </defs>
+
+  <!-- Outer Evergreen Frame + Brass Trim -->
+  <polygon points="120,8 225,69 225,195 120,256 15,195 15,69" fill="#16262E"/>
+  <polygon points="120,14 220,72 220,192 120,250 20,192 20,72" fill="#C97D10"/>
+  <polygon points="120,18 216,74 216,190 120,246 24,190 24,74" fill="#FBF5E6"/>
+
+  <!-- Clipped Illustrated Mid-Michigan World -->
+  <g clip-path="url(#crest-clip-light)">
+    <!-- Compass Halo Circle + Benzene Constellation Network in Upper Sky -->
+    <circle cx="120" cy="94" r="44" stroke="#C97D10" stroke-width="1.6" opacity="0.85"/>
+
+    <!-- Center Benzene Ring -->
+    <g stroke="#16262E" stroke-width="1.6" fill="none">
+      <polygon points="120,48 138,58 138,79 120,89 102,79 102,58"/>
+      <line x1="120" y1="36" x2="120" y2="48" stroke="#C97D10"/>
+      <line x1="138" y1="58" x2="152" y2="50" stroke="#C97D10"/>
+      <line x1="102" y1="58" x2="88" y2="50" stroke="#C97D10"/>
+      <line x1="107" y1="61" x2="107" y2="76" stroke="#19684B" stroke-width="1.8"/>
+      <line x1="133" y1="61" x2="133" y2="76" stroke="#0D7A87" stroke-width="1.8"/>
+      <!-- Left & Right Aromatic Rings -->
+      <line x1="102" y1="79" x2="84" y2="89"/>
+      <line x1="138" y1="79" x2="156" y2="89"/>
+      <polygon points="68,80 84,89 84,108 68,117 52,108 52,89" stroke="#8C6321"/>
+      <polygon points="172,80 188,89 188,108 172,117 156,108 156,89" stroke="#8C6321"/>
+      <line x1="57" y1="92" x2="57" y2="105" stroke="#C97D10"/>
+      <line x1="183" y1="92" x2="183" y2="105" stroke="#C97D10"/>
+    </g>
+
+    <!-- Golden Starlight Flecks -->
+    <g fill="#C97D10">
+      <polygon points="44,74 46,79 51,81 46,83 44,88 42,83 37,81 42,79"/>
+      <polygon points="196,74 198,79 203,81 198,83 196,88 194,83 189,81 194,79"/>
+      <polygon points="145,104 147,108 151,110 147,112 145,116 143,112 139,110 143,108"/>
+      <circle cx="90" cy="108" r="1.8"/>
+      <circle cx="152" cy="68" r="1.6"/>
+      <circle cx="78" cy="62" r="1.5"/>
+    </g>
+
+    <!-- Layered Balsam-Pine Topographic Hills -->
+    <path d="M 18 148 Q 52 126 86 144 T 156 138 T 224 128 L 224 202 L 18 202 Z" fill="#19684B" stroke="#16262E" stroke-width="2"/>
+    <g stroke="#114834" stroke-width="1.4" fill="none">
+      <path d="M 18 160 Q 54 142 92 158 T 164 152 T 224 144"/>
+      <path d="M 18 172 Q 58 156 98 170 T 170 165 T 224 158"/>
+      <path d="M 18 184 Q 62 170 104 182 T 178 178 T 224 172"/>
+    </g>
+
+    <!-- Stylized Michigan Pine Silhouettes along Ridges -->
+    <g fill="#16262E">
+      <polygon points="44,122 37,140 51,140"/>
+      <polygon points="62,128 56,143 68,143"/>
+      <polygon points="82,135 77,147 87,147"/>
+      <polygon points="160,132 155,144 165,144"/>
+      <polygon points="178,125 172,140 184,140"/>
+      <polygon points="196,118 189,136 203,136"/>
+    </g>
+
+    <!-- Great Lakes Turquoise Rippled Waves -->
+    <path d="M 18 186 Q 38 174 58 186 T 98 186 T 138 186 T 178 186 T 224 186 L 224 252 L 18 252 Z" fill="#0D7A87" stroke="#16262E" stroke-width="2"/>
+    <g stroke="#7FD3DC" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.75">
+      <path d="M 30 198 Q 48 190 66 198 T 102 198 T 138 198 T 174 198 T 210 198"/>
+      <path d="M 44 210 Q 62 203 80 210 T 116 210 T 152 210 T 188 210"/>
+      <path d="M 66 222 Q 86 216 106 222 T 146 222 T 174 222"/>
+    </g>
+
+    <!-- Center Faceted Woodblock Compass Needle -->
+    <g stroke="#16262E" stroke-width="2.2" stroke-linejoin="round">
+      <!-- North Half (Terracotta Copper) -->
+      <polygon points="120,56 120,136 105,136" fill="#D9543B"/>
+      <polygon points="120,56 135,136 120,136" fill="#A93520"/>
+      <!-- South Half (Marigold Ochre) -->
+      <polygon points="120,214 105,136 120,136" fill="#E39D25"/>
+      <polygon points="120,214 120,136 135,136" fill="#B56E0C"/>
+      <!-- Center Brass Jewel -->
+      <polygon points="120,127 127,136 120,145 113,136" fill="#FBF5E6"/>
+    </g>
+
+    <!-- Subtle JHW Monogram at Bottom Vertex -->
+    <text x="120" y="238" text-anchor="middle" fill="#FBF5E6" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="1.5">JHW</text>
+  </g>
+</svg>
