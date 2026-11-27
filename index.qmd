@@ -44,171 +44,403 @@ include-after-body:
 <section id="atlas-workbench" class="atlas-workbench" aria-label="Interactive project map">
   <div class="atlas-map-pane">
     <div class="atlas-map-header">
-      <span>Click a project on the map to inspect it</span>
-      <div class="atlas-legend">
-        <span><i style="background: var(--c-pine);"></i>Chemistry</span>
-        <span><i style="background: var(--c-ochre);"></i>Agents</span>
-        <span><i style="background: var(--c-copper);"></i>Shiny</span>
-        <span><i style="background: var(--c-plum);"></i>Home</span>
+      <div class="atlas-bearing" id="atlas-bearing">
+        <span class="bearing-dot" id="atlas-bearing-dot"></span>
+        <span id="atlas-bearing-text">Bearing 054° NE · Shiny &amp; interfaces</span>
+      </div>
+      <div class="atlas-legend" role="group" aria-label="Highlight map regions">
+        <button type="button" class="legend-chip" data-legend-region="chem"><i style="background: var(--c-pine);"></i>Chemistry</button>
+        <button type="button" class="legend-chip" data-legend-region="agents"><i style="background: var(--c-ochre);"></i>Agents</button>
+        <button type="button" class="legend-chip" data-legend-region="shiny"><i style="background: var(--c-copper);"></i>Shiny</button>
+        <button type="button" class="legend-chip" data-legend-region="home"><i style="background: var(--c-plum);"></i>Home</button>
       </div>
     </div>
 
-    <div class="atlas-svg-frame">
-      <svg viewBox="0 0 640 396" role="img" aria-label="Illustrated map of James Wade's open-source projects across analytical chemistry, Shiny, R agent packages, and Mid-Michigan">
+    <div class="atlas-svg-frame" id="atlas-svg-frame">
+      <svg id="atlas-map-svg" viewBox="0 0 680 432" role="img" aria-label="Illustrated cartographic map of James Wade's open-source projects across analytical chemistry, Shiny, R agent packages, and Mid-Michigan">
+        <defs>
+          <radialGradient id="atlas-water-glow" cx="46%" cy="44%" r="64%">
+            <stop offset="0%" stop-color="var(--s-paper)" stop-opacity="0.22"/>
+            <stop offset="65%" stop-color="var(--s-water)" stop-opacity="0"/>
+            <stop offset="100%" stop-color="var(--c-lake)" stop-opacity="0.16"/>
+          </radialGradient>
+
+          <linearGradient id="beacon-grad" x1="0%" y1="50%" x2="100%" y2="20%">
+            <stop offset="0%" stop-color="var(--c-ochre)" stop-opacity="0.48"/>
+            <stop offset="100%" stop-color="var(--c-ochre)" stop-opacity="0"/>
+          </linearGradient>
+
+          <pattern id="atlas-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+            <line x1="0" y1="0" x2="0" y2="8" stroke="var(--c-lake)" stroke-width="0.6" stroke-opacity="0.14"/>
+          </pattern>
+        </defs>
+
         <g class="atlas-decor">
-        <g class="night-stars" fill="#FAF2DF">
-          <circle cx="42" cy="48" r="1.1"/><circle cx="290" cy="30" r="1.4"/><circle cx="595" cy="42" r="1.2"/>
-          <circle cx="58" cy="215" r="1"/><circle cx="305" cy="182" r="1.3"/><circle cx="608" cy="240" r="1.1"/>
-          <circle cx="230" cy="355" r="1.2"/><circle cx="580" cy="352" r="1.4"/>
-        </g>
+          <rect x="0" y="0" width="680" height="432" fill="var(--s-water)"/>
+          <rect x="0" y="0" width="680" height="432" fill="url(#atlas-water-glow)"/>
 
-        <g stroke="var(--c-lake)" stroke-width="1" opacity="0.28" fill="none">
-          <path d="M 18 195 q 8 -4 16 0 t 16 0 t 16 0"/>
-          <path d="M 272 48 q 7 -3 14 0 t 14 0"/>
-          <path d="M 274 202 q 8 -4 16 0 t 16 0"/>
-          <path d="M 556 172 q 8 -4 16 0 t 16 0"/>
-          <path d="M 225 362 q 9 -4 18 0 t 18 0"/>
-        </g>
+          <!-- Subtle Lat/Lon Graticule -->
+          <g class="atlas-graticule" stroke="var(--c-lake)" stroke-width="0.7" stroke-opacity="0.15" fill="none">
+            <line x1="14" y1="112" x2="666" y2="112"/>
+            <line x1="14" y1="216" x2="666" y2="216"/>
+            <line x1="14" y1="320" x2="666" y2="320"/>
+            <line x1="172" y1="14" x2="172" y2="418"/>
+            <line x1="340" y1="14" x2="340" y2="418"/>
+            <line x1="508" y1="14" x2="508" y2="418"/>
+          </g>
+          <g stroke="var(--c-lake)" stroke-width="0.9" stroke-opacity="0.28">
+            <path d="M 168 112 h 8 M 172 108 v 8"/>
+            <path d="M 336 112 h 8 M 340 108 v 8"/>
+            <path d="M 504 112 h 8 M 508 108 v 8"/>
+            <path d="M 168 216 h 8 M 172 212 v 8"/>
+            <path d="M 336 216 h 8 M 340 212 v 8"/>
+            <path d="M 504 216 h 8 M 508 212 v 8"/>
+            <path d="M 168 320 h 8 M 172 316 v 8"/>
+            <path d="M 336 320 h 8 M 340 316 v 8"/>
+            <path d="M 504 320 h 8 M 508 316 v 8"/>
+          </g>
 
-        <!-- Analytical Chemistry -->
-        <g>
-          <path d="M 38 62 C 75 26, 178 24, 224 58 C 258 84, 250 148, 212 172 C 166 200, 62 194, 34 152 C 16 124, 16 84, 38 62 Z"
-                fill="var(--s-land-chem)" stroke="var(--c-pine)" stroke-width="1.8"/>
-          <path d="M 64 78 C 96 52, 164 52, 198 76 C 220 92, 214 134, 188 150 C 154 170, 88 164, 64 136 C 48 118, 48 92, 64 78 Z"
-                fill="none" stroke="var(--c-pine)" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
-          <text x="42" y="23" fill="var(--c-pine)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">Analytical chemistry</text>
-          <path d="M 155 150 Q 168 122 178 138 T 212 126" fill="none" stroke="var(--c-pine)" stroke-width="1.6"/>
-          <g transform="translate(52, 134)" stroke="var(--c-pine)" stroke-width="1.3" fill="none">
-            <path d="M 6 0 L 12 0 M 7 0 L 7 6 L 2 16 L 16 16 L 11 6 L 11 0"/>
-            <line x1="4.5" y1="12" x2="13.5" y2="12" stroke="var(--c-lake)" stroke-width="1.5"/>
+          <!-- Star Chart Night Stars -->
+          <g class="night-stars" fill="#FAF2DF">
+            <circle cx="34" cy="40" r="1.1"/><circle cx="294" cy="30" r="1.4"/><circle cx="642" cy="40" r="1.2"/>
+            <circle cx="48" cy="224" r="1.1"/><circle cx="246" cy="236" r="1.3"/><circle cx="648" cy="212" r="1.2"/>
+            <circle cx="246" cy="390" r="1.1"/><circle cx="646" cy="382" r="1.4"/><circle cx="352" cy="196" r="1"/>
+            <circle cx="268" cy="118" r="1.2"/><circle cx="328" cy="64" r="1.1"/><circle cx="586" cy="196" r="1"/>
+            <polygon class="star-twinkle" points="318,42 319.6,45.6 323.2,47.2 319.6,48.8 318,52.4 316.4,48.8 312.8,47.2 316.4,45.6"/>
+            <polygon class="star-twinkle star-twinkle-delay" points="256,288 257.4,291.2 260.6,292.6 257.4,294 256,297.2 254.6,294 251.4,292.6 254.6,291.2"/>
+            <polygon class="star-twinkle" points="654,190 655.4,193.2 658.6,194.6 655.4,196 654,199.2 652.6,196 649.4,194.6 652.6,193.2"/>
+          </g>
+
+          <!-- Open Water Ripples -->
+          <g stroke="var(--c-lake)" stroke-width="1" stroke-linecap="round" opacity="0.28" fill="none">
+            <path d="M 24 218 q 7 -3.5 14 0 t 14 0 t 14 0"/>
+            <path d="M 278 52 q 7 -3 14 0 t 14 0"/>
+            <path d="M 284 58 q 6 -2.5 12 0 t 12 0" opacity="0.65"/>
+            <path d="M 218 228 q 7 -3.5 14 0 t 14 0"/>
+            <path d="M 556 196 q 8 -3.5 16 0 t 16 0"/>
+            <path d="M 232 378 q 8 -3.5 16 0 t 16 0"/>
+            <path d="M 600 184 q 6 -2.5 12 0 t 12 0" opacity="0.6"/>
+          </g>
+
+          <!-- REGION 1: Analytical Chemistry -->
+          <g class="atlas-region" data-region="chem">
+            <path d="M 38 70 C 56 36, 112 28, 158 34 C 188 38, 210 30, 236 48 C 264 68, 270 108, 254 142 C 240 172, 210 192, 174 196 C 142 200, 114 206, 82 197 C 46 186, 20 156, 20 118 C 20 92, 26 82, 38 70 Z"
+                  fill="url(#atlas-hatch)" stroke="var(--c-lake)" stroke-width="0.9" stroke-opacity="0.32" stroke-dasharray="2 3"/>
+            <path d="M 48 78 C 64 48, 116 40, 160 46 C 188 50, 208 42, 232 58 C 258 76, 264 112, 250 142 C 238 170, 210 188, 178 192 C 146 196, 122 202, 90 194 C 56 184, 32 156, 32 122 C 32 100, 38 90, 48 78 Z"
+                  fill="var(--s-border-ink)" opacity="0.1"/>
+            <path class="region-land" d="M 44 74 C 60 44, 112 36, 156 42 C 184 46, 204 38, 228 54 C 254 72, 260 108, 246 138 C 234 166, 206 184, 174 188 C 142 192, 118 198, 86 190 C 52 180, 28 152, 28 118 C 28 96, 34 86, 44 74 Z"
+                  fill="var(--s-land-chem)" stroke="var(--c-pine)" stroke-width="1.8"/>
+            <path d="M 60 82 C 74 58, 120 52, 160 58 C 186 62, 204 58, 222 72 C 238 86, 240 116, 228 138 C 216 160, 186 172, 152 174 C 118 176, 86 174, 62 160 C 44 148, 42 104, 60 82 Z"
+                  fill="none" stroke="var(--c-pine)" stroke-width="0.9" opacity="0.38"/>
+            <path d="M 80 96 C 94 78, 136 74, 172 80 C 198 86, 212 108, 202 128 C 190 148, 152 156, 118 152 C 84 148, 66 116, 80 96 Z"
+                  fill="none" stroke="var(--c-pine)" stroke-width="0.9" stroke-dasharray="4 3" opacity="0.48"/>
+            <path d="M 42 146 L 52 145 Q 57 145 60 132 Q 63 145 69 144 Q 74 144 78 124 Q 82 144 88 145 L 94 145"
+                  fill="none" stroke="var(--c-pine)" stroke-width="1.4" stroke-linecap="round" opacity="0.72"/>
+            <g transform="translate(212, 66)" stroke="var(--c-pine)" stroke-width="1.2" fill="none" opacity="0.78">
+              <polygon points="10,0 18.6,5 18.6,15 10,20 1.4,15 1.4,5"/>
+              <line x1="4.2" y1="6.8" x2="4.2" y2="13.2" stroke-width="1"/>
+              <line x1="15.8" y1="6.8" x2="15.8" y2="13.2" stroke-width="1"/>
+              <line x1="10" y1="20" x2="10" y2="25"/>
+            </g>
+            <g transform="translate(46, 102)" stroke="var(--c-pine)" stroke-width="1.2" fill="none" opacity="0.72">
+              <path d="M 5 0 L 11 0 M 6 0 L 6 5.5 L 1.5 15 L 14.5 15 L 10 5.5 L 10 0"/>
+              <path d="M 3.5 11.2 Q 8 9.6 12.5 11.2" stroke="var(--c-lake)" stroke-width="1.4"/>
+            </g>
+            <text x="44" y="33" class="region-label" fill="var(--c-pine)">ANALYTICAL CHEMISTRY</text>
+          </g>
+
+          <!-- REGION 2: Shiny & Interfaces -->
+          <g class="atlas-region" data-region="shiny">
+            <path d="M 378 56 C 414 32, 488 26, 552 36 C 596 44, 636 60, 650 92 C 660 116, 648 150, 616 165 C 586 180, 542 186, 490 184 C 442 182, 390 176, 364 150 C 344 130, 348 76, 378 56 Z"
+                  fill="url(#atlas-hatch)" stroke="var(--c-lake)" stroke-width="0.9" stroke-opacity="0.32" stroke-dasharray="2 3"/>
+            <path d="M 388 66 C 420 44, 492 38, 552 48 C 594 56, 632 70, 646 98 C 656 118, 644 148, 616 162 C 588 176, 546 182, 496 180 C 450 178, 400 172, 376 150 C 358 132, 360 84, 388 66 Z"
+                  fill="var(--s-border-ink)" opacity="0.1"/>
+            <path class="region-land" d="M 384 62 C 416 40, 488 34, 548 44 C 590 52, 628 66, 642 94 C 652 114, 640 144, 612 158 C 584 172, 542 178, 492 176 C 446 174, 396 168, 372 146 C 354 128, 356 80, 384 62 Z"
+                  fill="var(--s-land-shiny)" stroke="var(--c-copper)" stroke-width="1.8"/>
+            <path class="region-land" d="M 622 162 C 632 156, 646 160, 648 168 C 649 175, 636 180, 625 176 C 618 174, 616 166, 622 162 Z"
+                  fill="var(--s-land-shiny)" stroke="var(--c-copper)" stroke-width="1.3"/>
+            <path d="M 402 74 C 430 56, 492 52, 542 60 C 578 66, 608 78, 618 98 C 626 114, 616 136, 590 146 C 562 158, 524 162, 482 160 C 442 158, 404 152, 388 134 C 374 118, 378 88, 402 74 Z"
+                  fill="none" stroke="var(--c-copper)" stroke-width="0.9" opacity="0.36"/>
+            <path d="M 426 86 C 452 74, 504 72, 546 78 C 574 84, 594 96, 596 112 C 598 128, 574 140, 540 144 C 498 150, 444 144, 422 128 C 406 116, 408 96, 426 86 Z"
+                  fill="none" stroke="var(--c-copper)" stroke-width="0.9" stroke-dasharray="4 3" opacity="0.45"/>
+            <g transform="translate(596, 80)">
+              <polygon class="lighthouse-beam" points="11,6 64,-16 64,22" fill="url(#beacon-grad)"/>
+              <line x1="2" y1="26" x2="18" y2="26" stroke="var(--c-copper)" stroke-width="1.5"/>
+              <polygon points="5,26 7.5,9 12.5,9 15,26" fill="var(--s-paper)" stroke="var(--c-copper)" stroke-width="1.3"/>
+              <line x1="6.3" y1="16" x2="13.7" y2="16" stroke="var(--c-copper)" stroke-width="2"/>
+              <rect x="7" y="4.5" width="6" height="4.5" fill="var(--c-ochre)" stroke="var(--c-copper)" stroke-width="1.1"/>
+              <polygon points="6,4.5 10,0.5 14,4.5" fill="var(--c-copper)"/>
+            </g>
+            <g stroke="var(--c-copper)" stroke-width="1.2" opacity="0.72">
+              <line x1="358" y1="120" x2="376" y2="120"/>
+              <line x1="362" y1="117" x2="362" y2="123"/>
+              <line x1="368" y1="117" x2="368" y2="123"/>
+            </g>
+            <text x="394" y="32" class="region-label" fill="var(--c-copper)">SHINY &amp; INTERFACES</text>
+          </g>
+
+          <!-- REGION 3: R Packages for AI Agents -->
+          <g class="atlas-region" data-region="agents">
+            <path d="M 296 236 C 328 208, 412 200, 496 206 C 564 210, 622 228, 646 264 C 664 294, 654 344, 618 370 C 578 398, 498 402, 420 398 C 354 394, 296 380, 274 348 C 258 322, 264 264, 296 236 Z"
+                  fill="url(#atlas-hatch)" stroke="var(--c-lake)" stroke-width="0.9" stroke-opacity="0.32" stroke-dasharray="2 3"/>
+            <path d="M 308 246 C 338 220, 416 212, 496 218 C 560 222, 618 238, 642 272 C 660 298, 650 344, 616 368 C 578 394, 500 398, 426 394 C 362 390, 308 378, 286 348 C 270 326, 276 272, 308 246 Z"
+                  fill="var(--s-border-ink)" opacity="0.1"/>
+            <path class="region-land" d="M 304 242 C 334 216, 412 208, 492 214 C 556 218, 614 234, 638 268 C 656 294, 646 340, 612 364 C 574 390, 496 394, 422 390 C 358 386, 304 374, 282 344 C 266 322, 272 268, 304 242 Z"
+                  fill="var(--s-land-agent)" stroke="var(--c-ochre)" stroke-width="1.8"/>
+            <path d="M 326 256 C 354 234, 422 228, 490 232 C 546 236, 596 250, 616 278 C 630 298, 622 336, 592 354 C 558 374, 490 378, 426 374 C 370 370, 326 360, 306 336 C 292 318, 298 278, 326 256 Z"
+                  fill="none" stroke="var(--c-ochre)" stroke-width="0.9" opacity="0.38"/>
+            <path d="M 358 272 C 386 254, 444 250, 498 254 C 544 258, 578 272, 588 292 C 596 310, 584 334, 554 346 C 516 360, 448 360, 396 354 C 352 348, 336 326, 338 302 C 340 288, 346 280, 358 272 Z"
+                  fill="none" stroke="var(--c-ochre)" stroke-width="0.9" stroke-dasharray="4 3" opacity="0.48"/>
+            <g transform="translate(572, 254)" stroke="var(--c-ochre)" stroke-width="1.25" fill="none" opacity="0.82">
+              <path d="M 4 18 L 22 18 M 6 18 L 6 12 A 7 7 0 0 1 20 12 L 20 18" fill="var(--s-paper)"/>
+              <line x1="13" y1="5" x2="18" y2="1" stroke-width="1.3"/>
+              <circle cx="24" cy="4" r="1.4" fill="var(--c-copper)" stroke="none"/>
+              <circle cx="32" cy="10" r="1.3" fill="var(--c-ochre)" stroke="none"/>
+              <line x1="19" y1="2" x2="24" y2="4" stroke-dasharray="1.5 1.5" stroke-width="0.9"/>
+              <line x1="24" y1="4" x2="32" y2="10" stroke-dasharray="1.5 1.5" stroke-width="0.9"/>
+            </g>
+            <text x="342" y="409" class="region-label" fill="var(--c-ochre)">R PACKAGES FOR AI AGENTS</text>
+          </g>
+
+          <!-- REGION 4: Mid-Michigan (Stylized Mitten + Saginaw Bay) -->
+          <g class="atlas-region" data-region="home">
+            <path d="M 68 244 C 98 234, 138 236, 158 258 C 166 268, 162 282, 168 286 C 176 288, 186 276, 202 280 C 222 286, 232 310, 226 340 C 218 370, 192 392, 150 396 C 102 400, 48 392, 30 362 C 16 336, 22 292, 42 266 C 50 256, 58 248, 68 244 Z"
+                  fill="url(#atlas-hatch)" stroke="var(--c-lake)" stroke-width="0.9" stroke-opacity="0.32" stroke-dasharray="2 3"/>
+            <path d="M 76 256 C 102 246, 138 248, 156 268 C 164 278, 160 294, 170 298 C 180 302, 190 288, 204 292 C 220 296, 228 318, 222 342 C 216 368, 192 388, 154 392 C 110 396, 58 388, 42 362 C 28 338, 34 300, 52 276 C 60 266, 66 260, 76 256 Z"
+                  fill="var(--s-border-ink)" opacity="0.1"/>
+            <path class="region-land" d="M 72 252 C 98 242, 134 244, 152 264 C 160 274, 156 290, 166 294 C 176 298, 186 284, 200 288 C 216 292, 224 314, 218 338 C 212 364, 188 384, 150 388 C 106 392, 54 384, 38 358 C 24 334, 30 296, 48 272 C 56 262, 62 256, 72 252 Z"
+                  fill="var(--s-land-woods)" stroke="var(--c-plum)" stroke-width="1.7"/>
+            <path d="M 80 266 C 102 258, 128 260, 142 276 C 150 286, 152 304, 166 308 C 178 312, 188 302, 198 306 C 206 310, 208 328, 202 344 C 194 362, 174 374, 144 376 C 108 378, 66 372, 54 352 C 42 332, 48 302, 62 282 C 68 274, 74 268, 80 266 Z"
+                  fill="none" stroke="var(--c-plum)" stroke-width="0.9" stroke-dasharray="3 3" opacity="0.4"/>
+            <path d="M 164 282 q 5 -2.5 10 0 t 10 0" fill="none" stroke="var(--c-lake)" stroke-width="1.1" opacity="0.65"/>
+            <g fill="var(--c-pine)" opacity="0.72">
+              <polygon points="86,262 80,275 92,275"/>
+              <polygon points="100,256 93,272 107,272"/>
+              <polygon points="116,263 111,275 121,275"/>
+              <polygon points="196,306 191,318 201,318"/>
+            </g>
+            <g transform="translate(50, 326)" stroke="var(--c-plum)" stroke-width="1.2" fill="none" opacity="0.78">
+              <polygon points="1,9 8,2 15,9" fill="var(--s-paper)"/>
+              <rect x="3" y="9" width="10" height="8" fill="var(--s-paper)"/>
+              <rect x="6.5" y="12.5" width="3" height="4.5" fill="var(--c-plum)"/>
+              <path d="M 12 4 Q 14 1 13 -2" stroke-width="1" opacity="0.65"/>
+            </g>
+            <text x="46" y="409" class="region-label" fill="var(--c-plum)">MID-MICHIGAN</text>
+          </g>
+
+          <!-- Inter-Island Survey Routes -->
+          <g class="atlas-routes" fill="none">
+            <path class="atlas-route" data-from="measure" data-to="shinymcp" d="M 96 92 Q 258 46 418 86"/>
+            <path class="atlas-route" data-from="measure" data-to="vandeemter" d="M 96 92 Q 86 122 112 152"/>
+            <path class="atlas-route" data-from="shinymcp" data-to="rill" d="M 418 86 Q 444 108 454 140"/>
+            <path class="atlas-route" data-from="shinymcp" data-to="deputy" d="M 418 86 Q 388 172 414 254"/>
+            <path class="atlas-route" data-from="rill" data-to="deputy" d="M 454 140 Q 444 200 414 254"/>
+            <path class="atlas-route" data-from="deputy" data-to="dsprrr" d="M 414 254 Q 362 280 328 326"/>
+            <path class="atlas-route" data-from="deputy" data-to="frontier" d="M 414 254 Q 464 286 486 332"/>
+            <path class="atlas-route" data-from="vandeemter" data-to="menagerie" d="M 112 152 Q 108 232 126 314"/>
+            <path class="atlas-route" data-from="vandeemter" data-to="dsprrr" d="M 112 152 Q 214 252 328 326"/>
+          </g>
+
+          <!-- Heirloom Faceted Hex-Compass Rose -->
+          <g class="atlas-compass" transform="translate(296, 174)">
+            <circle cx="0" cy="0" r="24" fill="var(--s-paper)" fill-opacity="0.74" stroke="var(--s-border-ink)" stroke-width="1.1" stroke-opacity="0.65"/>
+            <circle cx="0" cy="0" r="19.5" fill="none" stroke="var(--c-ochre)" stroke-width="0.9" stroke-dasharray="2 2.5" opacity="0.75"/>
+            <g stroke="var(--s-border-ink)" stroke-width="1" opacity="0.7">
+              <line x1="0" y1="-24" x2="0" y2="-19.5"/>
+              <line x1="0" y1="19.5" x2="0" y2="24"/>
+              <line x1="-24" y1="0" x2="-19.5" y2="0"/>
+              <line x1="19.5" y1="0" x2="24" y2="0"/>
+            </g>
+            <text x="0" y="-27.5" text-anchor="middle" class="compass-dir" fill="var(--c-copper)">N</text>
+            <text x="29" y="3" text-anchor="middle" class="compass-dir" fill="var(--s-ink-faint)">E</text>
+            <text x="0" y="34" text-anchor="middle" class="compass-dir" fill="var(--s-ink-faint)">S</text>
+            <text x="-29" y="3" text-anchor="middle" class="compass-dir" fill="var(--s-ink-faint)">W</text>
+            <g id="atlas-compass-needle" class="compass-needle">
+              <polygon points="0,-17 -4.2,0 0,0" fill="var(--c-copper)" stroke="var(--s-border-ink)" stroke-width="0.9" stroke-linejoin="round"/>
+              <polygon points="0,-17 4.2,0 0,0" fill="var(--c-copper)" fill-opacity="0.72" stroke="var(--s-border-ink)" stroke-width="0.9" stroke-linejoin="round"/>
+              <polygon points="0,17 -4.2,0 0,0" fill="var(--c-ochre)" stroke="var(--s-border-ink)" stroke-width="0.9" stroke-linejoin="round"/>
+              <polygon points="0,17 4.2,0 0,0" fill="var(--c-ochre)" fill-opacity="0.7" stroke="var(--s-border-ink)" stroke-width="0.9" stroke-linejoin="round"/>
+              <polygon points="0,-3.4 3,0 0,3.4 -3,0" fill="var(--s-paper)" stroke="var(--s-border-ink)" stroke-width="0.9"/>
+            </g>
+          </g>
+
+          <!-- Cartographic Double Neatline Border & Survey Scale -->
+          <rect x="7" y="7" width="666" height="418" fill="none" stroke="var(--s-border-ink)" stroke-width="1.2" opacity="0.55"/>
+          <rect x="12" y="12" width="656" height="408" fill="none" stroke="var(--s-border-ink)" stroke-width="0.7" opacity="0.38"/>
+          <text x="20" y="23" class="map-coord">43°37'N</text>
+          <text x="660" y="23" text-anchor="end" class="map-coord">84°15'W</text>
+          <g class="map-scale" transform="translate(576, 405)">
+            <rect x="0" y="0" width="20" height="4" fill="var(--s-border-ink)" opacity="0.65"/>
+            <rect x="20" y="0" width="20" height="4" fill="var(--s-paper)" stroke="var(--s-border-ink)" stroke-width="0.7" opacity="0.75"/>
+            <rect x="40" y="0" width="20" height="4" fill="var(--s-border-ink)" opacity="0.65"/>
+            <rect x="60" y="0" width="20" height="4" fill="var(--s-paper)" stroke="var(--s-border-ink)" stroke-width="0.7" opacity="0.75"/>
+            <text x="80" y="-3" text-anchor="end" class="map-coord">ATLAS SURVEY</text>
           </g>
         </g>
 
-        <!-- Shiny & Interfaces -->
-        <g>
-          <path d="M 358 48 C 415 24, 542 28, 588 64 C 620 90, 614 146, 566 164 C 508 184, 395 178, 355 144 C 325 118, 326 62, 358 48 Z"
-                fill="var(--s-land-shiny)" stroke="var(--c-copper)" stroke-width="1.8"/>
-          <path d="M 384 66 C 430 48, 524 52, 560 76 C 580 92, 576 128, 542 142 C 498 158, 412 152, 384 128 C 362 110, 362 76, 384 66 Z"
-                fill="none" stroke="var(--c-copper)" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
-          <text x="368" y="22" fill="var(--c-copper)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">Shiny &amp; interfaces</text>
-          <g transform="translate(566, 74)" stroke="var(--c-copper)" stroke-width="1.3" fill="none">
-            <polygon points="5,22 7,6 11,6 13,22" fill="var(--s-paper)"/>
-            <rect x="6" y="3" width="6" height="3" fill="var(--c-ochre)"/>
-            <line x1="14" y1="4" x2="22" y2="1" stroke="var(--c-ochre)" stroke-width="1.2"/>
-            <line x1="14" y1="6" x2="22" y2="8" stroke="var(--c-ochre)" stroke-width="1.2"/>
+        <!-- Interactive Landmark Pins -->
+        <g class="atlas-pin" data-pin="measure" data-region="chem" data-x="96" data-y="92" role="button" tabindex="0" aria-label="Inspect measure and measure.sec">
+          <rect x="76" y="70" width="134" height="44" fill="transparent"/>
+          <circle class="pin-pulse" cx="96" cy="92" r="17" fill="none" stroke="var(--c-pine)" stroke-width="1.4"/>
+          <g class="pin-reticle" stroke="var(--c-pine)" stroke-width="1.4" fill="none">
+            <path d="M 81 82 v -5 h 5 M 111 82 v -5 h -5 M 81 102 v 5 h 5 M 111 102 v 5 h -5"/>
+          </g>
+          <g class="pin-marker">
+            <circle id="pin-measure" class="pin-ring" cx="96" cy="92" r="13.5" fill="var(--s-paper)" stroke="var(--c-pine)" stroke-width="2"/>
+            <circle class="pin-core-bg" cx="96" cy="92" r="9.5" fill="var(--c-pine)" fill-opacity="0.16"/>
+            <path d="M 89 96 L 92 96 L 94.5 87 L 97 95 L 99.5 91 L 103 96" fill="none" stroke="var(--c-pine)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g class="pin-label">
+            <text x="115" y="89" class="pin-title">measure</text>
+            <text x="115" y="102" class="pin-sub">+ measure.sec</text>
           </g>
         </g>
 
-        <!-- R Agent Tools -->
-        <g>
-          <path d="M 284 220 C 344 186, 522 182, 584 226 C 622 254, 616 330, 560 354 C 482 384, 332 374, 280 336 C 244 308, 246 242, 284 220 Z"
-                fill="var(--s-land-agent)" stroke="var(--c-ochre)" stroke-width="1.8"/>
-          <path d="M 314 240 C 364 214, 502 212, 550 244 C 578 264, 574 314, 532 332 C 472 356, 356 348, 314 318 C 288 298, 288 256, 314 240 Z"
-                fill="none" stroke="var(--c-ochre)" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
-          <text x="332" y="388" fill="var(--c-ochre)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">R packages for AI agents</text>
-          <g transform="translate(544, 248)" stroke="var(--c-ochre)" stroke-width="1.3" fill="none">
-            <path d="M 4 12 C 1 12 0 9 2 7 C 2 4 6 2 9 4 C 12 2 17 4 17 8 C 19 9 18 12 15 12 Z" fill="var(--s-paper)"/>
-            <polyline points="10,12 7,17 11,17 8,22" stroke="var(--c-copper)" stroke-width="1.4"/>
+        <g class="atlas-pin" data-pin="vandeemter" data-region="chem" data-x="112" data-y="152" role="button" tabindex="0" aria-label="Inspect van-deemter-lab">
+          <rect x="92" y="132" width="144" height="40" fill="transparent"/>
+          <circle class="pin-pulse" cx="112" cy="152" r="16" fill="none" stroke="var(--c-lake)" stroke-width="1.4"/>
+          <g class="pin-reticle" stroke="var(--c-lake)" stroke-width="1.4" fill="none">
+            <path d="M 98 143 v -5 h 5 M 126 143 v -5 h -5 M 98 161 v 5 h 5 M 126 161 v 5 h -5"/>
+          </g>
+          <g class="pin-marker">
+            <circle id="pin-vandeemter" class="pin-ring" cx="112" cy="152" r="12.5" fill="var(--s-paper)" stroke="var(--c-lake)" stroke-width="1.9"/>
+            <circle class="pin-core-bg" cx="112" cy="152" r="8.8" fill="var(--c-lake)" fill-opacity="0.16"/>
+            <path d="M 105.5 147.5 Q 109.5 157.5 113 155 T 118.5 150.5" fill="none" stroke="var(--c-lake)" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="112.5" cy="154.8" r="1.7" fill="var(--c-ochre)"/>
+          </g>
+          <g class="pin-label">
+            <text x="130" y="150" class="pin-title">van-deemter-lab</text>
+            <text x="130" y="162" class="pin-sub">Chromatography</text>
           </g>
         </g>
 
-        <!-- Menagerie Woods -->
-        <g>
-          <path d="M 30 248 C 66 226, 174 228, 206 258 C 228 280, 218 336, 178 354 C 130 374, 48 364, 26 326 C 12 300, 12 260, 30 248 Z"
-                fill="var(--s-land-woods)" stroke="var(--c-plum)" stroke-width="1.6"/>
-          <g stroke="var(--c-pine)" stroke-width="1.2" fill="none">
-            <polyline points="46,282 51,270 56,282"/><line x1="51" y1="282" x2="51" y2="286"/>
-            <polyline points="178,274 183,262 188,274"/><line x1="183" y1="274" x2="183" y2="278"/>
+        <g class="atlas-pin" data-pin="shinymcp" data-region="shiny" data-x="418" data-y="86" role="button" tabindex="0" aria-label="Inspect shinymcp">
+          <rect x="396" y="64" width="160" height="44" fill="transparent"/>
+          <circle class="pin-pulse" cx="418" cy="86" r="18" fill="none" stroke="var(--c-copper)" stroke-width="1.5"/>
+          <g class="pin-reticle" stroke="var(--c-copper)" stroke-width="1.5" fill="none">
+            <path d="M 402 75 v -5 h 5 M 434 75 v -5 h -5 M 402 97 v 5 h 5 M 434 97 v 5 h -5"/>
           </g>
-          <path d="M 176 312 C 178 302 185 301 187 308 C 189 314 194 312 195 318 C 196 326 189 332 180 332 C 175 332 173 322 176 312 Z"
-                fill="var(--c-lake)" opacity="0.35" stroke="var(--c-lake)" stroke-width="1"/>
+          <g class="pin-marker">
+            <circle id="pin-shinymcp" class="pin-ring" cx="418" cy="86" r="14.5" fill="var(--s-paper)" stroke="var(--c-copper)" stroke-width="2.2"/>
+            <circle class="pin-core-bg" cx="418" cy="86" r="10.2" fill="var(--c-copper)" fill-opacity="0.18"/>
+            <polygon points="418,79 424,86 418,93 412,86" fill="none" stroke="var(--c-copper)" stroke-width="1.7"/>
+            <circle cx="418" cy="86" r="2.2" fill="var(--c-copper)"/>
+          </g>
+          <g class="pin-label">
+            <text x="438" y="83" class="pin-title">shinymcp</text>
+            <text x="438" y="96" class="pin-sub">Shiny -> MCP Apps</text>
+          </g>
         </g>
 
-        <!-- Paths -->
-        <g fill="none" stroke="var(--s-border-ink)" stroke-width="1.3" stroke-dasharray="3 4" opacity="0.5">
-          <path d="M 192 98 Q 285 68 386 86"/>
-          <path d="M 426 128 Q 418 182 406 232"/>
-          <path d="M 155 154 Q 218 228 318 274"/>
-          <path d="M 122 172 Q 114 214 114 268"/>
-        </g>
-        </g>
-
-        <!-- Interactive Pins -->
-        <g class="atlas-pin" data-pin="measure" role="button" tabindex="0" aria-label="Inspect measure and measure.sec">
-          <rect x="96" y="76" width="126" height="40" fill="transparent"/>
-          <circle id="pin-measure" cx="116" cy="96" r="14" fill="var(--c-pine)" fill-opacity="0.2" stroke="var(--c-pine)" stroke-width="1.8"/>
-          <circle cx="116" cy="96" r="5.5" fill="var(--c-pine)"/>
-          <text x="134" y="92" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700">measure</text>
-          <text x="134" y="106" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">+ measure.sec</text>
-        </g>
-
-        <g class="atlas-pin" data-pin="vandeemter" role="button" tabindex="0" aria-label="Inspect van-deemter-lab">
-          <rect x="64" y="130" width="116" height="48" fill="transparent"/>
-          <circle id="pin-vandeemter" cx="132" cy="146" r="12" fill="var(--c-lake)" fill-opacity="0.18" stroke="var(--c-lake)" stroke-width="1.6"/>
-          <circle cx="132" cy="146" r="4.8" fill="var(--c-lake)"/>
-          <text x="68" y="172" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700">van-deemter-lab</text>
+        <g class="atlas-pin" data-pin="rill" data-region="shiny" data-x="454" data-y="140" role="button" tabindex="0" aria-label="Inspect rill and suppose">
+          <rect x="434" y="120" width="150" height="40" fill="transparent"/>
+          <circle class="pin-pulse" cx="454" cy="140" r="16" fill="none" stroke="var(--c-lake)" stroke-width="1.4"/>
+          <g class="pin-reticle" stroke="var(--c-lake)" stroke-width="1.4" fill="none">
+            <path d="M 440 131 v -5 h 5 M 468 131 v -5 h -5 M 440 149 v 5 h 5 M 468 149 v 5 h -5"/>
+          </g>
+          <g class="pin-marker">
+            <circle id="pin-rill" class="pin-ring" cx="454" cy="140" r="12.5" fill="var(--s-paper)" stroke="var(--c-lake)" stroke-width="1.9"/>
+            <circle class="pin-core-bg" cx="454" cy="140" r="8.8" fill="var(--c-lake)" fill-opacity="0.16"/>
+            <path d="M 448.5 137 q 2.8 -2 5.5 0 t 5.5 0 M 448.5 142 q 2.8 -2 5.5 0 t 5.5 0" fill="none" stroke="var(--c-lake)" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+          <g class="pin-label">
+            <text x="472" y="138" class="pin-title">rill &amp; suppose</text>
+            <text x="472" y="150" class="pin-sub">Feeds &amp; beliefs</text>
+          </g>
         </g>
 
-        <g class="atlas-pin" data-pin="shinymcp" role="button" tabindex="0" aria-label="Inspect shinymcp">
-          <rect x="384" y="66" width="150" height="42" fill="transparent"/>
-          <circle id="pin-shinymcp" cx="404" cy="86" r="16" fill="var(--c-copper)" fill-opacity="0.28" stroke="var(--c-copper)" stroke-width="2.6"/>
-          <circle cx="404" cy="86" r="6" fill="var(--c-copper)"/>
-          <text x="425" y="82" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">shinymcp</text>
-          <text x="425" y="96" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">Shiny -> MCP Apps</text>
+        <g class="atlas-pin" data-pin="deputy" data-region="agents" data-x="414" data-y="254" role="button" tabindex="0" aria-label="Inspect deputy">
+          <rect x="394" y="232" width="146" height="44" fill="transparent"/>
+          <circle class="pin-pulse" cx="414" cy="254" r="17.5" fill="none" stroke="var(--c-ochre)" stroke-width="1.5"/>
+          <g class="pin-reticle" stroke="var(--c-ochre)" stroke-width="1.5" fill="none">
+            <path d="M 398 243 v -5 h 5 M 430 243 v -5 h -5 M 398 265 v 5 h 5 M 430 265 v 5 h -5"/>
+          </g>
+          <g class="pin-marker">
+            <circle id="pin-deputy" class="pin-ring" cx="414" cy="254" r="14" fill="var(--s-paper)" stroke="var(--c-ochre)" stroke-width="2"/>
+            <circle class="pin-core-bg" cx="414" cy="254" r="9.8" fill="var(--c-ochre)" fill-opacity="0.17"/>
+            <polygon points="414,247 416,251.8 421,252.2 417.2,255.4 418.4,260.4 414,257.6 409.6,260.4 410.8,255.4 407,252.2 412,251.8" fill="var(--c-ochre)"/>
+          </g>
+          <g class="pin-label">
+            <text x="434" y="251" class="pin-title">deputy</text>
+            <text x="434" y="264" class="pin-sub">Agent workflows</text>
+          </g>
         </g>
 
-        <g class="atlas-pin" data-pin="rill" role="button" tabindex="0" aria-label="Inspect rill and suppose">
-          <rect x="430" y="118" width="134" height="32" fill="transparent"/>
-          <circle id="pin-rill" cx="446" cy="134" r="12" fill="var(--c-lake)" fill-opacity="0.18" stroke="var(--c-lake)" stroke-width="1.6"/>
-          <circle cx="446" cy="134" r="4.8" fill="var(--c-lake)"/>
-          <text x="464" y="138" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">rill &amp; suppose</text>
+        <g class="atlas-pin" data-pin="dsprrr" data-region="agents" data-x="328" data-y="326" role="button" tabindex="0" aria-label="Inspect dsprrr">
+          <rect x="308" y="306" width="124" height="40" fill="transparent"/>
+          <circle class="pin-pulse" cx="328" cy="326" r="16.5" fill="none" stroke="var(--c-ochre)" stroke-width="1.4"/>
+          <g class="pin-reticle" stroke="var(--c-ochre)" stroke-width="1.4" fill="none">
+            <path d="M 314 316 v -5 h 5 M 342 316 v -5 h -5 M 314 336 v 5 h 5 M 342 336 v 5 h -5"/>
+          </g>
+          <g class="pin-marker">
+            <circle id="pin-dsprrr" class="pin-ring" cx="328" cy="326" r="13" fill="var(--s-paper)" stroke="var(--c-ochre)" stroke-width="1.9"/>
+            <circle class="pin-core-bg" cx="328" cy="326" r="9" fill="var(--c-ochre)" fill-opacity="0.16"/>
+            <path d="M 322 329 L 327 323 L 330 326 L 334.5 321.5 M 331.5 321.5 L 334.5 321.5 L 334.5 324.5" fill="none" stroke="var(--c-ochre)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g class="pin-label">
+            <text x="346" y="324" class="pin-title">dsprrr</text>
+            <text x="346" y="336" class="pin-sub">DSPy for R</text>
+          </g>
         </g>
 
-        <g class="atlas-pin" data-pin="deputy" role="button" tabindex="0" aria-label="Inspect deputy">
-          <rect x="366" y="226" width="136" height="40" fill="transparent"/>
-          <circle id="pin-deputy" cx="386" cy="246" r="15" fill="var(--c-ochre)" fill-opacity="0.2" stroke="var(--c-ochre)" stroke-width="1.8"/>
-          <circle cx="386" cy="246" r="5.8" fill="var(--c-ochre)"/>
-          <text x="406" y="242" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700">deputy</text>
-          <text x="406" y="255" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">Agent workflows</text>
+        <g class="atlas-pin" data-pin="frontier" data-region="agents" data-x="486" data-y="332" role="button" tabindex="0" aria-label="Inspect tempest, scans, and graft">
+          <rect x="466" y="312" width="154" height="42" fill="transparent"/>
+          <circle class="pin-pulse" cx="486" cy="332" r="16.5" fill="none" stroke="var(--c-copper)" stroke-width="1.4"/>
+          <g class="pin-reticle" stroke="var(--c-copper)" stroke-width="1.4" fill="none">
+            <path d="M 472 322 v -5 h 5 M 500 322 v -5 h -5 M 472 342 v 5 h 5 M 500 342 v 5 h -5"/>
+          </g>
+          <g class="pin-marker">
+            <circle id="pin-frontier" class="pin-ring" cx="486" cy="332" r="13" fill="var(--s-paper)" stroke="var(--c-copper)" stroke-width="1.9"/>
+            <circle class="pin-core-bg" cx="486" cy="332" r="9" fill="var(--c-copper)" fill-opacity="0.16"/>
+            <circle cx="486" cy="328" r="2.1" fill="var(--c-copper)"/>
+            <circle cx="482" cy="335" r="2.1" fill="var(--c-ochre)"/>
+            <circle cx="490" cy="335" r="2.1" fill="var(--c-lake)"/>
+            <path d="M 486 328 L 482 335 L 490 335 Z" fill="none" stroke="var(--c-copper)" stroke-width="0.9" opacity="0.65"/>
+          </g>
+          <g class="pin-label">
+            <text x="504" y="330" class="pin-title">tempest · scans</text>
+            <text x="504" y="342" class="pin-sub">&amp; graft</text>
+          </g>
         </g>
 
-        <g class="atlas-pin" data-pin="dsprrr" role="button" tabindex="0" aria-label="Inspect dsprrr">
-          <rect x="304" y="288" width="112" height="38" fill="transparent"/>
-          <circle id="pin-dsprrr" cx="322" cy="306" r="13" fill="var(--c-ochre)" fill-opacity="0.18" stroke="var(--c-ochre)" stroke-width="1.6"/>
-          <circle cx="322" cy="306" r="5" fill="var(--c-ochre)"/>
-          <text x="340" y="304" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700">dsprrr</text>
-          <text x="340" y="317" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="9">DSPy for R</text>
-        </g>
-
-        <g class="atlas-pin" data-pin="frontier" role="button" tabindex="0" aria-label="Inspect tempest, scans, and graft">
-          <rect x="420" y="282" width="164" height="58" fill="transparent"/>
-          <circle id="pin-frontier" cx="496" cy="300" r="14" fill="var(--c-copper)" fill-opacity="0.2" stroke="var(--c-copper)" stroke-width="1.8"/>
-          <circle cx="496" cy="300" r="5.2" fill="var(--c-copper)"/>
-          <text x="424" y="332" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700">tempest · scans · graft</text>
-        </g>
-
-        <g class="atlas-pin" data-pin="menagerie" role="button" tabindex="0" aria-label="Inspect Menagerie Crossing">
-          <rect x="38" y="278" width="136" height="66" fill="transparent"/>
-          <circle id="pin-menagerie" cx="110" cy="296" r="13" fill="var(--c-plum)" fill-opacity="0.18" stroke="var(--c-plum)" stroke-width="1.6"/>
-          <circle cx="110" cy="298" r="3" fill="var(--c-plum)"/>
-          <circle cx="106" cy="293" r="1.4" fill="var(--c-plum)"/>
-          <circle cx="110" cy="291.5" r="1.4" fill="var(--c-plum)"/>
-          <circle cx="114" cy="293" r="1.4" fill="var(--c-plum)"/>
-          <text x="42" y="324" fill="var(--c-plum)" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700">Menagerie Crossing</text>
-          <text x="58" y="337" fill="var(--s-ink-soft)" font-family="'JetBrains Mono', monospace" font-size="8.8">2 dogs · 5 cats</text>
+        <g class="atlas-pin" data-pin="menagerie" data-region="home" data-x="126" data-y="314" role="button" tabindex="0" aria-label="Inspect Menagerie Crossing">
+          <rect x="64" y="294" width="126" height="72" fill="transparent"/>
+          <circle class="pin-pulse" cx="126" cy="314" r="16.5" fill="none" stroke="var(--c-plum)" stroke-width="1.4"/>
+          <g class="pin-reticle" stroke="var(--c-plum)" stroke-width="1.4" fill="none">
+            <path d="M 112 304 v -5 h 5 M 140 304 v -5 h -5 M 112 324 v 5 h 5 M 140 324 v 5 h -5"/>
+          </g>
+          <g class="pin-marker">
+            <circle id="pin-menagerie" class="pin-ring" cx="126" cy="314" r="13" fill="var(--s-paper)" stroke="var(--c-plum)" stroke-width="1.9"/>
+            <circle class="pin-core-bg" cx="126" cy="314" r="9" fill="var(--c-plum)" fill-opacity="0.16"/>
+            <circle cx="126" cy="316.5" r="3" fill="var(--c-plum)"/>
+            <circle cx="122" cy="311.5" r="1.45" fill="var(--c-plum)"/>
+            <circle cx="126" cy="310" r="1.45" fill="var(--c-plum)"/>
+            <circle cx="130" cy="311.5" r="1.45" fill="var(--c-plum)"/>
+          </g>
+          <g class="pin-label">
+            <text x="126" y="345" text-anchor="middle" class="pin-title pin-title-plum">Menagerie Crossing</text>
+            <text x="126" y="357" text-anchor="middle" class="pin-sub">2 dogs · 5 cats</text>
+          </g>
         </g>
       </svg>
     </div>
 
-    <div class="atlas-tab-strip" role="group" aria-label="Map projects">
-      <button type="button" class="lm-btn is-active" data-lm="shinymcp">shinymcp</button>
-      <button type="button" class="lm-btn" data-lm="measure">measure</button>
-      <button type="button" class="lm-btn" data-lm="vandeemter">van-deemter-lab</button>
-      <button type="button" class="lm-btn" data-lm="deputy">deputy</button>
-      <button type="button" class="lm-btn" data-lm="dsprrr">dsprrr</button>
-      <button type="button" class="lm-btn" data-lm="frontier">tempest/scans/graft</button>
-      <button type="button" class="lm-btn" data-lm="rill">rill &amp; suppose</button>
-      <button type="button" class="lm-btn" data-lm="menagerie">Menagerie</button>
+    <div class="atlas-nav-bar">
+      <div class="atlas-tab-strip" role="group" aria-label="Map projects">
+        <button type="button" class="lm-btn is-active" data-lm="shinymcp"><i class="lm-dot" style="background: var(--c-copper);"></i>shinymcp</button>
+        <button type="button" class="lm-btn" data-lm="measure"><i class="lm-dot" style="background: var(--c-pine);"></i>measure</button>
+        <button type="button" class="lm-btn" data-lm="vandeemter"><i class="lm-dot" style="background: var(--c-lake);"></i>van-deemter-lab</button>
+        <button type="button" class="lm-btn" data-lm="deputy"><i class="lm-dot" style="background: var(--c-ochre);"></i>deputy</button>
+        <button type="button" class="lm-btn" data-lm="dsprrr"><i class="lm-dot" style="background: var(--c-ochre);"></i>dsprrr</button>
+        <button type="button" class="lm-btn" data-lm="frontier"><i class="lm-dot" style="background: var(--c-copper);"></i>tempest/scans/graft</button>
+        <button type="button" class="lm-btn" data-lm="rill"><i class="lm-dot" style="background: var(--c-lake);"></i>rill &amp; suppose</button>
+        <button type="button" class="lm-btn" data-lm="menagerie"><i class="lm-dot" style="background: var(--c-plum);"></i>Menagerie</button>
+      </div>
+      <div class="atlas-step-nav" aria-label="Cycle projects">
+        <button type="button" id="atlas-prev" class="atlas-step-btn" aria-label="Previous project" title="Previous project (Left arrow)">←</button>
+        <span id="atlas-counter" class="atlas-counter">1/8</span>
+        <button type="button" id="atlas-next" class="atlas-step-btn" aria-label="Next project" title="Next project (Right arrow)">→</button>
+      </div>
     </div>
   </div>
 
@@ -218,7 +450,7 @@ include-after-body:
       <span id="sheet-stamp" class="stamp-badge">R · MCP</span>
     </div>
 
-    <div class="sheet-body">
+    <div id="sheet-body" class="sheet-body">
       <div>
         <div class="sheet-title-row">
           <h2 id="sheet-title">shinymcp</h2>
@@ -226,15 +458,18 @@ include-after-body:
         </div>
         <p id="sheet-desc" class="sheet-desc"></p>
 
-        <div class="sheet-widget">
+        <div class="sheet-widget" id="sheet-widget">
           <div class="widget-head">
-            <strong id="sheet-widget-title">Try switching datasets</strong>
-            <span id="sheet-widget-sub">Preview</span>
+            <strong id="sheet-widget-title">Inline MCP preview</strong>
+            <span id="sheet-widget-sub">Interactive</span>
           </div>
           <div id="sheet-widget-body"></div>
         </div>
 
-        <pre id="sheet-code" class="sheet-code"></pre>
+        <div class="sheet-code-wrap">
+          <pre id="sheet-code" class="sheet-code"></pre>
+          <button type="button" id="sheet-copy-btn" class="sheet-copy-btn" aria-label="Copy code snippet">Copy</button>
+        </div>
       </div>
 
       <div class="sheet-footer">
