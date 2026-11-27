@@ -29,7 +29,7 @@ Before all this, I was a bench chemist. I grew up in South Carolina and started 
 
 I did my graduate work at the [University of Illinois at Urbana-Champaign](https://chemistry.illinois.edu), in [Ryan Bailey's lab](https://www.baileylab.com), building silicon photonic biosensors and microfluidic tools for cancer diagnostics and precision medicine.
 
-I live in mid-Michigan with my wife and son. My wife is a veterinarian who brings home too many furry friends: the current menagerie is two dogs and five cats.
+I live in mid-Michigan with my wife and our three kids. My wife is a veterinarian who brings home too many furry friends: the current menagerie is one dog and four cats.
 
 [View Resume](/resume/) · [Download PDF](resources/resume.pdf)
 
@@ -44,8 +44,6 @@ I live in mid-Michigan with my wife and son. My wife is a veterinarian who bring
 ::: {.crest-copy}
 ### About the Hex-Compass
 
-The site's mark fuses a chemistry benzene ring, an `#rstats` package hex, and a compass needle. The full crest pairs golden aromatic rings over mid-Michigan pine hills and Great Lakes waves.
-
-[Explore the Brand Kit & downloads →](brand.qmd)
+The site's mark combines a chemistry benzene ring, an `#rstats` package hex, and a compass needle. The full crest puts `(-)-geosmin` (the molecule behind petrichor, wet forest soil, and fresh lake air) in the sky over mid-Michigan pine hills and Great Lakes waves.
 :::
 :::

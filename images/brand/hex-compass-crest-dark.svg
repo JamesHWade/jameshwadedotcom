@@ -1,42 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 264" width="240" height="264" fill="none" role="img" aria-label="James H Wade Mid-Michigan Hex-Compass crest (dark)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 264" width="240" height="264" fill="none" role="img" aria-label="James H Wade Mid-Michigan Hex-Compass crest with geosmin molecule (dark)">
   <defs>
     <clipPath id="crest-clip-dark">
       <polygon points="120,16 218,73 218,191 120,248 22,191 22,73"/>
     </clipPath>
   </defs>
 
-  <!-- Outer Starlight Frame + Campfire Amber Trim -->
+  <!-- Outer Starlight Frame + Amber Trim -->
   <polygon points="120,8 225,69 225,195 120,256 15,195 15,69" fill="#FAF2DF"/>
   <polygon points="120,14 220,72 220,192 120,250 20,192 20,72" fill="#F7B538"/>
   <polygon points="120,18 216,74 216,190 120,246 24,190 24,74" fill="#101B24"/>
 
   <g clip-path="url(#crest-clip-dark)">
-    <!-- Star Chart Halo + Glowing Benzene Constellations -->
-    <circle cx="120" cy="94" r="44" stroke="#F7B538" stroke-width="1.5" opacity="0.7"/>
+    <!-- Subtle Compass Halo behind Geosmin -->
+    <circle cx="120" cy="70" r="43" stroke="#2B4252" stroke-width="1.3" stroke-dasharray="3 3"/>
 
-    <g stroke="#FAF2DF" stroke-width="1.4" fill="none" opacity="0.9">
-      <polygon points="120,48 138,58 138,79 120,89 102,79 102,58"/>
-      <line x1="120" y1="36" x2="120" y2="48" stroke="#F7B538"/>
-      <line x1="138" y1="58" x2="152" y2="50" stroke="#F7B538"/>
-      <line x1="102" y1="58" x2="88" y2="50" stroke="#F7B538"/>
-      <line x1="107" y1="61" x2="107" y2="76" stroke="#42E3AC" stroke-width="1.8"/>
-      <line x1="133" y1="61" x2="133" y2="76" stroke="#54D2E8" stroke-width="1.8"/>
-      <line x1="102" y1="79" x2="84" y2="89"/>
-      <line x1="138" y1="79" x2="156" y2="89"/>
-      <polygon points="68,80 84,89 84,108 68,117 52,108 52,89" stroke="#8EB1C2"/>
-      <polygon points="172,80 188,89 188,108 172,117 156,108 156,89" stroke="#8EB1C2"/>
-      <line x1="57" y1="92" x2="57" y2="105" stroke="#F7B538"/>
-      <line x1="183" y1="92" x2="183" y2="105" stroke="#F7B538"/>
+    <!-- (-)-Geosmin: (4S,4aS,8aR)-4,8a-dimethyloctahydronaphthalen-4a(2H)-ol -->
+    <g stroke="#FAF2DF" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <polyline points="120,54 101,43 82,54 82,76 101,87 120,76"/>
+      <polyline points="120,54 139,43 158,54 158,76 139,87 120,76"/>
+      <line x1="120" y1="54" x2="120" y2="76"/>
+    </g>
+
+    <!-- C8a-CH3 (8aR): Solid Wedge pointing UP -->
+    <polygon points="120,54 117.2,35 122.8,35" fill="#FAF2DF"/>
+
+    <!-- C4a-OH (4aS): Hashed/Dashed Bond pointing DOWN -->
+    <g stroke="#F46E57" stroke-width="1.8" stroke-linecap="round">
+      <line x1="118.8" y1="80" x2="121.2" y2="80"/>
+      <line x1="118.1" y1="83.5" x2="121.9" y2="83.5"/>
+      <line x1="117.4" y1="87" x2="122.6" y2="87"/>
+      <line x1="116.7" y1="90.5" x2="123.3" y2="90.5"/>
+    </g>
+    <text x="120" y="103" text-anchor="middle" fill="#F46E57" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="10.5" font-weight="700">OH</text>
+
+    <!-- C4-CH3 (4S): Hashed/Dashed Bond pointing DOWN-RIGHT -->
+    <g stroke="#FAF2DF" stroke-width="1.7" stroke-linecap="round">
+      <line x1="141.2" y1="90.6" x2="143.2" y2="88.6"/>
+      <line x1="143.5" y1="93.8" x2="146.3" y2="91.0"/>
+      <line x1="145.8" y1="97.0" x2="149.4" y2="93.4"/>
+      <line x1="148.1" y1="100.2" x2="152.5" y2="95.8"/>
     </g>
 
     <!-- Starlight Sparks -->
     <g fill="#F7B538">
-      <polygon points="44,74 46,79 51,81 46,83 44,88 42,83 37,81 42,79"/>
-      <polygon points="196,74 198,79 203,81 198,83 196,88 194,83 189,81 194,79"/>
-      <polygon points="145,104 147,108 151,110 147,112 145,116 143,112 139,110 143,108"/>
-      <circle cx="90" cy="108" r="1.8" fill="#FAF2DF"/>
-      <circle cx="152" cy="68" r="1.6" fill="#FAF2DF"/>
-      <circle cx="78" cy="62" r="1.5" fill="#42E3AC"/>
+      <polygon points="48,74 50,79 55,81 50,83 48,88 46,83 41,81 46,79"/>
+      <polygon points="192,74 194,79 199,81 194,83 192,88 190,83 185,81 190,79"/>
+      <circle cx="64" cy="100" r="1.7" fill="#FAF2DF"/>
+      <circle cx="176" cy="100" r="1.7" fill="#FAF2DF"/>
+      <circle cx="96" cy="34" r="1.4" fill="#42E3AC"/>
+      <circle cx="144" cy="34" r="1.4" fill="#54D2E8"/>
     </g>
 
     <!-- Deep Aurora Pine Hills -->
@@ -66,11 +78,11 @@
 
     <!-- Luminous Faceted Compass Needle -->
     <g stroke="#101B24" stroke-width="2" stroke-linejoin="round">
-      <polygon points="120,56 120,136 105,136" fill="#F46E57"/>
-      <polygon points="120,56 135,136 120,136" fill="#C9462E"/>
-      <polygon points="120,214 105,136 120,136" fill="#F7B538"/>
-      <polygon points="120,214 120,136 135,136" fill="#C97D10"/>
-      <polygon points="120,127 127,136 120,145 113,136" fill="#FAF2DF"/>
+      <polygon points="120,117 120,166 107,166" fill="#F46E57"/>
+      <polygon points="120,117 133,166 120,166" fill="#C9462E"/>
+      <polygon points="120,217 107,166 120,166" fill="#F7B538"/>
+      <polygon points="120,217 120,166 133,166" fill="#C97D10"/>
+      <polygon points="120,158 126,166 120,174 114,166" fill="#FAF2DF"/>
     </g>
 
     <text x="120" y="238" text-anchor="middle" fill="#FAF2DF" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="1.5">JHW</text>

@@ -51,8 +51,6 @@ website:
   page-footer:
     left: "© 2023–2026 James H. Wade. Made in Mid-Michigan with Quarto. Text and images [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), code [MIT](https://choosealicense.com/licenses/mit/)."
     right:
-      - text: "Brand Kit"
-        href: brand.qmd
       - text: "llms.txt"
         href: /llms.txt
       - text: "RSS"

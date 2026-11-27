@@ -19,8 +19,7 @@ Deployment is automated: push to `main` triggers GitHub Actions → Quarto rende
 ## Architecture
 
 - **`_quarto.yml`** — Main config (Quarto 1.11+): site metadata, `llms-txt: true`, compass navbar, light/dark theme (`respect-user-color-scheme: true`), strata ribbon header, fonts, footer, freeze settings
-- **`_brand.yml`** — Unified Light ("Daylight Survey") and Dark ("Star Chart Night") brand definitions: color palette, typography, responsive 3-tier Hex-Compass logos (`images/brand/`), and social links
-- **`brand.qmd`** — Live Brand Kit page showcasing all 3 logo tiers, horizontal lockups, Light/Dark palettes, OG card (`images/og-card.png`), and `_brand.yml` reuse instructions
+- **`_brand.yml`** — Unified Light and Dark brand definitions: color palette, typography, responsive 3-tier Hex-Compass logos (`images/brand/`), and social links
 - **`custom.scss`** — Light theme ("Daylight Survey"): Bootstrap overrides and `:root` CSS variables (cream vellum, pale aqua water, pine/copper/ochre/lake/plum geological map inks)
 - **`custom-dark.scss`** — Dark theme ("Star Chart Night"): Bootstrap overrides and dark `:root` CSS variables (midnight Great Lakes slate, aurora mint, campfire amber, coral, orchid)
 - **`assets/atlas.css`** — Shared layout and component styles loaded in both light and dark modes (strata ribbon, interactive map workbench, field sheets, bench slips, field-notes ledger, talks cards)
