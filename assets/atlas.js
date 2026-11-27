@@ -1472,16 +1472,60 @@
     // Copy snippet button
     const copyBtn = document.getElementById("sheet-copy-btn");
     if (copyBtn) {
-      copyBtn.addEventListener("click", async () => {
+      const setCopyLabel = (label, delay = 1500) => {
+        copyBtn.textContent = label;
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => {
+          copyBtn.textContent = "Copy";
+        }, delay);
+      };
+
+      const fallbackCopy = (text) => {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
         try {
-          await navigator.clipboard.writeText(currentCode);
-          copyBtn.textContent = "Copied";
-          clearTimeout(copyTimer);
-          copyTimer = setTimeout(() => {
-            copyBtn.textContent = "Copy";
-          }, 1500);
+          ok = document.execCommand("copy");
         } catch {
-          copyBtn.textContent = "Copied";
+          ok = false;
+        }
+        document.body.removeChild(ta);
+        return ok;
+      };
+
+      const selectCodeBlock = () => {
+        const codeEl = document.getElementById("sheet-code");
+        if (!codeEl || !window.getSelection) return;
+        const range = document.createRange();
+        range.selectNodeContents(codeEl);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      };
+
+      copyBtn.addEventListener("click", async () => {
+        let copied = false;
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+          try {
+            await navigator.clipboard.writeText(currentCode);
+            copied = true;
+          } catch {
+            copied = fallbackCopy(currentCode);
+          }
+        } else {
+          copied = fallbackCopy(currentCode);
+        }
+
+        if (copied) {
+          setCopyLabel("Copied");
+        } else {
+          selectCodeBlock();
+          setCopyLabel("Copy failed", 2000);
         }
       });
     }
