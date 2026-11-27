@@ -7,61 +7,125 @@ meta:
     bluesky: https://bsky.app/profile/jameshwade.bsky.social
     linkedin: https://www.linkedin.com/in/james-h-wade
 
+logo:
+  images:
+    hex-small-light:
+      path: images/brand/hex-compass-small-light.svg
+      alt: James H Wade Hex-Compass mark (light)
+    hex-small-dark:
+      path: images/brand/hex-compass-small-dark.svg
+      alt: James H Wade Hex-Compass mark (dark)
+    hex-medium-light:
+      path: images/brand/hex-compass-medium-light.svg
+      alt: James H Wade Engraved Hex-Compass seal (light)
+    hex-medium-dark:
+      path: images/brand/hex-compass-medium-dark.svg
+      alt: James H Wade Engraved Hex-Compass seal (dark)
+    hex-crest-light:
+      path: images/brand/hex-compass-crest-light.svg
+      alt: James H Wade Mid-Michigan Hex-Compass crest (light)
+    hex-crest-dark:
+      path: images/brand/hex-compass-crest-dark.svg
+      alt: James H Wade Mid-Michigan Hex-Compass crest (dark)
+  small:
+    light: hex-small-light
+    dark: hex-small-dark
+  medium:
+    light: hex-medium-light
+    dark: hex-medium-dark
+  large:
+    light: hex-crest-light
+    dark: hex-crest-dark
+
 color:
   palette:
-    cream: "#faf7f2"
-    cream-dark: "#f0ece4"
-    ink: "#1c1c2e"
-    ink-light: "#3d3d52"
-    teal: "#1b6b4a"
-    teal-dark: "#0f4d35"
-    teal-light: "#28a06e"
-    amber: "#c27839"
-    amber-light: "#d4956a"
-    warm-gray: "#8b8680"
-    mid-gray: "#6b6660"
-    border: "#e0dbd2"
-    # Bootstrap color name aliases for tooling compatibility
-    green: teal
-    orange: amber
-    white: cream
-    black: ink
-  foreground: ink
-  background: cream
-  primary: teal
-  secondary: amber
-  success: teal-light
-  warning: amber
-  light: cream-dark
-  dark: ink
+    # Daylight Survey (Light)
+    vellum: "#FBF5E6"
+    paper: "#FFFDF7"
+    parchment-tint: "#F3EAD3"
+    ink-slate: "#16262E"
+    pine: "#19684B"
+    copper: "#C9462E"
+    ochre: "#C97D10"
+    lake: "#0D7A87"
+    plum: "#7E3661"
+    # Star Chart Night (Dark)
+    midnight: "#101B24"
+    night-paper: "#162531"
+    starlight: "#FAF2DF"
+    aurora: "#42E3AC"
+    coral: "#F46E57"
+    amber: "#F7B538"
+    bay: "#54D2E8"
+    orchid: "#DE85D4"
+    # Bootstrap aliases
+    green: pine
+    orange: ochre
+    red: copper
+    blue: lake
+    white: vellum
+    black: ink-slate
+
+  background:
+    light: vellum
+    dark: midnight
+  foreground:
+    light: ink-slate
+    dark: starlight
+  primary:
+    light: pine
+    dark: aurora
+  secondary:
+    light: copper
+    dark: coral
+  success:
+    light: pine
+    dark: aurora
+  warning:
+    light: ochre
+    dark: amber
+  info:
+    light: lake
+    dark: bay
+  light:
+    light: parchment-tint
+    dark: night-paper
+  dark:
+    light: ink-slate
+    dark: starlight
 
 typography:
   fonts:
     - family: Bricolage Grotesque
       source: google
-      weight: [200, 300, 400, 500, 600, 700, 800]
+      weight: [400, 500, 600, 700, 800]
     - family: Newsreader
       source: google
-      weight: [200, 300, 400, 500, 600, 700, 800]
+      weight: [300, 400, 500, 600, 700]
       style: [normal, italic]
     - family: JetBrains Mono
       source: google
-      weight: [100, 200, 300, 400, 500, 600, 700, 800]
+      weight: [400, 500, 600, 700]
       style: [normal, italic]
   base:
     family: Newsreader
     size: 1.05rem
     line-height: 1.78
   headings:
-    family: Bricolage Grotesque
+    family: Newsreader
     weight: 700
-    line-height: 1.25
-    color: ink
+    line-height: 1.2
   monospace:
     family: JetBrains Mono
     size: 0.88em
   monospace-inline:
-    color: amber
-    background-color: cream-dark
+    color:
+      light: copper
+      dark: coral
+    background-color:
+      light: parchment-tint
+      dark: night-paper
   link:
-    color: teal
+    color:
+      light: pine
+      dark: aurora

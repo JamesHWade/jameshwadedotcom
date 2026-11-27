@@ -1,0 +1,14 @@
+```{=html}
+<div class="bench-slips-grid">
+<% for (const item of items) { %>
+  <a class="bench-slip tone-<%= item.tone %>" href="<%= item.href %>" data-focus-landmark="<%= item.landmark %>">
+    <div class="slip-meta">
+      <span><%= item.meta_left %></span>
+      <span><%= item.meta_right %></span>
+    </div>
+    <div class="slip-title"><%= item.title %></div>
+    <p class="slip-desc"><%= item.description %></p>
+  </a>
+<% } %>
+</div>
+```

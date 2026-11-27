@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 72" width="360" height="72" fill="none" role="img" aria-label="James H Wade horizontal brand lockup (light)">
+  <g transform="translate(4, 4)">
+    <g stroke="#16262E" stroke-width="3.2" stroke-linecap="butt">
+      <line x1="35.5" y1="6" x2="52.8" y2="16"/>
+      <line x1="56.2" y1="22" x2="56.2" y2="42"/>
+      <line x1="52.8" y1="48" x2="35.5" y2="58"/>
+      <line x1="28.5" y1="58" x2="11.2" y2="48"/>
+      <line x1="7.8" y1="42" x2="7.8" y2="22"/>
+      <line x1="11.2" y1="16" x2="28.5" y2="6"/>
+    </g>
+    <line x1="13.8" y1="20.4" x2="28.5" y2="11.9" stroke="#19684B" stroke-width="2.8"/>
+    <line x1="50.4" y1="23.5" x2="50.4" y2="40.5" stroke="#0D7A87" stroke-width="2.8"/>
+    <line x1="28.5" y1="52.1" x2="13.8" y2="43.6" stroke="#C97D10" stroke-width="2.8"/>
+    <polygon points="32,10 32,32 16,32 27.5,27.5" fill="#DC583D"/>
+    <polygon points="32,10 36.5,27.5 48,32 32,32" fill="#B53822"/>
+    <polygon points="32,54 27.5,36.5 16,32 32,32" fill="#19684B"/>
+    <polygon points="32,54 32,32 48,32 36.5,36.5" fill="#16262E"/>
+    <circle cx="32" cy="32" r="2.2" fill="#FBF5E6"/>
+  </g>
+  <text x="82" y="38" fill="#16262E" font-family="Newsreader, Georgia, serif" font-size="28" font-weight="700" letter-spacing="-0.4">James H. Wade</text>
+  <text x="83" y="56" fill="#435760" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="10.2" font-weight="600" letter-spacing="1.6">CHEMISTRY · CODE · AI TOOLS</text>
+</svg>

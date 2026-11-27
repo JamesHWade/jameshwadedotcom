@@ -65,3 +65,5 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 /.luarc.json
+
+**/*.quarto_ipynb

@@ -1,262 +1,94 @@
 /*-- scss:defaults --*/
 
-// ==============================
-// Dark Color Palette
-// ==============================
-$cream:       #1a1a2e;
-$cream-dark:  #232340;
-$ink:         #e8e6e1;
-$ink-light:   #c5c3bc;
-$teal:        #34d399;
-$teal-dark:   #6ee7b7;
-$teal-light:  #28a06e;
-$amber:       #e0a370;
-$amber-light: #d4956a;
-$warm-gray:   #9b978f;
-$mid-gray:    #a8a49c;
-$border:      #2e2e48;
+// Star Chart Night Palette (Dark)
+$midnight:      #101B24;
+$night-paper:   #162531;
+$starlight:     #FAF2DF;
+$border:        #2B4252;
+$aurora:        #42E3AC;
+$coral:         #F46E57;
+$amber:         #F7B538;
 
-// ==============================
-// Bootstrap Variable Overrides
-// ==============================
-$body-bg: $cream;
-$body-color: $ink;
-$primary: $teal;
-$secondary: $amber;
-$light: $cream;
-$dark: $ink;
+$body-bg: $midnight;
+$body-color: $starlight;
+$primary: $aurora;
+$secondary: $coral;
+$light: $night-paper;
+$dark: $starlight;
 
-$headings-color: $ink;
+$font-family-sans-serif: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+$font-family-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+$font-family-monospace: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+$font-family-base: $font-family-serif;
+$headings-font-family: $font-family-serif;
 
-$link-color: $teal;
-$link-hover-color: $teal-dark;
+$font-size-base: 1.05rem;
+$line-height-base: 1.78;
+$headings-font-weight: 700;
+$headings-line-height: 1.2;
+$headings-color: $starlight;
 
+$link-color: $aurora;
+$link-hover-color: $coral;
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+$border-radius: 3px;
+$border-radius-sm: 2px;
+$border-radius-lg: 4px;
+
+$card-bg: $night-paper;
 $card-border-color: $border;
-$card-bg: $cream;
+$card-border-radius: 3px;
 
-$navbar-dark-color: $ink;
-$navbar-dark-hover-color: $teal;
-$navbar-dark-active-color: $teal;
+$navbar-bg: $night-paper;
+$navbar-fg: $starlight;
+$navbar-hl: $coral;
+$navbar-padding-y: 0.7rem;
 
-$code-color: $amber;
+$code-color: $coral;
+$code-block-bg: #0A131A;
 
 /*-- scss:rules --*/
 
-// ==============================
-// Navbar
-// ==============================
-.navbar {
-  border-bottom: 1px solid $border;
-  background: rgba($cream, 0.92) !important;
+:root,
+body.quarto-dark {
+  --s-bg: #101B24;
+  --s-paper: #162531;
+  --s-tint: #1C2E3D;
+  --s-water: #0B212A;
+  --s-land-chem: #15312A;
+  --s-land-agent: #31271A;
+  --s-land-shiny: #332022;
+  --s-land-woods: #1B2C27;
+  --s-contour: #264152;
+  --s-contour-deep: #35586C;
+  --s-ink: #FAF2DF;
+  --s-ink-soft: #B8CAD4;
+  --s-ink-faint: #849DA9;
+  --s-border: #2B4252;
+  --s-border-ink: #5A7D91;
 
-  .navbar-brand {
-    color: $ink !important;
+  --c-pine: #42E3AC;
+  --c-pine-bg: rgba(66, 227, 172, 0.14);
+  --c-copper: #F46E57;
+  --c-copper-bg: rgba(244, 110, 87, 0.16);
+  --c-ochre: #F7B538;
+  --c-ochre-bg: rgba(247, 181, 56, 0.15);
+  --c-lake: #54D2E8;
+  --c-lake-bg: rgba(84, 210, 232, 0.15);
+  --c-plum: #DE85D4;
+  --c-plum-bg: rgba(222, 133, 212, 0.16);
 
-    &:hover {
-      color: $teal !important;
-    }
-  }
-
-  .navbar-nav .nav-link {
-    color: $mid-gray;
-
-    &:hover, &.active {
-      color: $teal;
-    }
-  }
+  --s-code-bg: #0A131A;
+  --s-code-ink: #F5EFE2;
+  --s-shadow: 4px 4px 0px rgba(0, 0, 0, 0.42);
+  --s-shadow-hover: 6px 6px 0px rgba(0, 0, 0, 0.55);
+  --s-star-opacity: 0.72;
+  --s-active-tab-ink: #0E171F;
 }
 
-#quarto-search .aa-Form {
-  border-color: $border;
-  background: $cream-dark;
-
-  &:focus-within {
-    border-color: $teal;
-    box-shadow: 0 0 0 3px rgba($teal, 0.15);
-  }
-}
-
-// ==============================
-// Hero Section
-// ==============================
-.hero-title p {
-  color: $ink;
-}
-
-.hero-subtitle p {
-  color: $ink-light;
-}
-
-.hero-links {
-  .btn-primary-custom {
-    background: $teal;
-    color: $cream;
-    border-color: $teal;
-
-    &:hover {
-      background: $teal-dark;
-      border-color: $teal-dark;
-      color: $cream;
-    }
-  }
-
-  .btn-outline-custom {
-    color: $ink;
-    border-color: $border;
-
-    &:hover {
-      border-color: $teal;
-      color: $teal;
-    }
-  }
-}
-
-// ==============================
-// Cards
-// ==============================
-.quarto-grid-item {
-  &.card, .card {
-    background: $cream-dark;
-    border-color: $border;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-    &:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.15);
-      border-color: rgba($teal, 0.4);
-    }
-  }
-
-  .card-title a {
-    color: $ink;
-
-    &:hover {
-      color: $teal;
-    }
-  }
-
-  .card-text {
-    color: $mid-gray;
-  }
-
-  .listing-category {
-    background: rgba($teal, 0.1);
-    color: $mid-gray;
-
-    &:hover {
-      background: rgba($teal, 0.2);
-      color: $teal;
-    }
-  }
-
-  .card-footer {
-    border-top-color: $border;
-  }
-}
-
-// ==============================
-// Content
-// ==============================
 ::selection {
-  background: rgba($teal, 0.25);
-  color: $ink;
-}
-
-.quarto-title-banner {
-  background: $cream-dark !important;
-  border-bottom-color: $border;
-}
-
-#quarto-content {
-  h2 {
-    border-top-color: $border;
-  }
-
-  blockquote {
-    background: rgba($cream-dark, 0.5);
-
-    p {
-      color: $ink-light;
-    }
-  }
-
-  hr {
-    border-color: $border;
-  }
-}
-
-// ==============================
-// Code
-// ==============================
-pre {
-  border-color: lighten($border, 8%);
-}
-
-p code, li code {
-  background: lighten($cream-dark, 5%);
-  color: $amber;
-}
-
-// ==============================
-// About Page
-// ==============================
-.about-entity {
-  .about-image {
-    border-color: $border;
-
-    &:hover {
-      border-color: $teal;
-    }
-  }
-
-  .about-links .about-link {
-    border-color: $border;
-    color: $ink;
-
-    &:hover {
-      border-color: $teal;
-      color: $teal;
-      background: rgba($teal, 0.08);
-    }
-
-    .bi {
-      color: $teal;
-    }
-  }
-}
-
-// ==============================
-// Footer
-// ==============================
-.nav-footer {
-  border-top-color: $border;
-  background: $cream-dark;
-
-  .nav-footer-left {
-    color: $warm-gray;
-
-    a {
-      color: $teal;
-
-      &:hover {
-        color: $teal-dark;
-      }
-    }
-  }
-}
-
-// ==============================
-// TOC
-// ==============================
-#TOC {
-  a {
-    color: $mid-gray;
-
-    &:hover {
-      color: $teal;
-    }
-  }
-
-  .active {
-    color: $teal !important;
-  }
+  background: rgba($amber, 0.28);
+  color: $starlight;
 }

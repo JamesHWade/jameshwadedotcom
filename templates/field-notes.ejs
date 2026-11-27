@@ -1,0 +1,46 @@
+```{=html}
+<ul class="field-notes-ledger list">
+<% for (const item of items) {
+     const cats = item.categories || [];
+     const primary = cats.length > 0 ? cats[0] : "Note";
+     const lower = cats.map(c => String(c).toLowerCase());
+     let stampClass = "stamp-pine";
+     let stampLabel = primary;
+     if (lower.includes("webassembly") || lower.includes("pyodide")) {
+       stampClass = "stamp-lake";
+       stampLabel = lower.includes("python") ? "Pyodide" : "WebR";
+     } else if (lower.includes("mcp")) {
+       stampClass = "stamp-copper";
+       stampLabel = "MCP";
+     } else if (lower.includes("posit::conf")) {
+       stampClass = "stamp-ochre";
+       stampLabel = "Talk";
+     } else if (lower.includes("shiny")) {
+       stampClass = "stamp-copper";
+       stampLabel = "Shiny";
+     } else if (lower.includes("ai") || lower.includes("llm") || lower.includes("chatgpt")) {
+       stampClass = "stamp-ochre";
+       stampLabel = "AI";
+     }
+%>
+  <li class="ledger-entry" <%= metadataAttrs(item) %>>
+    <div class="ledger-main">
+      <a class="ledger-title listing-title" href="<%= item.path %>"><%- item.title %></a>
+      <% if (item.description) { %>
+        <div class="ledger-desc listing-description">
+```
+<%= item.description %>
+```{=html}
+        </div>
+      <% } %>
+    </div>
+    <div class="ledger-meta">
+      <span class="stamp-badge <%= stampClass %>"><%- stampLabel %></span>
+      <% if (item.date) { %>
+        <span class="ledger-date listing-date"><%- item.date %></span>
+      <% } %>
+    </div>
+  </li>
+<% } %>
+</ul>
+```

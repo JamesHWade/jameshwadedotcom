@@ -1,0 +1,13 @@
+---
+title: "Writing"
+description: "Articles, runnable WebAssembly notebooks, and talk notes on R, Python, Shiny, and AI tooling."
+listing:
+  contents: posts
+  sort: "date desc"
+  categories: true
+  sort-ui: false
+  filter-ui: true
+  template: templates/field-notes.ejs
+page-layout: full
+comments: false
+---

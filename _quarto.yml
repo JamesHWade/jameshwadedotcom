@@ -1,37 +1,66 @@
 project:
   type: website
   execute-dir: project
+  render:
+    - "*.qmd"
+    - "posts/*.qmd"
+    - "!posts/2023-01-10_model-monitoring-shinylive.qmd"
   resources:
     - resume/
+    - assets/
+    - images/brand/
 
 website:
   title: "James H Wade"
+  description: "Analytical chemist and research scientist building open-source R and Python developer tools for science, Shiny interfaces, and AI agents."
   site-url: https://jameshwade.com
-  favicon: images/favicon.ico
-  twitter-card: true
+  favicon: images/favicon.svg
+  open-graph:
+    image: images/og-card.png
+  twitter-card:
+    image: images/og-card.png
+    card-style: summary_large_image
+  llms-txt: true
+  draft-mode: gone
   navbar:
-    background: light
+    title: "James H. Wade"
     search: true
     right:
-      - about.qmd
+      - href: index.qmd
+        text: Home
+      - href: writing.qmd
+        text: Writing
       - href: talks.qmd
         text: Talks
+      - href: about.qmd
+        text: About
       - href: /resume/
         text: Resume
-      - icon: rss
-        href: index.xml
-      - icon: youtube
-        href: https://youtube.com/@james-h-wade
-      - icon: twitter-x
-        href: https://x.com/jameshwade
-      - icon: linkedin
-        href: https://linkedin.com/in/james-h-wade
       - icon: github
         href: https://github.com/jameshwade
+        aria-label: GitHub
       - icon: bluesky
         href: https://bsky.app/profile/jameshwade.bsky.social
+        aria-label: Bluesky
+      - icon: youtube
+        href: https://youtube.com/@james-h-wade
+        aria-label: YouTube
+      - icon: rss
+        href: index.xml
+        aria-label: RSS feed
   page-footer:
-    left: "© 2023–2026 James Wade. Text and images licensed [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), code [MIT](https://choosealicense.com/licenses/mit/) unless otherwise noted."
+    left: "© 2023–2026 James H. Wade. Made in Mid-Michigan with Quarto. Text and images [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), code [MIT](https://choosealicense.com/licenses/mit/)."
+    right:
+      - text: "Brand Kit"
+        href: brand.qmd
+      - text: "llms.txt"
+        href: /llms.txt
+      - text: "RSS"
+        href: index.xml
+      - text: "LinkedIn"
+        href: https://linkedin.com/in/james-h-wade
+      - text: "X"
+        href: https://x.com/jameshwade
 
 format:
   html:
@@ -42,18 +71,18 @@ format:
       dark:
         - brand
         - custom-dark.scss
+    css: assets/atlas.css
+    respect-user-color-scheme: true
     highlight-style:
       light: atom-one-light
       dark: atom-one-dark
     include-in-header:
       - text: |
+          <link rel="icon" href="/images/favicon.ico" sizes="any">
+          <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-
-# comments:
-#   giscus:
-#     repo: jameshwade/jameshwadedotcom
+          <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap" rel="stylesheet">
 
 execute:
   freeze: auto

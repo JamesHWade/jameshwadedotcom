@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" role="img" aria-label="James H Wade Hex-Compass mark (dark)">
+  <!-- Open-corner monoline hexagon in warm starlight cream -->
+  <g stroke="#FAF2DF" stroke-width="3.2" stroke-linecap="butt">
+    <line x1="35.5" y1="6" x2="52.8" y2="16"/>
+    <line x1="56.2" y1="22" x2="56.2" y2="42"/>
+    <line x1="52.8" y1="48" x2="35.5" y2="58"/>
+    <line x1="28.5" y1="58" x2="11.2" y2="48"/>
+    <line x1="7.8" y1="42" x2="7.8" y2="22"/>
+    <line x1="11.2" y1="16" x2="28.5" y2="6"/>
+  </g>
+
+  <!-- Three alternating aromatic double-bond accent bars -->
+  <line x1="13.8" y1="20.4" x2="28.5" y2="11.9" stroke="#42E3AC" stroke-width="2.8" stroke-linecap="butt"/>
+  <line x1="50.4" y1="23.5" x2="50.4" y2="40.5" stroke="#54D2E8" stroke-width="2.8" stroke-linecap="butt"/>
+  <line x1="28.5" y1="52.1" x2="13.8" y2="43.6" stroke="#F7B538" stroke-width="2.8" stroke-linecap="butt"/>
+
+  <!-- Sleek 4-point concave faceted compass star -->
+  <polygon points="32,10 32,32 16,32 27.5,27.5" fill="#F46E57"/>
+  <polygon points="32,10 36.5,27.5 48,32 32,32" fill="#C9462E"/>
+  <polygon points="32,54 27.5,36.5 16,32 32,32" fill="#42E3AC"/>
+  <polygon points="32,54 32,32 48,32 36.5,36.5" fill="#FAF2DF"/>
+  <circle cx="32" cy="32" r="2.2" fill="#101B24"/>
+</svg>
