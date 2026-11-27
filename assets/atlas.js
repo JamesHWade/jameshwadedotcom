@@ -147,6 +147,61 @@
   let currentCode = "";
   let copyTimer = null;
 
+  const FOCUS_ATTRS = [
+    "data-ds",
+    "data-idx",
+    "data-step",
+    "data-col",
+    "data-tool",
+    "data-pass",
+    "data-ftab",
+    "data-persona",
+    "data-scan",
+    "data-graft",
+    "data-rtab",
+    "data-feed",
+    "data-pet"
+  ];
+
+  function cssEscape(value) {
+    if (typeof CSS !== "undefined" && typeof CSS.escape === "function") {
+      return CSS.escape(value);
+    }
+    return String(value).replace(/["\\]/g, "\\$&");
+  }
+
+  function getFocusSelector(el) {
+    if (!el || el.nodeType !== 1) return null;
+    if (el.id) return `#${cssEscape(el.id)}`;
+    for (const attr of FOCUS_ATTRS) {
+      if (el.hasAttribute(attr)) {
+        return `[${attr}="${cssEscape(el.getAttribute(attr))}"]`;
+      }
+    }
+    return null;
+  }
+
+  function renderPreservingFocus(container, renderFn, preferredSelector = null) {
+    const active = document.activeElement;
+    const hadFocus = Boolean(active && container.contains(active));
+    const prevSelector = hadFocus ? getFocusSelector(active) : null;
+    const selector = preferredSelector || prevSelector;
+
+    renderFn();
+
+    if (!hadFocus) return;
+    let target = selector ? container.querySelector(selector) : null;
+    if (!target && preferredSelector && prevSelector) {
+      target = container.querySelector(prevSelector);
+    }
+    if (!target) {
+      target = container.querySelector("button, input, [tabindex='0']");
+    }
+    if (target && typeof target.focus === "function") {
+      target.focus({ preventScroll: true });
+    }
+  }
+
   /* =========================================================================
      WIDGET 1: shinymcp — Inline MCP Chat Preview
      ========================================================================= */
@@ -187,63 +242,72 @@
     const state = { ds: "sec", activeIdx: 0 };
 
     function render() {
-      const d = datasets[state.ds];
-      const maxVal = Math.max(...d.bars.map((b) => b.val)) * 1.15;
-      const sel = d.bars[state.activeIdx] || d.bars[0];
-      const barSvg = d.bars
-        .map((b, i) => {
-          const y = 8 + i * 22;
-          const w = Math.max(16, (b.val / maxVal) * 168);
-          const isSel = i === state.activeIdx;
-          const fill = isSel ? "var(--c-copper)" : "var(--c-lake)";
-          const op = isSel ? "1" : "0.45";
-          return `
-            <g class="mcp-bar-row" data-idx="${i}" style="cursor:pointer;">
-              <rect x="0" y="${y - 3}" width="276" height="20" fill="${isSel ? "var(--c-copper-bg)" : "transparent"}"/>
-              <text x="6" y="${y + 10}" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="9.5" font-weight="${isSel ? "700" : "500"}">${b.label}</text>
-              <rect x="64" y="${y + 1}" width="${w.toFixed(1)}" height="12" fill="${fill}" opacity="${op}" rx="1"/>
-              <text x="${(69 + w).toFixed(1)}" y="${y + 10.5}" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700">${b.val} ${d.unit}</text>
-            </g>`;
-        })
-        .join("");
+      renderPreservingFocus(container, () => {
+        const d = datasets[state.ds];
+        const maxVal = Math.max(...d.bars.map((b) => b.val)) * 1.15;
+        const sel = d.bars[state.activeIdx] || d.bars[0];
+        const barSvg = d.bars
+          .map((b, i) => {
+            const y = 8 + i * 22;
+            const w = Math.max(16, (b.val / maxVal) * 168);
+            const isSel = i === state.activeIdx;
+            const fill = isSel ? "var(--c-copper)" : "var(--c-lake)";
+            const op = isSel ? "1" : "0.45";
+            return `
+              <g class="mcp-bar-row" data-idx="${i}" role="button" tabindex="0" aria-label="Select ${b.label}: ${b.val} ${d.unit}" aria-pressed="${isSel ? "true" : "false"}" style="cursor:pointer;">
+                <rect x="0" y="${y - 3}" width="276" height="20" fill="${isSel ? "var(--c-copper-bg)" : "transparent"}"/>
+                <text x="6" y="${y + 10}" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="9.5" font-weight="${isSel ? "700" : "500"}">${b.label}</text>
+                <rect x="64" y="${y + 1}" width="${w.toFixed(1)}" height="12" fill="${fill}" opacity="${op}" rx="1"/>
+                <text x="${(69 + w).toFixed(1)}" y="${y + 10.5}" fill="var(--s-ink)" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700">${b.val} ${d.unit}</text>
+              </g>`;
+          })
+          .join("");
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-copper);">
-          <div class="w-pills">
-            <button type="button" class="w-pill ${state.ds === "sec" ? "is-on" : ""}" data-ds="sec">sec_polymers</button>
-            <button type="button" class="w-pill ${state.ds === "mtcars" ? "is-on" : ""}" data-ds="mtcars">mtcars</button>
-            <button type="button" class="w-pill ${state.ds === "iris" ? "is-on" : ""}" data-ds="iris">iris</button>
-          </div>
-          <div class="w-chat-frame">
-            <div class="w-chat-user">${d.prompt}</div>
-            <div class="w-chat-card">
-              <div class="w-row">
-                <strong style="color:var(--s-ink);">MCP UI · ${state.ds}</strong>
-                <span>${sel.label}: ${sel.sub}</span>
+        container.innerHTML = `
+          <div class="w-stack" style="--w-accent: var(--c-copper);">
+            <div class="w-pills">
+              <button type="button" class="w-pill ${state.ds === "sec" ? "is-on" : ""}" data-ds="sec">sec_polymers</button>
+              <button type="button" class="w-pill ${state.ds === "mtcars" ? "is-on" : ""}" data-ds="mtcars">mtcars</button>
+              <button type="button" class="w-pill ${state.ds === "iris" ? "is-on" : ""}" data-ds="iris">iris</button>
+            </div>
+            <div class="w-chat-frame">
+              <div class="w-chat-user">${d.prompt}</div>
+              <div class="w-chat-card">
+                <div class="w-row">
+                  <strong style="color:var(--s-ink);">MCP UI · ${state.ds}</strong>
+                  <span>${sel.label}: ${sel.sub}</span>
+                </div>
+                <svg viewBox="0 0 276 74" class="w-canvas" style="height:76px;" role="img" aria-label="Inline MCP bar chart">
+                  ${barSvg}
+                </svg>
               </div>
-              <svg viewBox="0 0 276 74" class="w-canvas" style="height:76px;" role="img" aria-label="Inline MCP bar chart">
-                ${barSvg}
-              </svg>
+            </div>
+            <div class="w-trace">
+              <code>→ tools/call summarize(data="${state.ds}", slice="${sel.label}", n=${sel.n})</code>
             </div>
           </div>
-          <div class="w-trace">
-            <code>→ tools/call summarize(data="${state.ds}", slice="${sel.label}", n=${sel.n})</code>
-          </div>
-        </div>
-      `;
+        `;
 
-      container.querySelectorAll("[data-ds]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.ds = btn.dataset.ds;
-          state.activeIdx = 0;
-          render();
+        container.querySelectorAll("[data-ds]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.ds = btn.dataset.ds;
+            state.activeIdx = 0;
+            render();
+          });
         });
-      });
 
-      container.querySelectorAll(".mcp-bar-row").forEach((row) => {
-        row.addEventListener("click", () => {
-          state.activeIdx = Number(row.dataset.idx);
-          render();
+        container.querySelectorAll(".mcp-bar-row").forEach((row) => {
+          const selectRow = () => {
+            state.activeIdx = Number(row.dataset.idx);
+            render();
+          };
+          row.addEventListener("click", selectRow);
+          row.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              selectRow();
+            }
+          });
         });
       });
     }
@@ -313,57 +377,59 @@
     }
 
     function render() {
-      const rawVals = xs.map((_, i) => pure[i] + drift[i] + noise[i]);
-      const procVals = xs.map((_, i) => {
-        let v = pure[i];
-        if (!state.als) v += drift[i];
-        if (!state.smooth) v += noise[i];
-        else v += noise[i] * 0.12;
-        return Math.max(0, v);
-      });
+      renderPreservingFocus(container, () => {
+        const rawVals = xs.map((_, i) => pure[i] + drift[i] + noise[i]);
+        const procVals = xs.map((_, i) => {
+          let v = pure[i];
+          if (!state.als) v += drift[i];
+          if (!state.smooth) v += noise[i];
+          else v += noise[i] * 0.12;
+          return Math.max(0, v);
+        });
 
-      const rawPath = toPath(rawVals);
-      const driftPath = toPath(drift);
-      const procPath = toPath(procVals);
-      const p1Area = state.peaks && state.als ? peakFillPath(0.16, 0.46, procVals) : "";
-      const p2Area = state.peaks && state.als ? peakFillPath(0.49, 0.88, procVals) : "";
+        const rawPath = toPath(rawVals);
+        const driftPath = toPath(drift);
+        const procPath = toPath(procVals);
+        const p1Area = state.peaks && state.als ? peakFillPath(0.16, 0.46, procVals) : "";
+        const p2Area = state.peaks && state.als ? peakFillPath(0.49, 0.88, procVals) : "";
 
-      const driftVal = state.als ? "0.0 mV" : "+18.4 mV";
-      const snrVal = state.smooth ? "64 dB" : "19 dB";
-      const calVal = state.als && state.peaks ? "64.2 kDa" : "Uncalibrated";
+        const driftVal = state.als ? "0.0 mV" : "+18.4 mV";
+        const snrVal = state.smooth ? "64 dB" : "19 dB";
+        const calVal = state.als && state.peaks ? "64.2 kDa" : "Uncalibrated";
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-pine);">
-          <div class="w-pills">
-            <button type="button" class="w-pill w-pill-subtle ${state.als ? "is-on" : ""}" data-step="als">${state.als ? "✓" : "+"} Baseline ALS</button>
-            <button type="button" class="w-pill w-pill-subtle ${state.smooth ? "is-on" : ""}" data-step="smooth">${state.smooth ? "✓" : "+"} Savitzky-Golay</button>
-            <button type="button" class="w-pill w-pill-subtle ${state.peaks ? "is-on" : ""}" data-step="peaks">${state.peaks ? "✓" : "+"} SEC Peaks</button>
+        container.innerHTML = `
+          <div class="w-stack" style="--w-accent: var(--c-pine);">
+            <div class="w-pills">
+              <button type="button" class="w-pill w-pill-subtle ${state.als ? "is-on" : ""}" data-step="als">${state.als ? "✓" : "+"} Baseline ALS</button>
+              <button type="button" class="w-pill w-pill-subtle ${state.smooth ? "is-on" : ""}" data-step="smooth">${state.smooth ? "✓" : "+"} Savitzky-Golay</button>
+              <button type="button" class="w-pill w-pill-subtle ${state.peaks ? "is-on" : ""}" data-step="peaks">${state.peaks ? "✓" : "+"} SEC Peaks</button>
+            </div>
+            <svg viewBox="0 0 280 78" class="w-canvas w-canvas-dark" style="height:82px;" role="img" aria-label="Interactive SEC chromatogram">
+              <line x1="8" y1="66" x2="272" y2="66" stroke="var(--s-border-ink)" stroke-width="0.9"/>
+              ${p1Area ? `<path d="${p1Area}" fill="var(--c-pine)" opacity="0.26"/>` : ""}
+              ${p2Area ? `<path d="${p2Area}" fill="var(--c-lake)" opacity="0.26"/>` : ""}
+              <path d="${rawPath}" fill="none" stroke="var(--s-ink-faint)" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity="${state.als || state.smooth ? "0.45" : "0"}"/>
+              ${state.als ? `<path d="${driftPath}" fill="none" stroke="var(--c-ochre)" stroke-width="1" stroke-dasharray="4 3" opacity="0.72"/>` : ""}
+              <path d="${procPath}" fill="none" stroke="var(--c-pine)" stroke-width="2" stroke-linejoin="round"/>
+              ${state.peaks && state.als ? `
+                <text x="90" y="17" text-anchor="middle" fill="var(--s-code-ink)" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">61% · Mw</text>
+                <text x="186" y="29" text-anchor="middle" fill="var(--s-code-ink)" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">39% · Olig</text>
+              ` : ""}
+            </svg>
+            <div class="w-metrics">
+              <div class="w-metric"><small>Drift</small><strong>${driftVal}</strong></div>
+              <div class="w-metric"><small>Signal SNR</small><strong>${snrVal}</strong></div>
+              <div class="w-metric"><small>SEC Mw</small><strong>${calVal}</strong></div>
+            </div>
           </div>
-          <svg viewBox="0 0 280 78" class="w-canvas w-canvas-dark" style="height:82px;" role="img" aria-label="Interactive SEC chromatogram">
-            <line x1="8" y1="66" x2="272" y2="66" stroke="var(--s-border-ink)" stroke-width="0.9"/>
-            ${p1Area ? `<path d="${p1Area}" fill="var(--c-pine)" opacity="0.26"/>` : ""}
-            ${p2Area ? `<path d="${p2Area}" fill="var(--c-lake)" opacity="0.26"/>` : ""}
-            <path d="${rawPath}" fill="none" stroke="var(--s-ink-faint)" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity="${state.als || state.smooth ? "0.45" : "0"}"/>
-            ${state.als ? `<path d="${driftPath}" fill="none" stroke="var(--c-ochre)" stroke-width="1" stroke-dasharray="4 3" opacity="0.72"/>` : ""}
-            <path d="${procPath}" fill="none" stroke="var(--c-pine)" stroke-width="2" stroke-linejoin="round"/>
-            ${state.peaks && state.als ? `
-              <text x="90" y="17" text-anchor="middle" fill="var(--s-code-ink)" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">61% · Mw</text>
-              <text x="186" y="29" text-anchor="middle" fill="var(--s-code-ink)" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700">39% · Olig</text>
-            ` : ""}
-          </svg>
-          <div class="w-metrics">
-            <div class="w-metric"><small>Drift</small><strong>${driftVal}</strong></div>
-            <div class="w-metric"><small>Signal SNR</small><strong>${snrVal}</strong></div>
-            <div class="w-metric"><small>SEC Mw</small><strong>${calVal}</strong></div>
-          </div>
-        </div>
-      `;
+        `;
 
-      container.querySelectorAll("[data-step]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const k = btn.dataset.step;
-          state[k] = !state[k];
-          render();
+        container.querySelectorAll("[data-step]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const k = btn.dataset.step;
+            state[k] = !state[k];
+            render();
+          });
         });
       });
     }
@@ -401,134 +467,136 @@
     }
 
     function render() {
-      const c = columns[state.col];
-      const uOpt = Math.sqrt(c.B / c.C);
-      const hMin = c.A + 2 * Math.sqrt(c.B * c.C);
-      const H = c.A + c.B / state.u + c.C * state.u;
-      const plates = Math.round(150000 / H); // 15 cm = 150,000 µm
+      renderPreservingFocus(container, () => {
+        const c = columns[state.col];
+        const uOpt = Math.sqrt(c.B / c.C);
+        const hMin = c.A + 2 * Math.sqrt(c.B * c.C);
+        const H = c.A + c.B / state.u + c.C * state.u;
+        const plates = Math.round(150000 / H); // 15 cm = 150,000 µm
 
-      let regime = "Optimal zone";
-      let badgeCls = "w-badge-ok";
-      if (state.u < uOpt * 0.72) {
-        regime = "B/u diffusion";
-        badgeCls = "w-badge-warn";
-      } else if (state.u > uOpt * 1.38) {
-        regime = "C·u mass transfer";
-        badgeCls = "w-badge-err";
-      }
+        let regime = "Optimal zone";
+        let badgeCls = "w-badge-ok";
+        if (state.u < uOpt * 0.72) {
+          regime = "B/u diffusion";
+          badgeCls = "w-badge-warn";
+        } else if (state.u > uOpt * 1.38) {
+          regime = "C·u mass transfer";
+          badgeCls = "w-badge-err";
+        }
 
-      const mainPath = curvePath((u) => c.A + c.B / u + c.C * u);
-      const aPath = state.showTerms ? curvePath(() => c.A) : "";
-      const bPath = state.showTerms ? curvePath((u) => c.B / u) : "";
-      const cPath = state.showTerms ? curvePath((u) => c.C * u) : "";
+        const mainPath = curvePath((u) => c.A + c.B / u + c.C * u);
+        const aPath = state.showTerms ? curvePath(() => c.A) : "";
+        const bPath = state.showTerms ? curvePath((u) => c.B / u) : "";
+        const cPath = state.showTerms ? curvePath((u) => c.C * u) : "";
 
-      const dotX = toX(state.u);
-      const dotY = toY(H);
-      const optX = toX(Math.min(uMax, uOpt));
-      const optY = toY(hMin);
+        const dotX = toX(state.u);
+        const dotY = toY(H);
+        const optX = toX(Math.min(uMax, uOpt));
+        const optY = toY(hMin);
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-lake);">
-          <div class="w-row">
-            <div class="w-pills">
-              ${Object.entries(columns)
-                .map(
-                  ([k, v]) =>
-                    `<button type="button" class="w-pill ${state.col === k ? "is-on" : ""}" data-col="${k}">${v.name}</button>`
-                )
-                .join("")}
+        container.innerHTML = `
+          <div class="w-stack" style="--w-accent: var(--c-lake);">
+            <div class="w-row">
+              <div class="w-pills">
+                ${Object.entries(columns)
+                  .map(
+                    ([k, v]) =>
+                      `<button type="button" class="w-pill ${state.col === k ? "is-on" : ""}" data-col="${k}">${v.name}</button>`
+                  )
+                  .join("")}
+              </div>
+              <button type="button" class="w-btn is-ghost" id="vd-opt-btn">u_opt</button>
             </div>
-            <button type="button" class="w-btn is-ghost" id="vd-opt-btn">u_opt</button>
-          </div>
 
-          <svg viewBox="0 0 280 78" class="w-canvas w-canvas-dark" style="height:82px;" role="img" aria-label="Exact van Deemter plot">
-            <line x1="12" y1="72" x2="268" y2="72" stroke="var(--s-border-ink)" stroke-width="0.9"/>
-            ${state.showTerms ? `
-              <path d="${aPath}" fill="none" stroke="var(--s-ink-faint)" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>
-              <path d="${bPath}" fill="none" stroke="var(--c-ochre)" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>
-              <path d="${cPath}" fill="none" stroke="var(--c-copper)" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>
-            ` : ""}
-            <path d="${mainPath}" fill="none" stroke="var(--c-lake)" stroke-width="2.2"/>
-            <line x1="${optX.toFixed(1)}" y1="${optY.toFixed(1)}" x2="${optX.toFixed(1)}" y2="72" stroke="var(--c-pine)" stroke-width="1" stroke-dasharray="2 2" opacity="0.75"/>
-            <polygon points="${optX.toFixed(1)},${(optY - 3.5).toFixed(1)} ${(optX + 3.5).toFixed(1)},${optY.toFixed(1)} ${optX.toFixed(1)},${(optY + 3.5).toFixed(1)} ${(optX - 3.5).toFixed(1)},${optY.toFixed(1)}" fill="var(--c-pine)"/>
-            <line id="vd-vline" x1="${dotX.toFixed(1)}" y1="${dotY.toFixed(1)}" x2="${dotX.toFixed(1)}" y2="72" stroke="var(--c-ochre)" stroke-width="1.1" opacity="0.8"/>
-            <circle id="vd-dot" cx="${dotX.toFixed(1)}" cy="${dotY.toFixed(1)}" r="4.8" fill="var(--c-ochre)" stroke="var(--s-code-bg)" stroke-width="1.5"/>
-          </svg>
+            <svg viewBox="0 0 280 78" class="w-canvas w-canvas-dark" style="height:82px;" role="img" aria-label="Exact van Deemter plot">
+              <line x1="12" y1="72" x2="268" y2="72" stroke="var(--s-border-ink)" stroke-width="0.9"/>
+              ${state.showTerms ? `
+                <path d="${aPath}" fill="none" stroke="var(--s-ink-faint)" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>
+                <path d="${bPath}" fill="none" stroke="var(--c-ochre)" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>
+                <path d="${cPath}" fill="none" stroke="var(--c-copper)" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>
+              ` : ""}
+              <path d="${mainPath}" fill="none" stroke="var(--c-lake)" stroke-width="2.2"/>
+              <line x1="${optX.toFixed(1)}" y1="${optY.toFixed(1)}" x2="${optX.toFixed(1)}" y2="72" stroke="var(--c-pine)" stroke-width="1" stroke-dasharray="2 2" opacity="0.75"/>
+              <polygon points="${optX.toFixed(1)},${(optY - 3.5).toFixed(1)} ${(optX + 3.5).toFixed(1)},${optY.toFixed(1)} ${optX.toFixed(1)},${(optY + 3.5).toFixed(1)} ${(optX - 3.5).toFixed(1)},${optY.toFixed(1)}" fill="var(--c-pine)"/>
+              <line id="vd-vline" x1="${dotX.toFixed(1)}" y1="${dotY.toFixed(1)}" x2="${dotX.toFixed(1)}" y2="72" stroke="var(--c-ochre)" stroke-width="1.1" opacity="0.8"/>
+              <circle id="vd-dot" cx="${dotX.toFixed(1)}" cy="${dotY.toFixed(1)}" r="4.8" fill="var(--c-ochre)" stroke="var(--s-code-bg)" stroke-width="1.5"/>
+            </svg>
 
-          <div class="w-row">
-            <span>u = <strong id="vd-u" style="color:var(--s-ink);">${state.u.toFixed(1)}</strong> cm/s</span>
-            <span id="vd-regime" class="w-badge ${badgeCls}">${regime}</span>
+            <div class="w-row">
+              <span>u = <strong id="vd-u" style="color:var(--s-ink);">${state.u.toFixed(1)}</strong> cm/s</span>
+              <span id="vd-regime" class="w-badge ${badgeCls}">${regime}</span>
+            </div>
+            <input id="vd-slider" class="w-slider" type="range" min="4" max="60" value="${Math.round(state.u * 10)}" aria-label="Mobile phase velocity u"/>
+            <div class="w-metrics">
+              <div class="w-metric"><small>Plate H</small><strong id="vd-h">${H.toFixed(2)} µm</strong></div>
+              <div class="w-metric"><small>Plates N</small><strong id="vd-n">${plates.toLocaleString()}</strong></div>
+              <div class="w-metric"><small>u_opt</small><strong>${uOpt.toFixed(1)} cm/s</strong></div>
+            </div>
           </div>
-          <input id="vd-slider" class="w-slider" type="range" min="4" max="60" value="${Math.round(state.u * 10)}" aria-label="Mobile phase velocity u"/>
-          <div class="w-metrics">
-            <div class="w-metric"><small>Plate H</small><strong id="vd-h">${H.toFixed(2)} µm</strong></div>
-            <div class="w-metric"><small>Plates N</small><strong id="vd-n">${plates.toLocaleString()}</strong></div>
-            <div class="w-metric"><small>u_opt</small><strong>${uOpt.toFixed(1)} cm/s</strong></div>
-          </div>
-        </div>
-      `;
+        `;
 
-      container.querySelectorAll("[data-col]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.col = btn.dataset.col;
-          const col = columns[state.col];
-          state.u = Math.min(uMax, Math.max(uMin, Number(Math.sqrt(col.B / col.C).toFixed(1))));
-          render();
+        container.querySelectorAll("[data-col]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.col = btn.dataset.col;
+            const col = columns[state.col];
+            state.u = Math.min(uMax, Math.max(uMin, Number(Math.sqrt(col.B / col.C).toFixed(1))));
+            render();
+          });
         });
-      });
 
-      const optBtn = container.querySelector("#vd-opt-btn");
-      if (optBtn) {
-        optBtn.addEventListener("click", () => {
-          const col = columns[state.col];
-          state.u = Math.min(uMax, Math.max(uMin, Number(Math.sqrt(col.B / col.C).toFixed(1))));
-          render();
-        });
-      }
+        const optBtn = container.querySelector("#vd-opt-btn");
+        if (optBtn) {
+          optBtn.addEventListener("click", () => {
+            const col = columns[state.col];
+            state.u = Math.min(uMax, Math.max(uMin, Number(Math.sqrt(col.B / col.C).toFixed(1))));
+            render();
+          });
+        }
 
-      const slider = container.querySelector("#vd-slider");
-      if (slider) {
-        slider.addEventListener("input", () => {
-          state.u = Number(slider.value) / 10;
-          const col = columns[state.col];
-          const uOptNow = Math.sqrt(col.B / col.C);
-          const Hnow = col.A + col.B / state.u + col.C * state.u;
-          const nNow = Math.round(150000 / Hnow);
-          const dx = toX(state.u).toFixed(1);
-          const dy = toY(Hnow).toFixed(1);
+        const slider = container.querySelector("#vd-slider");
+        if (slider) {
+          slider.addEventListener("input", () => {
+            state.u = Number(slider.value) / 10;
+            const col = columns[state.col];
+            const uOptNow = Math.sqrt(col.B / col.C);
+            const Hnow = col.A + col.B / state.u + col.C * state.u;
+            const nNow = Math.round(150000 / Hnow);
+            const dx = toX(state.u).toFixed(1);
+            const dy = toY(Hnow).toFixed(1);
 
-          const dot = container.querySelector("#vd-dot");
-          const vline = container.querySelector("#vd-vline");
-          if (dot) {
-            dot.setAttribute("cx", dx);
-            dot.setAttribute("cy", dy);
-          }
-          if (vline) {
-            vline.setAttribute("x1", dx);
-            vline.setAttribute("x2", dx);
-            vline.setAttribute("y1", dy);
-          }
-          const uEl = container.querySelector("#vd-u");
-          const hEl = container.querySelector("#vd-h");
-          const nEl = container.querySelector("#vd-n");
-          const regEl = container.querySelector("#vd-regime");
-          if (uEl) uEl.textContent = state.u.toFixed(1);
-          if (hEl) hEl.textContent = `${Hnow.toFixed(2)} µm`;
-          if (nEl) nEl.textContent = nNow.toLocaleString();
-          if (regEl) {
-            if (state.u < uOptNow * 0.72) {
-              regEl.textContent = "B/u diffusion";
-              regEl.className = "w-badge w-badge-warn";
-            } else if (state.u > uOptNow * 1.38) {
-              regEl.textContent = "C·u mass transfer";
-              regEl.className = "w-badge w-badge-err";
-            } else {
-              regEl.textContent = "Optimal zone";
-              regEl.className = "w-badge w-badge-ok";
+            const dot = container.querySelector("#vd-dot");
+            const vline = container.querySelector("#vd-vline");
+            if (dot) {
+              dot.setAttribute("cx", dx);
+              dot.setAttribute("cy", dy);
             }
-          }
-        });
-      }
+            if (vline) {
+              vline.setAttribute("x1", dx);
+              vline.setAttribute("x2", dx);
+              vline.setAttribute("y1", dy);
+            }
+            const uEl = container.querySelector("#vd-u");
+            const hEl = container.querySelector("#vd-h");
+            const nEl = container.querySelector("#vd-n");
+            const regEl = container.querySelector("#vd-regime");
+            if (uEl) uEl.textContent = state.u.toFixed(1);
+            if (hEl) hEl.textContent = `${Hnow.toFixed(2)} µm`;
+            if (nEl) nEl.textContent = nNow.toLocaleString();
+            if (regEl) {
+              if (state.u < uOptNow * 0.72) {
+                regEl.textContent = "B/u diffusion";
+                regEl.className = "w-badge w-badge-warn";
+              } else if (state.u > uOptNow * 1.38) {
+                regEl.textContent = "C·u mass transfer";
+                regEl.className = "w-badge w-badge-err";
+              } else {
+                regEl.textContent = "Optimal zone";
+                regEl.className = "w-badge w-badge-ok";
+              }
+            }
+          });
+        }
+      });
     }
 
     render();
@@ -595,7 +663,7 @@
           tag: "PAUSED",
           msg: `Approval hook intercepted ${tool.call}.`
         };
-        render();
+        render("#dep-approve");
         return;
       }
 
@@ -609,105 +677,111 @@
       render();
     }
 
-    function render() {
-      const pct = Math.min(100, (state.spent / MAX_COST) * 100);
-      const fillColor = pct >= 95 ? "var(--c-copper)" : pct >= 70 ? "var(--c-ochre)" : "var(--c-pine)";
-      const badgeCls =
-        state.status.tone === "ok"
-          ? "w-badge-ok"
-          : state.status.tone === "warn"
-            ? "w-badge-warn"
-            : "w-badge-err";
+    function render(preferredSelector = null) {
+      renderPreservingFocus(
+        container,
+        () => {
+          const pct = Math.min(100, (state.spent / MAX_COST) * 100);
+          const fillColor = pct >= 95 ? "var(--c-copper)" : pct >= 70 ? "var(--c-ochre)" : "var(--c-pine)";
+          const badgeCls =
+            state.status.tone === "ok"
+              ? "w-badge-ok"
+              : state.status.tone === "warn"
+                ? "w-badge-warn"
+                : "w-badge-err";
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-ochre);">
-          <div class="w-row">
-            <label class="w-toggle"><input id="dep-w" type="checkbox" ${state.allowWrite ? "checked" : ""}/> Writes</label>
-            <label class="w-toggle"><input id="dep-b" type="checkbox" ${state.allowBash ? "checked" : ""}/> Bash</label>
-            <label class="w-toggle"><input id="dep-h" type="checkbox" ${state.approvalHook ? "checked" : ""}/> Approval hook</label>
-          </div>
+          container.innerHTML = `
+            <div class="w-stack" style="--w-accent: var(--c-ochre);">
+              <div class="w-row">
+                <label class="w-toggle"><input id="dep-w" type="checkbox" ${state.allowWrite ? "checked" : ""}/> Writes</label>
+                <label class="w-toggle"><input id="dep-b" type="checkbox" ${state.allowBash ? "checked" : ""}/> Bash</label>
+                <label class="w-toggle"><input id="dep-h" type="checkbox" ${state.approvalHook ? "checked" : ""}/> Approval hook</label>
+              </div>
 
-          <div class="w-stack" style="gap:0.28rem;">
-            <div class="w-row">
-              <span>Budget: <strong style="color:var(--s-ink);">$${state.spent.toFixed(2)} / $${MAX_COST.toFixed(2)}</strong></span>
-              <button type="button" id="dep-reset" class="w-btn is-ghost" style="padding:0.1rem 0.42rem;">Reset</button>
+              <div class="w-stack" style="gap:0.28rem;">
+                <div class="w-row">
+                  <span>Budget: <strong style="color:var(--s-ink);">$${state.spent.toFixed(2)} / $${MAX_COST.toFixed(2)}</strong></span>
+                  <button type="button" id="dep-reset" class="w-btn is-ghost" style="padding:0.1rem 0.42rem;">Reset</button>
+                </div>
+                <div class="w-meter"><div class="w-meter-fill" style="width:${pct.toFixed(0)}%; background:${fillColor};"></div></div>
+              </div>
+
+              <div class="w-pills">
+                ${tools
+                  .map(
+                    (t) =>
+                      `<button type="button" class="w-btn" data-tool="${t.id}">${t.label} <span style="opacity:0.65;">$${t.cost.toFixed(2)}</span></button>`
+                  )
+                  .join("")}
+              </div>
+
+              ${
+                state.pending
+                  ? `
+                <div class="w-approval-bar">
+                  <span>Approve <strong>${state.pending.call}</strong>?</span>
+                  <span class="w-pills">
+                    <button type="button" id="dep-approve" class="w-btn is-solid" style="--w-accent: var(--c-pine);">Approve</button>
+                    <button type="button" id="dep-deny" class="w-btn">Deny</button>
+                  </span>
+                </div>`
+                  : `
+                <div class="w-trace" style="display:flex; align-items:center; gap:0.5rem;">
+                  <span class="w-badge ${badgeCls}">${state.status.tag}</span>
+                  <span>${state.status.msg}</span>
+                </div>`
+              }
             </div>
-            <div class="w-meter"><div class="w-meter-fill" style="width:${pct.toFixed(0)}%; background:${fillColor};"></div></div>
-          </div>
+          `;
 
-          <div class="w-pills">
-            ${tools
-              .map(
-                (t) =>
-                  `<button type="button" class="w-btn" data-tool="${t.id}">${t.label} <span style="opacity:0.65;">$${t.cost.toFixed(2)}</span></button>`
-              )
-              .join("")}
-          </div>
+          container.querySelector("#dep-w")?.addEventListener("change", (e) => {
+            state.allowWrite = e.target.checked;
+            state.pending = null;
+            render();
+          });
+          container.querySelector("#dep-b")?.addEventListener("change", (e) => {
+            state.allowBash = e.target.checked;
+            state.pending = null;
+            render();
+          });
+          container.querySelector("#dep-h")?.addEventListener("change", (e) => {
+            state.approvalHook = e.target.checked;
+            state.pending = null;
+            render();
+          });
+          container.querySelector("#dep-reset")?.addEventListener("click", () => {
+            state.spent = 0;
+            state.pending = null;
+            state.status = { tone: "ok", tag: "RESET", msg: "Usage budget cleared to $0.00." };
+            render();
+          });
 
-          ${
-            state.pending
-              ? `
-            <div class="w-approval-bar">
-              <span>Approve <strong>${state.pending.call}</strong>?</span>
-              <span class="w-pills">
-                <button type="button" id="dep-approve" class="w-btn is-solid" style="--w-accent: var(--c-pine);">Approve</button>
-                <button type="button" id="dep-deny" class="w-btn">Deny</button>
-              </span>
-            </div>`
-              : `
-            <div class="w-trace" style="display:flex; align-items:center; gap:0.5rem;">
-              <span class="w-badge ${badgeCls}">${state.status.tag}</span>
-              <span>${state.status.msg}</span>
-            </div>`
-          }
-        </div>
-      `;
+          container.querySelectorAll("[data-tool]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const tool = tools.find((t) => t.id === btn.dataset.tool);
+              if (tool) handleTool(tool);
+            });
+          });
 
-      container.querySelector("#dep-w")?.addEventListener("change", (e) => {
-        state.allowWrite = e.target.checked;
-        state.pending = null;
-        render();
-      });
-      container.querySelector("#dep-b")?.addEventListener("change", (e) => {
-        state.allowBash = e.target.checked;
-        state.pending = null;
-        render();
-      });
-      container.querySelector("#dep-h")?.addEventListener("change", (e) => {
-        state.approvalHook = e.target.checked;
-        state.pending = null;
-        render();
-      });
-      container.querySelector("#dep-reset")?.addEventListener("click", () => {
-        state.spent = 0;
-        state.pending = null;
-        state.status = { tone: "ok", tag: "RESET", msg: "Usage budget cleared to $0.00." };
-        render();
-      });
+          container.querySelector("#dep-approve")?.addEventListener("click", () => {
+            if (!state.pending) return;
+            const t = state.pending;
+            state.spent = Number((state.spent + t.cost).toFixed(2));
+            state.pending = null;
+            state.status = { tone: "ok", tag: "APPROVED", msg: `Signed off on ${t.call} (+$${t.cost.toFixed(2)}).` };
+            render(`[data-tool="${t.id}"]`);
+          });
 
-      container.querySelectorAll("[data-tool]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const tool = tools.find((t) => t.id === btn.dataset.tool);
-          if (tool) handleTool(tool);
-        });
-      });
-
-      container.querySelector("#dep-approve")?.addEventListener("click", () => {
-        if (!state.pending) return;
-        const t = state.pending;
-        state.spent = Number((state.spent + t.cost).toFixed(2));
-        state.pending = null;
-        state.status = { tone: "ok", tag: "APPROVED", msg: `Signed off on ${t.call} (+$${t.cost.toFixed(2)}).` };
-        render();
-      });
-
-      container.querySelector("#dep-deny")?.addEventListener("click", () => {
-        if (!state.pending) return;
-        const t = state.pending;
-        state.pending = null;
-        state.status = { tone: "err", tag: "REJECTED", msg: `Human reviewer rejected ${t.call}.` };
-        render();
-      });
+          container.querySelector("#dep-deny")?.addEventListener("click", () => {
+            if (!state.pending) return;
+            const t = state.pending;
+            state.pending = null;
+            state.status = { tone: "err", tag: "REJECTED", msg: `Human reviewer rejected ${t.call}.` };
+            render(`[data-tool="${t.id}"]`);
+          });
+        },
+        preferredSelector
+      );
     }
 
     render();
@@ -756,59 +830,61 @@
     const state = { pass: 0 };
 
     function render() {
-      const p = passes[state.pass];
-      const pct = Math.round(p.acc * 100);
-      const barCol = pct === 100 ? "var(--c-pine)" : pct >= 75 ? "var(--c-ochre)" : "var(--c-copper)";
+      renderPreservingFocus(container, () => {
+        const p = passes[state.pass];
+        const pct = Math.round(p.acc * 100);
+        const barCol = pct === 100 ? "var(--c-pine)" : pct >= 75 ? "var(--c-ochre)" : "var(--c-copper)";
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-ochre);">
-          <div class="w-row">
-            <div class="w-pills">
-              ${passes
+        container.innerHTML = `
+          <div class="w-stack" style="--w-accent: var(--c-ochre);">
+            <div class="w-row">
+              <div class="w-pills">
+                ${passes
+                  .map(
+                    (item, idx) =>
+                      `<button type="button" class="w-pill ${state.pass === idx ? "is-on" : ""}" data-pass="${idx}">${item.label}</button>`
+                  )
+                  .join("")}
+              </div>
+              <button type="button" id="dsp-next" class="w-btn is-solid">Step →</button>
+            </div>
+
+            <div class="w-stack" style="gap:0.25rem;">
+              <div class="w-row">
+                <span>${p.summary}</span>
+                <strong style="color:${barCol};">acc = ${p.acc.toFixed(2)}</strong>
+              </div>
+              <div class="w-meter"><div class="w-meter-fill" style="width:${pct}%; background:${barCol};"></div></div>
+            </div>
+
+            <div class="w-eval-grid">
+              ${p.preds
                 .map(
-                  (item, idx) =>
-                    `<button type="button" class="w-pill ${state.pass === idx ? "is-on" : ""}" data-pass="${idx}">${item.label}</button>`
+                  (r) => `
+                <div class="w-eval-card ${r.ok ? "is-pass" : "is-fail"}">
+                  <span class="w-eval-note" title="${r.note}">${r.note}</span>
+                  <div class="w-eval-res">
+                    <span>→ ${r.pred}</span>
+                    <span style="color:${r.ok ? "var(--c-pine)" : "var(--c-copper)"};">${r.ok ? "✓" : `✗ (${r.truth})`}</span>
+                  </div>
+                </div>`
                 )
                 .join("")}
             </div>
-            <button type="button" id="dsp-next" class="w-btn is-solid">Step →</button>
           </div>
+        `;
 
-          <div class="w-stack" style="gap:0.25rem;">
-            <div class="w-row">
-              <span>${p.summary}</span>
-              <strong style="color:${barCol};">acc = ${p.acc.toFixed(2)}</strong>
-            </div>
-            <div class="w-meter"><div class="w-meter-fill" style="width:${pct}%; background:${barCol};"></div></div>
-          </div>
+        container.querySelectorAll("[data-pass]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.pass = Number(btn.dataset.pass);
+            render();
+          });
+        });
 
-          <div class="w-eval-grid">
-            ${p.preds
-              .map(
-                (r) => `
-              <div class="w-eval-card ${r.ok ? "is-pass" : "is-fail"}">
-                <span class="w-eval-note" title="${r.note}">${r.note}</span>
-                <div class="w-eval-res">
-                  <span>→ ${r.pred}</span>
-                  <span style="color:${r.ok ? "var(--c-pine)" : "var(--c-copper)"};">${r.ok ? "✓" : `✗ (${r.truth})`}</span>
-                </div>
-              </div>`
-              )
-              .join("")}
-          </div>
-        </div>
-      `;
-
-      container.querySelectorAll("[data-pass]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.pass = Number(btn.dataset.pass);
+        container.querySelector("#dsp-next")?.addEventListener("click", () => {
+          state.pass = (state.pass + 1) % passes.length;
           render();
         });
-      });
-
-      container.querySelector("#dsp-next")?.addEventListener("click", () => {
-        state.pass = (state.pass + 1) % passes.length;
-        render();
       });
     }
 
@@ -868,108 +944,110 @@
     }
 
     function render() {
-      syncSheetCodeAndLinks();
-      let bodyHtml = "";
+      renderPreservingFocus(container, () => {
+        syncSheetCodeAndLinks();
+        let bodyHtml = "";
 
-      if (state.tab === "tempest") {
-        const sections = [];
-        if (state.personas.chem) sections.push("1. Multi-angle light scattering & dn/dc calibration");
-        if (state.personas.stats) sections.push("2. Error propagation across narrow-standard curves");
-        if (state.personas.skeptic) sections.push("3. Failure modes: column shear & aggregation bias");
-        const cites = sections.length * 4;
-        bodyHtml = `
-          <div class="w-row">
-            <span>Toggle STORM perspectives:</span>
-            <span><strong style="color:var(--s-ink);">${cites}</strong> cited refs</span>
-          </div>
-          <div class="w-pills">
-            <button type="button" class="w-pill w-pill-subtle ${state.personas.chem ? "is-on" : ""}" data-persona="chem">Chemist</button>
-            <button type="button" class="w-pill w-pill-subtle ${state.personas.stats ? "is-on" : ""}" data-persona="stats">Statistician</button>
-            <button type="button" class="w-pill w-pill-subtle ${state.personas.skeptic ? "is-on" : ""}" data-persona="skeptic">Skeptic</button>
-          </div>
-          <div class="w-list">
-            ${
-              sections.length
-                ? sections.map((s) => `<div class="w-list-item"><span>${s}</span><span class="w-badge w-badge-ok">Cited</span></div>`).join("")
-                : `<div class="w-list-item is-dim"><span>Enable a perspective above to draft an outline.</span></div>`
-            }
-          </div>
-        `;
-      } else if (state.tab === "scans") {
-        const s = scanSteps[state.scanStep];
-        bodyHtml = `
-          <div class="w-step-strip">
-            ${scanSteps
-              .map(
-                (st) =>
-                  `<button type="button" class="w-step-chip ${state.scanStep === st.id ? "is-on" : ""}" data-scan="${st.id}">${st.name}</button>`
-              )
-              .join("")}
-          </div>
-          <div class="w-trace">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; margin-bottom:0.25rem;">
-              <span class="w-badge ${s.cls}">${s.verdict}</span>
-              <span style="opacity:0.8;">${s.ms} · ${s.tok}</span>
+        if (state.tab === "tempest") {
+          const sections = [];
+          if (state.personas.chem) sections.push("1. Multi-angle light scattering & dn/dc calibration");
+          if (state.personas.stats) sections.push("2. Error propagation across narrow-standard curves");
+          if (state.personas.skeptic) sections.push("3. Failure modes: column shear & aggregation bias");
+          const cites = sections.length * 4;
+          bodyHtml = `
+            <div class="w-row">
+              <span>Toggle STORM perspectives:</span>
+              <span><strong style="color:var(--s-ink);">${cites}</strong> cited refs</span>
             </div>
-            <div>${s.detail}</div>
+            <div class="w-pills">
+              <button type="button" class="w-pill w-pill-subtle ${state.personas.chem ? "is-on" : ""}" data-persona="chem">Chemist</button>
+              <button type="button" class="w-pill w-pill-subtle ${state.personas.stats ? "is-on" : ""}" data-persona="stats">Statistician</button>
+              <button type="button" class="w-pill w-pill-subtle ${state.personas.skeptic ? "is-on" : ""}" data-persona="skeptic">Skeptic</button>
+            </div>
+            <div class="w-list">
+              ${
+                sections.length
+                  ? sections.map((s) => `<div class="w-list-item"><span>${s}</span><span class="w-badge w-badge-ok">Cited</span></div>`).join("")
+                  : `<div class="w-list-item is-dim"><span>Enable a perspective above to draft an outline.</span></div>`
+              }
+            </div>
+          `;
+        } else if (state.tab === "scans") {
+          const s = scanSteps[state.scanStep];
+          bodyHtml = `
+            <div class="w-step-strip">
+              ${scanSteps
+                .map(
+                  (st) =>
+                    `<button type="button" class="w-step-chip ${state.scanStep === st.id ? "is-on" : ""}" data-scan="${st.id}">${st.name}</button>`
+                )
+                .join("")}
+            </div>
+            <div class="w-trace">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; margin-bottom:0.25rem;">
+                <span class="w-badge ${s.cls}">${s.verdict}</span>
+                <span style="opacity:0.8;">${s.ms} · ${s.tok}</span>
+              </div>
+              <div>${s.detail}</div>
+            </div>
+          `;
+        } else {
+          const revCount = state.graftItems.filter((i) => i.reviewed).length;
+          bodyHtml = `
+            <div class="w-row">
+              <span>Click an artifact to toggle review:</span>
+              <span><strong style="color:var(--s-ink);">${revCount}/${state.graftItems.length}</strong> pinned</span>
+            </div>
+            <div class="w-list">
+              ${state.graftItems
+                .map(
+                  (item) => `
+                <button type="button" class="w-list-item" data-graft="${item.id}" style="cursor:pointer; text-align:left; width:100%;">
+                  <span>${item.text}</span>
+                  <span class="w-badge ${item.reviewed ? "w-badge-ok" : "w-badge-warn"}">${item.reviewed ? "Reviewed" : "Draft"}</span>
+                </button>`
+                )
+                .join("")}
+            </div>
+          `;
+        }
+
+        container.innerHTML = `
+          <div class="w-stack" style="--w-accent: var(--c-copper);">
+            <div class="w-pills">
+              <button type="button" class="w-pill ${state.tab === "tempest" ? "is-on" : ""}" data-ftab="tempest">tempest</button>
+              <button type="button" class="w-pill ${state.tab === "scans" ? "is-on" : ""}" data-ftab="scans">scans</button>
+              <button type="button" class="w-pill ${state.tab === "graft" ? "is-on" : ""}" data-ftab="graft">graft</button>
+            </div>
+            ${bodyHtml}
           </div>
         `;
-      } else {
-        const revCount = state.graftItems.filter((i) => i.reviewed).length;
-        bodyHtml = `
-          <div class="w-row">
-            <span>Click an artifact to toggle review:</span>
-            <span><strong style="color:var(--s-ink);">${revCount}/${state.graftItems.length}</strong> pinned</span>
-          </div>
-          <div class="w-list">
-            ${state.graftItems
-              .map(
-                (item) => `
-              <button type="button" class="w-list-item" data-graft="${item.id}" style="cursor:pointer; text-align:left; width:100%;">
-                <span>${item.text}</span>
-                <span class="w-badge ${item.reviewed ? "w-badge-ok" : "w-badge-warn"}">${item.reviewed ? "Reviewed" : "Draft"}</span>
-              </button>`
-              )
-              .join("")}
-          </div>
-        `;
-      }
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-copper);">
-          <div class="w-pills">
-            <button type="button" class="w-pill ${state.tab === "tempest" ? "is-on" : ""}" data-ftab="tempest">tempest</button>
-            <button type="button" class="w-pill ${state.tab === "scans" ? "is-on" : ""}" data-ftab="scans">scans</button>
-            <button type="button" class="w-pill ${state.tab === "graft" ? "is-on" : ""}" data-ftab="graft">graft</button>
-          </div>
-          ${bodyHtml}
-        </div>
-      `;
-
-      container.querySelectorAll("[data-ftab]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.tab = btn.dataset.ftab;
-          render();
+        container.querySelectorAll("[data-ftab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.tab = btn.dataset.ftab;
+            render();
+          });
         });
-      });
-      container.querySelectorAll("[data-persona]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const p = btn.dataset.persona;
-          state.personas[p] = !state.personas[p];
-          render();
+        container.querySelectorAll("[data-persona]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const p = btn.dataset.persona;
+            state.personas[p] = !state.personas[p];
+            render();
+          });
         });
-      });
-      container.querySelectorAll("[data-scan]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.scanStep = Number(btn.dataset.scan);
-          render();
+        container.querySelectorAll("[data-scan]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.scanStep = Number(btn.dataset.scan);
+            render();
+          });
         });
-      });
-      container.querySelectorAll("[data-graft]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const item = state.graftItems.find((i) => i.id === btn.dataset.graft);
-          if (item) item.reviewed = !item.reviewed;
-          render();
+        container.querySelectorAll("[data-graft]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const item = state.graftItems.find((i) => i.id === btn.dataset.graft);
+            if (item) item.reviewed = !item.reviewed;
+            render();
+          });
         });
       });
     }
@@ -1003,88 +1081,90 @@
     }
 
     function render() {
-      syncCode();
-      let bodyHtml = "";
+      renderPreservingFocus(container, () => {
+        syncCode();
+        let bodyHtml = "";
 
-      if (state.tab === "rill") {
-        const kept = state.feeds.filter((f) => f.saved);
-        bodyHtml = `
-          <div class="w-list">
-            ${state.feeds
-              .map(
-                (f) => `
-              <div class="w-list-item ${f.saved ? "is-selected" : "is-dim"}">
-                <span>${f.title} <span style="opacity:0.65;">(${f.score})</span></span>
-                <button type="button" class="w-btn ${f.saved ? "is-solid" : ""}" data-feed="${f.id}" style="padding:0.12rem 0.42rem;">${f.saved ? "Kept" : "Keep"}</button>
-              </div>`
-              )
-              .join("")}
-          </div>
-          <div class="w-trace">
-            <code>Digest (${kept.length}): ${kept.length ? kept.map((k) => k.title.split(" ")[0]).join(" + ") + " queued for reading." : "Queue empty. Keep a feed item above."}</code>
+        if (state.tab === "rill") {
+          const kept = state.feeds.filter((f) => f.saved);
+          bodyHtml = `
+            <div class="w-list">
+              ${state.feeds
+                .map(
+                  (f) => `
+                <div class="w-list-item ${f.saved ? "is-selected" : "is-dim"}">
+                  <span>${f.title} <span style="opacity:0.65;">(${f.score})</span></span>
+                  <button type="button" class="w-btn ${f.saved ? "is-solid" : ""}" data-feed="${f.id}" style="padding:0.12rem 0.42rem;">${f.saved ? "Kept" : "Keep"}</button>
+                </div>`
+                )
+                .join("")}
+            </div>
+            <div class="w-trace">
+              <code>Digest (${kept.length}): ${kept.length ? kept.map((k) => k.title.split(" ")[0]).join(" + ") + " queued for reading." : "Queue empty. Keep a feed item above."}</code>
+            </div>
+          `;
+        } else {
+          const wasm = state.beliefs.wasm;
+          const stat = state.beliefs.staticHost;
+          const coopNeeded = wasm;
+          const zeroServer = wasm && stat;
+          const offlineOk = wasm;
+          bodyHtml = `
+            <div class="w-row">
+              <label class="w-toggle"><input id="sup-wasm" type="checkbox" ${wasm ? "checked" : ""}/> Client-side Wasm</label>
+              <label class="w-toggle"><input id="sup-stat" type="checkbox" ${stat ? "checked" : ""}/> Static Netlify host</label>
+            </div>
+            <div class="w-metrics">
+              <div class="w-metric">
+                <small>Server cost</small>
+                <strong style="color:${zeroServer ? "var(--c-pine)" : "var(--c-ochre)"};">${zeroServer ? "$0 static" : "Needs host"}</strong>
+              </div>
+              <div class="w-metric">
+                <small>COOP/COEP</small>
+                <strong style="color:${coopNeeded ? "var(--c-ochre)" : "var(--c-pine)"};">${coopNeeded ? "Required" : "Optional"}</strong>
+              </div>
+              <div class="w-metric">
+                <small>Offline run</small>
+                <strong style="color:${offlineOk ? "var(--c-pine)" : "var(--c-copper)"};">${offlineOk ? "Supported" : "Blocked"}</strong>
+              </div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = `
+          <div class="w-stack" style="--w-accent: var(--c-lake);">
+            <div class="w-pills">
+              <button type="button" class="w-pill ${state.tab === "rill" ? "is-on" : ""}" data-rtab="rill">rill (Feed reader)</button>
+              <button type="button" class="w-pill ${state.tab === "suppose" ? "is-on" : ""}" data-rtab="suppose">suppose (Beliefs)</button>
+            </div>
+            ${bodyHtml}
           </div>
         `;
-      } else {
-        const wasm = state.beliefs.wasm;
-        const stat = state.beliefs.staticHost;
-        const coopNeeded = wasm;
-        const zeroServer = wasm && stat;
-        const offlineOk = wasm;
-        bodyHtml = `
-          <div class="w-row">
-            <label class="w-toggle"><input id="sup-wasm" type="checkbox" ${wasm ? "checked" : ""}/> Client-side Wasm</label>
-            <label class="w-toggle"><input id="sup-stat" type="checkbox" ${stat ? "checked" : ""}/> Static Netlify host</label>
-          </div>
-          <div class="w-metrics">
-            <div class="w-metric">
-              <small>Server cost</small>
-              <strong style="color:${zeroServer ? "var(--c-pine)" : "var(--c-ochre)"};">${zeroServer ? "$0 static" : "Needs host"}</strong>
-            </div>
-            <div class="w-metric">
-              <small>COOP/COEP</small>
-              <strong style="color:${coopNeeded ? "var(--c-ochre)" : "var(--c-pine)"};">${coopNeeded ? "Required" : "Optional"}</strong>
-            </div>
-            <div class="w-metric">
-              <small>Offline run</small>
-              <strong style="color:${offlineOk ? "var(--c-pine)" : "var(--c-copper)"};">${offlineOk ? "Supported" : "Blocked"}</strong>
-            </div>
-          </div>
-        `;
-      }
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-lake);">
-          <div class="w-pills">
-            <button type="button" class="w-pill ${state.tab === "rill" ? "is-on" : ""}" data-rtab="rill">rill (Feed reader)</button>
-            <button type="button" class="w-pill ${state.tab === "suppose" ? "is-on" : ""}" data-rtab="suppose">suppose (Beliefs)</button>
-          </div>
-          ${bodyHtml}
-        </div>
-      `;
+        container.querySelectorAll("[data-rtab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.tab = btn.dataset.rtab;
+            render();
+          });
+        });
 
-      container.querySelectorAll("[data-rtab]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.tab = btn.dataset.rtab;
+        container.querySelectorAll("[data-feed]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const f = state.feeds.find((x) => x.id === btn.dataset.feed);
+            if (f) f.saved = !f.saved;
+            render();
+          });
+        });
+
+        container.querySelector("#sup-wasm")?.addEventListener("change", (e) => {
+          state.beliefs.wasm = e.target.checked;
           render();
         });
-      });
 
-      container.querySelectorAll("[data-feed]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const f = state.feeds.find((x) => x.id === btn.dataset.feed);
-          if (f) f.saved = !f.saved;
+        container.querySelector("#sup-stat")?.addEventListener("change", (e) => {
+          state.beliefs.staticHost = e.target.checked;
           render();
         });
-      });
-
-      container.querySelector("#sup-wasm")?.addEventListener("change", (e) => {
-        state.beliefs.wasm = e.target.checked;
-        render();
-      });
-
-      container.querySelector("#sup-stat")?.addEventListener("change", (e) => {
-        state.beliefs.staticHost = e.target.checked;
-        render();
       });
     }
 
@@ -1111,43 +1191,45 @@
     const state = { selected: "d1", treats: 0, hopping: false };
 
     function render() {
-      const pet = crew.find((c) => c.id === state.selected) || crew[0];
-      const msg = state.treats > 0 ? `${pet.label}: ${pet.treat}` : `${pet.label}: ${pet.idle}`;
+      renderPreservingFocus(container, () => {
+        const pet = crew.find((c) => c.id === state.selected) || crew[0];
+        const msg = state.treats > 0 ? `${pet.label}: ${pet.treat}` : `${pet.label}: ${pet.idle}`;
 
-      container.innerHTML = `
-        <div class="w-stack" style="--w-accent: var(--c-plum);">
-          <div class="w-critter-grid">
-            ${crew
-              .map(
-                (c, i) => `
-              <button type="button" class="w-critter ${state.selected === c.id ? "is-active" : ""} ${state.hopping ? "is-hopping" : ""}" style="${state.hopping ? `animation-delay:${i * 35}ms;` : ""}" data-pet="${c.id}" aria-label="${c.label}">
-                ${c.kind === "dog" ? dogSvg : catSvg}
-                <span>${c.label.replace(" ", "")}</span>
-              </button>`
-              )
-              .join("")}
+        container.innerHTML = `
+          <div class="w-stack" style="--w-accent: var(--c-plum);">
+            <div class="w-critter-grid">
+              ${crew
+                .map(
+                  (c, i) => `
+                <button type="button" class="w-critter ${state.selected === c.id ? "is-active" : ""} ${state.hopping ? "is-hopping" : ""}" style="${state.hopping ? `animation-delay:${i * 35}ms;` : ""}" data-pet="${c.id}" aria-label="${c.label}">
+                  ${c.kind === "dog" ? dogSvg : catSvg}
+                  <span>${c.label.replace(" ", "")}</span>
+                </button>`
+                )
+                .join("")}
+            </div>
+            <div class="w-row">
+              <span>Treats tossed: <strong style="color:var(--s-ink);">${state.treats}</strong></span>
+              <button type="button" id="w-pet-btn" class="w-btn is-solid">Toss Treat</button>
+            </div>
+            <div class="w-trace">${msg}</div>
           </div>
-          <div class="w-row">
-            <span>Treats tossed: <strong style="color:var(--s-ink);">${state.treats}</strong></span>
-            <button type="button" id="w-pet-btn" class="w-btn is-solid">Toss Treat</button>
-          </div>
-          <div class="w-trace">${msg}</div>
-        </div>
-      `;
+        `;
 
-      container.querySelectorAll("[data-pet]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.selected = btn.dataset.pet;
-          state.hopping = false;
+        container.querySelectorAll("[data-pet]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.selected = btn.dataset.pet;
+            state.hopping = false;
+            render();
+          });
+        });
+
+        container.querySelector("#w-pet-btn")?.addEventListener("click", () => {
+          state.treats += 1;
+          state.selected = crew[state.treats % crew.length].id;
+          state.hopping = true;
           render();
         });
-      });
-
-      container.querySelector("#w-pet-btn")?.addEventListener("click", () => {
-        state.treats += 1;
-        state.selected = crew[state.treats % crew.length].id;
-        state.hopping = true;
-        render();
       });
     }
 
